@@ -11,10 +11,10 @@
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html { font-size: 14px; -webkit-font-smoothing: antialiased; }
-  body { font-family: 'Inter', sans-serif; background: #0f0f0f; color: #f5f5f5; min-height: 100vh; }
+  body { font-family: 'Inter', sans-serif; background: #f5f6fa; color: #111; min-height: 100vh; }
   ::-webkit-scrollbar { width: 4px; height: 4px; }
-  ::-webkit-scrollbar-track { background: #1a1a1a; }
-  ::-webkit-scrollbar-thumb { background: #333; border-radius: 2px; }
+  ::-webkit-scrollbar-track { background: #f3f4f6; }
+  ::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 2px; }
   select, input, button { font-family: 'Inter', sans-serif; }
   @keyframes spin { to { transform: rotate(360deg); } }
   @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
@@ -66,7 +66,7 @@ const f2   = n => (n||0).toFixed(2);
 const pct  = (a,b) => b > 0 ? Math.round(a/b*100) : 0;
 
 const roasColor  = r => r >= 1.5 ? "#22c55e" : r >= 1.0 ? "#f59e0b" : "#ef4444";
-const roasBadge  = r => r >= 1.5 ? "#052e16" : r >= 1.0 ? "#1c1400" : "#1c0505";
+const roasBadge  = r => r >= 1.5 ? "#f0fdf4" : r >= 1.0 ? "#fefce8" : "#fef2f2";
 const cplColor   = c => !c ? "#666" : c <= 10 ? "#22c55e" : c <= 13 ? "#f59e0b" : "#ef4444";
 const suColor    = s => s >= 28 ? "#22c55e" : s >= 22 ? "#f59e0b" : "#ef4444";
 
@@ -87,12 +87,12 @@ async function runAI(c) {
 // ═══════════ COMPONENTS ══════════════════════════════════════════════════════
 
 function Spin() {
-  return <div style={{width:13,height:13,border:"2px solid #333",borderTopColor:"#666",borderRadius:"50%",animation:"spin .7s linear infinite",flexShrink:0}}/>;
+  return <div style={{width:13,height:13,border:"2px solid #e5e7eb",borderTopColor:"#6366f1",borderRadius:"50%",animation:"spin .7s linear infinite",flexShrink:0}}/>;
 }
 
 function Badge({label, color="#22c55e", bg="#052e16"}) {
   return (
-    <span style={{background:bg,color,borderRadius:4,padding:"2px 8px",fontSize:11,fontWeight:600,letterSpacing:0.3,display:"inline-block"}}>
+    <span style={{background:bg,color,borderRadius:4,padding:"2px 8px",fontSize:11,fontWeight:600,letterSpacing:0.3,display:"inline-block",border:`1px solid ${color}33`}}>
       {label}
     </span>
   );
@@ -144,38 +144,38 @@ export default function App() {
 
   const S = {
     // Layout
-    page:   {minHeight:"100vh",background:"#0f0f0f",padding:"0 0 60px"},
+    page:   {minHeight:"100vh",background:"#f5f6fa",padding:"0 0 60px"},
     wrap:   {maxWidth:1400,margin:"0 auto",padding:"0 32px"},
 
     // Header
-    header: {background:"#0f0f0f",borderBottom:"1px solid #1f1f1f",padding:"0 32px",position:"sticky",top:0,zIndex:100},
+    header: {background:"#fff",borderBottom:"1px solid #e5e7eb",padding:"0 32px",position:"sticky",top:0,zIndex:100},
     headerInner:{maxWidth:1400,margin:"0 auto",height:56,display:"flex",alignItems:"center",justifyContent:"space-between"},
 
     // KPI cards
-    kpiGrid:{display:"grid",gridTemplateColumns:"repeat(6,1fr)",gap:1,background:"#1f1f1f",border:"1px solid #1f1f1f",borderRadius:12,overflow:"hidden",marginBottom:24},
-    kpiCard:{background:"#171717",padding:"20px 24px"},
-    kpiLabel:{fontSize:11,color:"#555",fontWeight:500,textTransform:"uppercase",letterSpacing:1,marginBottom:8},
+    kpiGrid:{display:"grid",gridTemplateColumns:"repeat(6,1fr)",gap:1,background:"#e5e7eb",border:"1px solid #e5e7eb",borderRadius:12,overflow:"hidden",marginBottom:24},
+    kpiCard:{background:"#fff",padding:"20px 24px"},
+    kpiLabel:{fontSize:11,color:"#9ca3af",fontWeight:500,textTransform:"uppercase",letterSpacing:1,marginBottom:8},
     kpiValue:{fontSize:26,fontWeight:700,letterSpacing:-0.5,lineHeight:1},
-    kpiSub:  {fontSize:11,color:"#444",marginTop:4},
+    kpiSub:  {fontSize:11,color:"#9ca3af",marginTop:4},
 
     // Section
     section:{marginBottom:24},
     sectionHead:{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:12},
-    sectionTitle:{fontSize:13,fontWeight:600,color:"#888",textTransform:"uppercase",letterSpacing:1},
+    sectionTitle:{fontSize:13,fontWeight:600,color:"#9ca3af",textTransform:"uppercase",letterSpacing:1},
 
     // Table
-    table:  {background:"#131313",border:"1px solid #1f1f1f",borderRadius:12,overflow:"hidden"},
-    thead:  {display:"grid",padding:"12px 20px",background:"#0f0f0f",borderBottom:"1px solid #1f1f1f"},
-    th:     {fontSize:11,color:"#444",fontWeight:500,textTransform:"uppercase",letterSpacing:0.8},
-    trow:   {display:"grid",padding:"16px 20px",borderBottom:"1px solid #1a1a1a",cursor:"pointer",transition:"background 0.1s"},
-    td:     {fontSize:14,color:"#ccc"},
-    tdBig:  {fontSize:18,fontWeight:700,color:"#fff",letterSpacing:-0.3},
+    table:  {background:"#fff",border:"1px solid #e5e7eb",borderRadius:12,overflow:"hidden"},
+    thead:  {display:"grid",padding:"12px 20px",background:"#f9fafb",borderBottom:"1px solid #e5e7eb"},
+    th:     {fontSize:11,color:"#9ca3af",fontWeight:500,textTransform:"uppercase",letterSpacing:0.8},
+    trow:   {display:"grid",padding:"16px 20px",borderBottom:"1px solid #f3f4f6",cursor:"pointer",transition:"background 0.1s"},
+    td:     {fontSize:14,color:"#6b7280"},
+    tdBig:  {fontSize:18,fontWeight:700,color:"#111",letterSpacing:-0.3},
 
     // Buttons
     btn:    {border:"none",borderRadius:6,padding:"7px 16px",fontSize:12,fontWeight:600,cursor:"pointer",transition:"all 0.1s"},
-    btnPrim:{background:"#1f1f1f",color:"#fff"},
+    btnPrim:{background:"#111",color:"#fff"},
     btnAct: {background:"#fff",color:"#000"},
-    btnSm:  {border:"none",borderRadius:4,padding:"4px 10px",fontSize:11,fontWeight:600,cursor:"pointer",background:"#1f1f1f",color:"#666"},
+    btnSm:  {border:"none",borderRadius:4,padding:"4px 10px",fontSize:11,fontWeight:600,cursor:"pointer",background:"#f3f4f6",color:"#6b7280"},
   };
 
   // Webinar columns
@@ -190,7 +190,7 @@ export default function App() {
       <div style={S.header}>
         <div style={S.headerInner}>
           <div style={{display:"flex",alignItems:"center",gap:24}}>
-            <div style={{fontSize:13,fontWeight:700,color:"#fff",letterSpacing:-0.3}}>Meilenweit Voraus</div>
+            <div style={{fontSize:13,fontWeight:700,color:"#111",letterSpacing:-0.3}}>Meilenweit Voraus</div>
             <div style={{width:1,height:16,background:"#222"}}/>
             <div style={{display:"flex",gap:2}}>
               {[["webinare","Webinare"],["kampagnen","Kampagnen"]].map(([id,label])=>(
@@ -199,13 +199,13 @@ export default function App() {
             </div>
           </div>
           <div style={{display:"flex",gap:8,alignItems:"center"}}>
-            <span style={{fontSize:11,color:"#444"}}>Zeitraum:</span>
-            <div style={{display:"flex",gap:2,background:"#1a1a1a",borderRadius:6,padding:2}}>
+            <span style={{fontSize:11,color:"#9ca3af"}}>Zeitraum:</span>
+            <div style={{display:"flex",gap:2,background:"#f3f4f6",borderRadius:6,padding:2}}>
               {[["last4","Letzte 4"],["all","Alle"]].map(([v,l])=>(
                 <button key={v} onClick={()=>setView(v)} style={{
                   ...S.btn,
                   background:view===v?"#fff":"transparent",
-                  color:view===v?"#000":"#555",
+                  color:view===v?"#000":"#6b7280",
                   padding:"4px 12px",fontSize:11
                 }}>{l}</button>
               ))}
@@ -239,7 +239,7 @@ export default function App() {
         <div style={S.section}>
           <div style={S.sectionHead}>
             <span style={S.sectionTitle}>Webinar-Performance</span>
-            <span style={{fontSize:11,color:"#333"}}>Sonntag 10:00 Attribution · TC CSV</span>
+            <span style={{fontSize:11,color:"#9ca3af"}}>Sonntag 10:00 Attribution · TC CSV</span>
           </div>
 
           <div style={S.table}>
@@ -265,15 +265,15 @@ export default function App() {
                     onClick={()=>setExpanded(isExp?null:w.date)}
                     style={{
                       ...S.trow, gridTemplateColumns:WCols,
-                      background:isExp?"#1a1a1a":"transparent",
+                      background:isExp?"#f9fafb":"transparent",
                       borderBottom:i<webinars.length-1||isExp?"1px solid #1a1a1a":"none",
                     }}
-                    onMouseEnter={e=>e.currentTarget.style.background="#161616"}
-                    onMouseLeave={e=>e.currentTarget.style.background=isExp?"#1a1a1a":"transparent"}
+                    onMouseEnter={e=>e.currentTarget.style.background="#f9fafb"}
+                    onMouseLeave={e=>e.currentTarget.style.background=isExp?"#f9fafb":"transparent"}
                   >
                     <div>
                       <div style={{fontSize:14,fontWeight:600,color:"#fff"}}>{w.label}</div>
-                      {w.partial&&<div style={{fontSize:10,color:"#444",marginTop:2}}>laufend</div>}
+                      {w.partial&&<div style={{fontSize:10,color:"#9ca3af",marginTop:2}}>laufend</div>}
                       {w.spend===0&&!w.partial&&<div style={{fontSize:10,color:"#f59e0b",marginTop:2}}>carry</div>}
                     </div>
 
@@ -299,8 +299,8 @@ export default function App() {
 
                   {/* Expanded product detail */}
                   {isExp&&(
-                    <div style={{background:"#111",borderBottom:"1px solid #1a1a1a",padding:"16px 20px",animation:"fadeIn 0.15s ease"}}>
-                      <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(160px,1fr))",gap:1,background:"#1f1f1f",border:"1px solid #1f1f1f",borderRadius:8,overflow:"hidden"}}>
+                    <div style={{background:"#f9fafb",borderBottom:"1px solid #e5e7eb",padding:"16px 20px",animation:"fadeIn 0.15s ease"}}>
+                      <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(160px,1fr))",gap:1,background:"#e5e7eb",border:"1px solid #e5e7eb",borderRadius:8,overflow:"hidden"}}>
                         {[
                           {k:"kurs",label:"Meilenkurs",color:"#818cf8"},
                           {k:"masterclass",label:"Masterclass",color:"#f59e0b"},
@@ -309,8 +309,8 @@ export default function App() {
                         ].map(({k,label,color})=>{
                           const v = w[k]||0;
                           return (
-                            <div key={k} style={{background:"#131313",padding:"14px 16px"}}>
-                              <div style={{fontSize:11,color:"#444",marginBottom:4,display:"flex",alignItems:"center",gap:5}}>
+                            <div key={k} style={{background:"#fff",padding:"14px 16px"}}>
+                              <div style={{fontSize:11,color:"#9ca3af",marginBottom:4,display:"flex",alignItems:"center",gap:5}}>
                                 <div style={{width:6,height:6,borderRadius:"50%",background:v>0?color:"#222"}}/>
                                 {label}
                               </div>
@@ -319,13 +319,13 @@ export default function App() {
                             </div>
                           );
                         })}
-                        <div style={{background:"#131313",padding:"14px 16px"}}>
+                        <div style={{background:"#fff",padding:"14px 16px"}}>
                           <div style={{fontSize:11,color:"#444",marginBottom:4}}>CPL</div>
                           <div style={{fontSize:18,fontWeight:700,color:w.leads>0?cplColor(w.spend/w.leads):"#222"}}>
                             {w.leads>0?("€"+f2(w.spend/w.leads)):"—"}
                           </div>
                         </div>
-                        <div style={{background:"#131313",padding:"14px 16px"}}>
+                        <div style={{background:"#fff",padding:"14px 16px"}}>
                           <div style={{fontSize:11,color:"#444",marginBottom:4}}>Ø Order Value</div>
                           <div style={{fontSize:18,fontWeight:700,color:"#fff"}}>
                             {w.sales>0?eur(w.revenue/w.sales):"—"}
@@ -345,7 +345,7 @@ export default function App() {
           <div style={S.sectionHead}>
             <span style={S.sectionTitle}>Meta Kampagnen</span>
             <div style={{display:"flex",gap:8,alignItems:"center"}}>
-              <span style={{fontSize:11,color:"#333"}}>Windsor.ai · 30T · {eur(metaSpend)} · {metaLeads} Leads</span>
+              <span style={{fontSize:11,color:"#9ca3af"}}>Windsor.ai · 30T · {eur(metaSpend)} · {metaLeads} Leads</span>
               <button
                 onClick={analyzeAll} disabled={aiRunning}
                 style={{...S.btn,...S.btnPrim,display:"flex",alignItems:"center",gap:5,opacity:aiRunning?0.5:1}}
@@ -374,13 +374,13 @@ export default function App() {
                     onClick={()=>{ if(!res&&!loading) analyzeOne(c); else setMetaExpanded(isExp?null:c.name); }}
                     style={{
                       ...S.trow, gridTemplateColumns:MCols,
-                      background:isExp?"#1a1a1a":"transparent",
+                      background:isExp?"#f9fafb":"transparent",
                       borderBottom:i<META.length-1||isExp?"1px solid #1a1a1a":"none",
                     }}
-                    onMouseEnter={e=>e.currentTarget.style.background="#161616"}
-                    onMouseLeave={e=>e.currentTarget.style.background=isExp?"#1a1a1a":"transparent"}
+                    onMouseEnter={e=>e.currentTarget.style.background="#f9fafb"}
+                    onMouseLeave={e=>e.currentTarget.style.background=isExp?"#f9fafb":"transparent"}
                   >
-                    <div style={{fontSize:13,fontWeight:500,color:"#ddd",paddingRight:16,lineHeight:1.4}}>{c.name}</div>
+                    <div style={{fontSize:13,fontWeight:500,color:"#374151",paddingRight:16,lineHeight:1.4}}>{c.name}</div>
                     <div style={{...S.td}}>{eur(c.spend)}</div>
                     <div style={{...S.td,fontWeight:600,color:"#fff"}}>{c.leads||"—"}</div>
                     <div style={{fontSize:14,fontWeight:600,color:cplColor(c.cpl)}}>{c.cpl>0?"€"+f2(c.cpl):"—"}</div>
@@ -388,26 +388,26 @@ export default function App() {
                     <div style={{...S.td,color:c.freq>=2?"#ef4444":c.freq>=1.5?"#f59e0b":"#666"}}>{c.freq.toFixed(2)}</div>
                     <div>
                       {loading&&<div style={{display:"flex",alignItems:"center",gap:6}}><Spin/><span style={{fontSize:11,color:"#444"}}>…</span></div>}
-                      {!loading&&!res&&<span style={{fontSize:11,color:"#2a2a2a"}}>→ analysieren</span>}
+                      {!loading&&!res&&<span style={{fontSize:11,color:"#d1d5db"}}>→ analysieren</span>}
                       {res&&vc&&<Badge label={vc.label} color={vc.color} bg={vc.bg}/>}
                     </div>
                   </div>
 
                   {res&&isExp&&(
-                    <div style={{background:"#111",borderBottom:"1px solid #1a1a1a",padding:"16px 20px",animation:"fadeIn 0.15s ease"}}>
+                    <div style={{background:"#f9fafb",borderBottom:"1px solid #e5e7eb",padding:"16px 20px",animation:"fadeIn 0.15s ease"}}>
                       <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr 1.2fr",gap:16}}>
                         {[["Signal",res.signal,res.signal_reason],["Trust",res.trust,res.trust_reason],["Audience",res.audience,res.audience_reason]].map(([l,level,reason])=>{
                           const col = {high:"#22c55e",medium:"#f59e0b",low:"#ef4444",deep:"#22c55e",saturating:"#ef4444"}[level]||"#666";
                           return (
                             <div key={l}>
                               <div style={{fontSize:11,color:"#444",marginBottom:3}}>{l}: <span style={{color:col,fontWeight:600}}>{level}</span></div>
-                              <div style={{fontSize:12,color:"#888",lineHeight:1.4}}>{reason}</div>
+                              <div style={{fontSize:12,color:"#6b7280",lineHeight:1.4}}>{reason}</div>
                             </div>
                           );
                         })}
-                        <div style={{borderLeft:"1px solid #1f1f1f",paddingLeft:16}}>
+                        <div style={{borderLeft:"1px solid #e5e7eb",paddingLeft:16}}>
                           <div style={{fontSize:11,color:"#444",marginBottom:3}}>Aktion</div>
-                          <div style={{fontSize:12,color:"#aaa",fontWeight:500,lineHeight:1.4}}>{res.action}</div>
+                          <div style={{fontSize:12,color:"#374151",fontWeight:500,lineHeight:1.4}}>{res.action}</div>
                           {res.budget_recommended&&res.budget_recommended!==c.budget&&(
                             <div style={{display:"flex",alignItems:"center",gap:8,marginTop:8}}>
                               <span style={{fontSize:12,color:"#444",textDecoration:"line-through"}}>€{c.budget}/T</span>
@@ -425,7 +425,7 @@ export default function App() {
         </div>
 
         {/* ── FOOTER ── */}
-        <div style={{textAlign:"center",fontSize:11,color:"#2a2a2a",paddingTop:16}}>
+        <div style={{textAlign:"center",fontSize:11,color:"#d1d5db",paddingTop:16}}>
           MEILENWEIT VORAUS · ThriveCart CSV · Meta Windsor.ai · Sonntag 10:00 Attribution · Claude AI
         </div>
       </div>
