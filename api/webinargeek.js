@@ -43,7 +43,7 @@ export default async function handler(req, res) {
     const response = await fetch(url, {
       method:  "GET",
       headers: {
-        "Authorization": `Bearer ${WG_TOKEN}`,
+        "Api-Token":     WG_TOKEN,
         "Accept":        "application/json",
         "Content-Type":  "application/json",
       },
