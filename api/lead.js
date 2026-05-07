@@ -65,23 +65,33 @@ export default async function handler(req, res) {
 
   const payload = req.body;
 
-  // WebinarGeek Webhook Struktur:
-  // { event: "webinar_subscribed", entity: { subscription: { email, first_name, ... } } }
+  // DEBUG: Alle eingehenden Requests loggen
+  console.log("=== WEBHOOK RECEIVED ===");
+  console.log("Event type:", payload.event || payload.type || "UNKNOWN");
+  console.log("Full payload:", JSON.stringify(payload).substring(0, 500));
+  console.log("========================");
+
   const eventType = payload.event || payload.type || "";
 
-  // Nur Registrierungen verarbeiten
-  if (eventType !== "webinar_subscribed" && eventType !== "subscription_created") {
-    console.log(`Skipping event: ${eventType}`);
-    return res.status(200).json({ status: "skipped", event: eventType });
+  // Alle Events akzeptieren die eine Email enthalten
+  const email = payload.email 
+    || payload.entity?.subscription?.email 
+    || payload.entity?.email
+    || payload.subscription?.email
+    || payload.data?.email
+    || "";
+
+  if (!email) {
+    console.log(`No email found, event: ${eventType}`);
+    return res.status(200).json({ status: "no_email", event: eventType, payload_keys: Object.keys(payload) });
   }
 
-  // Subscriber-Daten extrahieren
+  // Subscriber-Daten aus verschiedenen Payload-Strukturen extrahieren
   const entity   = payload.entity || payload;
   const sub      = entity.subscription || entity;
 
-  const email     = sub.email     || payload.email     || "";
-  const firstName = sub.first_name || sub.firstname || payload.first_name || "";
-  const lastName  = sub.last_name  || sub.lastname  || payload.last_name  || "";
+  const firstName = sub.first_name || sub.firstname || entity.first_name || payload.first_name || "";
+  const lastName  = sub.last_name  || sub.lastname  || entity.last_name  || payload.last_name  || "";
   const phone     = sub.phone_number || sub.phone   || payload.phone      || "";
 
   // fbc aus URL-Parametern (wenn fbclid in WebinarGeek-URL übergeben wurde)
