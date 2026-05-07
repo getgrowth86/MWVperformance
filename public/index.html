@@ -7,86 +7,97 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-html{font-size:14px;-webkit-font-smoothing:antialiased}
-body{font-family:'Inter',sans-serif;background:#f5f6fa;color:#111;min-height:100vh}
-::-webkit-scrollbar{width:4px;height:4px}
-::-webkit-scrollbar-track{background:#f1f1f1}
-::-webkit-scrollbar-thumb{background:#d1d5db;border-radius:2px}
+html{-webkit-font-smoothing:antialiased}
+body{font-family:'Inter',sans-serif;background:#f4f5f7;color:#1a1a2e;min-height:100vh}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:#ddd;border-radius:2px}
 @keyframes spin{to{transform:rotate(360deg)}}
 @keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
 
-/* Layout */
-.header{background:#fff;border-bottom:1px solid #e5e7eb;padding:0 32px;position:sticky;top:0;z-index:100}
-.header-inner{max-width:1400px;margin:0 auto;height:56px;display:flex;align-items:center;justify-content:space-between}
-.logo{font-size:14px;font-weight:700;color:#111;letter-spacing:-0.3px}
-.wrap{max-width:1400px;margin:0 auto;padding:24px 32px 60px}
+/* Header */
+.header{background:#fff;border-bottom:1px solid #eaecf0;padding:0 40px;position:sticky;top:0;z-index:100}
+.header-inner{max-width:1300px;margin:0 auto;height:60px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-size:16px;font-weight:700;color:#111}
+.nav{display:flex;gap:4px;background:#f4f5f7;padding:3px;border-radius:8px}
+.nav button{border:none;background:transparent;border-radius:5px;padding:6px 16px;font-size:13px;font-weight:500;font-family:'Inter',sans-serif;cursor:pointer;color:#6b7280;transition:all .15s}
+.nav button.active{background:#fff;color:#111;font-weight:600;box-shadow:0 1px 3px rgba(0,0,0,.08)}
 
-/* Toggle */
-.toggle{display:flex;gap:2px;background:#f3f4f6;border-radius:6px;padding:2px}
-.toggle button{border:none;border-radius:4px;padding:5px 14px;font-size:12px;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer;transition:all .1s;background:transparent;color:#6b7280}
-.toggle button.active{background:#fff;color:#111;box-shadow:0 1px 2px rgba(0,0,0,.06)}
+/* Page */
+.page{max-width:1300px;margin:0 auto;padding:32px 40px 80px}
+.page-title{font-size:24px;font-weight:700;color:#111;margin-bottom:4px}
+.page-sub{font-size:14px;color:#9ca3af;margin-bottom:28px}
 
-/* KPI Grid */
-.kpi-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:1px;background:#e5e7eb;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden;margin-bottom:24px}
-.kpi-card{background:#fff;padding:20px 24px}
-.kpi-label{font-size:11px;color:#9ca3af;font-weight:500;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
-.kpi-value{font-size:26px;font-weight:700;letter-spacing:-0.5px;line-height:1}
-.kpi-sub{font-size:11px;color:#9ca3af;margin-top:4px}
+/* Top stats - exactly like ThriveCart */
+.top-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px}
+.stat-card{background:#fff;border:1px solid #eaecf0;border-radius:12px;padding:24px 28px}
+.stat-label{font-size:13px;color:#6b7280;font-weight:500;margin-bottom:10px}
+.stat-value{font-size:32px;font-weight:700;color:#111;letter-spacing:-1px;line-height:1}
+.stat-sub{font-size:12px;color:#9ca3af;margin-top:6px}
+.stat-badge{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:600;padding:2px 8px;border-radius:20px;margin-top:8px}
+.up{background:#ecfdf5;color:#059669}.down{background:#fef2f2;color:#dc2626}.neutral{background:#f3f4f6;color:#6b7280}
 
-/* Section */
-.section{margin-bottom:24px}
-.section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
-.section-title{font-size:12px;font-weight:600;color:#9ca3af;text-transform:uppercase;letter-spacing:1px}
-.section-meta{font-size:11px;color:#9ca3af}
+/* Section header */
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;margin-top:32px}
+.section-title{font-size:15px;font-weight:600;color:#111}
+.section-right{display:flex;align-items:center;gap:12px}
+.section-meta{font-size:12px;color:#9ca3af}
 
 /* Table */
-.table{background:#fff;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden}
-.table-head{display:grid;padding:12px 20px;background:#f9fafb;border-bottom:1px solid #e5e7eb}
-.th{font-size:11px;color:#9ca3af;font-weight:500;text-transform:uppercase;letter-spacing:.8px}
-.table-row{display:grid;padding:15px 20px;border-bottom:1px solid #f3f4f6;cursor:pointer;transition:background .1s;align-items:center}
-.table-row:last-child{border-bottom:none}
-.table-row:hover{background:#f9fafb}
-.table-row.expanded{background:#f9fafb}
+.table-wrap{background:#fff;border:1px solid #eaecf0;border-radius:12px;overflow:hidden}
+.table-head{display:grid;padding:12px 24px;background:#f9fafb;border-bottom:1px solid #eaecf0}
+.th{font-size:11px;font-weight:600;color:#9ca3af;text-transform:uppercase;letter-spacing:.8px}
+.t-row{display:grid;padding:16px 24px;border-bottom:1px solid #f3f4f6;cursor:pointer;transition:background .1s;align-items:center}
+.t-row:last-child{border-bottom:none}
+.t-row:hover,.t-row.exp{background:#f9fafb}
+.td{font-size:14px;color:#374151}
+.td-main{font-size:15px;font-weight:600;color:#111}
+.td-big{font-size:20px;font-weight:700;color:#111;letter-spacing:-0.5px}
 
-/* Expanded detail */
-.row-detail{background:#f9fafb;border-bottom:1px solid #e5e7eb;padding:16px 20px;animation:fadeIn .15s ease}
-.detail-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:1px;background:#e5e7eb;border:1px solid #e5e7eb;border-radius:8px;overflow:hidden}
-.detail-card{background:#fff;padding:14px 16px}
-.detail-label{font-size:11px;color:#9ca3af;margin-bottom:4px;display:flex;align-items:center;gap:5px}
-.detail-dot{width:6px;height:6px;border-radius:50%;display:inline-block}
-.detail-value{font-size:18px;font-weight:700}
-.detail-sub{font-size:10px;color:#9ca3af;margin-top:2px}
+/* Expanded */
+.expand-row{background:#f9fafb;border-bottom:1px solid #eaecf0;padding:20px 24px;animation:fadeIn .15s ease}
+.expand-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px}
+.expand-card{background:#fff;border:1px solid #eaecf0;border-radius:8px;padding:14px 16px}
+.expand-label{font-size:11px;color:#9ca3af;font-weight:600;text-transform:uppercase;letter-spacing:.6px;margin-bottom:6px;display:flex;align-items:center;gap:5px}
+.expand-value{font-size:18px;font-weight:700;color:#111}
+.expand-sub{font-size:11px;color:#9ca3af;margin-top:3px}
 
 /* Badges */
-.badge{border-radius:4px;padding:2px 8px;font-size:11px;font-weight:600;letter-spacing:.3px;display:inline-block}
-.badge-green{background:#f0fdf4;color:#16a34a;border:1px solid #bbf7d0}
-.badge-yellow{background:#fefce8;color:#ca8a04;border:1px solid #fde68a}
-.badge-red{background:#fef2f2;color:#dc2626;border:1px solid #fecaca}
-.badge-purple{background:#f5f3ff;color:#7c3aed;border:1px solid #ddd6fe}
+.badge{display:inline-block;border-radius:6px;padding:3px 10px;font-size:12px;font-weight:600;letter-spacing:.2px}
+.b-green{background:#ecfdf5;color:#059669;border:1px solid #a7f3d0}
+.b-yellow{background:#fffbeb;color:#d97706;border:1px solid #fde68a}
+.b-red{background:#fef2f2;color:#dc2626;border:1px solid #fecaca}
+.b-purple{background:#f5f3ff;color:#7c3aed;border:1px solid #ddd6fe}
+.b-blue{background:#eff6ff;color:#2563eb;border:1px solid #bfdbfe}
 
-/* Product bars */
-.prod-bars{display:flex;gap:3px;align-items:center}
-.prod-bar{height:4px;border-radius:2px;opacity:.8;min-width:6px}
-
-/* Meta AI row */
-.ai-detail{background:#f9fafb;border-bottom:1px solid #e5e7eb;padding:16px 20px;animation:fadeIn .15s ease}
-.ai-grid{display:grid;grid-template-columns:1fr 1fr 1fr 1.2fr;gap:16px}
-.ai-cell .ai-label{font-size:11px;color:#9ca3af;margin-bottom:3px}
-.ai-cell .ai-value{font-size:12px;color:#374151;line-height:1.4}
-.ai-divider{border-left:1px solid #e5e7eb;padding-left:16px}
-.budget-change{display:flex;align-items:center;gap:8px;margin-top:8px}
+/* Product dots */
+.prod-dots{display:flex;gap:5px;align-items:center}
+.prod-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
 
 /* Button */
-.btn{border:none;border-radius:6px;padding:7px 16px;font-size:12px;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer;transition:all .1s;background:#111;color:#fff;display:flex;align-items:center;gap:5px}
-.btn:hover{opacity:.85}
-.btn:disabled{opacity:.4;cursor:not-allowed}
-.spin{width:12px;height:12px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite}
-
-/* Footer */
-.footer{text-align:center;font-size:11px;color:#d1d5db;padding-top:16px}
+.btn{border:none;border-radius:8px;padding:8px 18px;font-size:13px;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:all .15s;background:#111;color:#fff}
+.btn:hover{background:#333}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn-outline{background:#fff;color:#374151;border:1px solid #e5e7eb}
+.btn-outline:hover{background:#f9fafb}
+.spin{width:13px;height:13px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite}
 
 /* Colors */
-.green{color:#16a34a}.yellow{color:#ca8a04}.red{color:#dc2626}.purple{color:#7c3aed}.blue{color:#2563eb}.orange{color:#ea580c}.gray{color:#9ca3af}
+.green{color:#059669}.yellow{color:#d97706}.red{color:#dc2626}.purple{color:#7c3aed}.orange{color:#ea580c}.blue{color:#2563eb}.gray{color:#9ca3af}
+
+/* AI detail */
+.ai-detail{background:#f9fafb;border-bottom:1px solid #eaecf0;padding:20px 24px;animation:fadeIn .15s ease}
+.ai-grid{display:grid;grid-template-columns:1fr 1fr 1fr 1.3fr;gap:20px}
+.ai-label{font-size:11px;color:#9ca3af;font-weight:600;text-transform:uppercase;letter-spacing:.6px;margin-bottom:5px}
+.ai-val{font-size:13px;color:#374151;line-height:1.5}
+.ai-divider{border-left:1px solid #eaecf0;padding-left:20px}
+
+/* Chart */
+.chart-wrap{background:#fff;border:1px solid #eaecf0;border-radius:12px;padding:24px;margin-bottom:0}
+.chart-canvas{width:100%;height:180px;position:relative;margin-top:12px}
+.chart-bar-group{display:flex;align-items:flex-end;gap:2px;height:150px}
+.chart-bar{border-radius:4px 4px 0 0;transition:opacity .15s;cursor:pointer;flex:1;min-width:12px}
+.chart-bar:hover{opacity:.75}
+.chart-labels{display:flex;gap:2px;margin-top:6px}
+.chart-label{flex:1;font-size:10px;color:#9ca3af;text-align:center;overflow:hidden;min-width:12px}
 </style>
 </head>
 <body>
@@ -94,381 +105,341 @@ body{font-family:'Inter',sans-serif;background:#f5f6fa;color:#111;min-height:100
 <div class="header">
   <div class="header-inner">
     <div class="logo">Meilenweit Voraus</div>
-    <div style="display:flex;align-items:center;gap:12px">
-      <span style="font-size:11px;color:#9ca3af">Zeitraum:</span>
-      <div class="toggle">
-        <button class="active" id="btn-last4" onclick="setView('last4')">Letzte 4</button>
-        <button id="btn-all" onclick="setView('all')">Alle</button>
+    <div style="display:flex;align-items:center;gap:16px">
+      <div class="nav">
+        <button class="active" id="btn-last4" onclick="setView('last4')">Letzte 4 Webinare</button>
+        <button id="btn-all" onclick="setView('all')">Alle 2026</button>
       </div>
     </div>
   </div>
 </div>
 
-<div class="wrap">
-  <!-- KPI -->
-  <div class="kpi-grid" id="kpi-grid"></div>
+<div class="page">
+  <div class="page-title">Dashboard</div>
+  <div class="page-sub" id="page-sub">Letzte 4 Webinare · ThriveCart Attribution · Sonntag 10:00 Stichtag</div>
+
+  <!-- Top Stats -->
+  <div class="top-stats" id="top-stats"></div>
+
+  <!-- ROAS Chart -->
+  <div class="section-header">
+    <span class="section-title">ROAS-Verlauf</span>
+    <span class="section-meta">TC Revenue ÷ Ad Spend</span>
+  </div>
+  <div class="chart-wrap">
+    <div class="chart-canvas">
+      <div class="chart-bar-group" id="chart-bars"></div>
+      <div class="chart-labels" id="chart-labels"></div>
+    </div>
+  </div>
 
   <!-- Webinar Table -->
-  <div class="section">
-    <div class="section-head">
-      <span class="section-title">Webinar-Performance</span>
-      <span class="section-meta">Sonntag 10:00 Attribution · ThriveCart CSV</span>
-    </div>
-    <div class="table">
-      <div class="table-head" style="grid-template-columns:100px 1fr 100px 70px 80px 70px 70px 80px 90px">
-        <span class="th">Datum</span>
-        <span class="th">Produkte</span>
-        <span class="th">Revenue</span>
-        <span class="th">Käufe</span>
-        <span class="th">ROAS</span>
-        <span class="th">Show%</span>
-        <span class="th">Tag 0</span>
-        <span class="th">Tag 7</span>
-        <span class="th">Spend</span>
-      </div>
-      <div id="webinar-table"></div>
-    </div>
+  <div class="section-header">
+    <span class="section-title">Webinar-Performance</span>
+    <span class="section-meta">Klick für Details</span>
+  </div>
+  <div class="table-wrap">
+    <div class="table-head" id="w-head"></div>
+    <div id="w-body"></div>
   </div>
 
   <!-- Meta Table -->
-  <div class="section">
-    <div class="section-head">
-      <span class="section-title">Meta Kampagnen</span>
-      <div style="display:flex;align-items:center;gap:12px">
-        <span class="section-meta" id="meta-meta"></span>
-        <button class="btn" id="ai-btn" onclick="analyzeAll()">✦ KI-Analyse</button>
-      </div>
-    </div>
-    <div class="table">
-      <div class="table-head" style="grid-template-columns:2fr 90px 70px 80px 65px 65px 100px">
-        <span class="th">Kampagne</span>
-        <span class="th">Spend</span>
-        <span class="th">Leads</span>
-        <span class="th">CPL</span>
-        <span class="th">CTR</span>
-        <span class="th">Freq</span>
-        <span class="th">KI</span>
-      </div>
-      <div id="meta-table"></div>
+  <div class="section-header">
+    <span class="section-title">Meta Kampagnen</span>
+    <div class="section-right">
+      <span class="section-meta" id="meta-meta"></span>
+      <button class="btn" id="ai-btn" onclick="analyzeAll()">✦ KI-Analyse</button>
     </div>
   </div>
+  <div class="table-wrap">
+    <div class="table-head" style="grid-template-columns:2fr 90px 70px 80px 65px 65px 110px">
+      <span class="th">Kampagne</span>
+      <span class="th">Spend</span>
+      <span class="th">Leads</span>
+      <span class="th">CPL</span>
+      <span class="th">CTR</span>
+      <span class="th">Freq</span>
+      <span class="th">KI-Bewertung</span>
+    </div>
+    <div id="m-body"></div>
+  </div>
 
-  <div class="footer">MEILENWEIT VORAUS · ThriveCart CSV · Meta Windsor.ai · Sonntag 10:00 Attribution · Claude AI</div>
 </div>
 
 <script>
-// ═══════════ DATA ════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════
+// DATA
+// ══════════════════════════════════════════════════
 const WEBINARS = [
-  {date:"2026-05-03",label:"03.05.",spend:3078, leads:551, showUp:17,revenue:1282,  roas:0.417,sales:7,  day0:6, day7:0, partial:true, kurs:1188, masterclass:0,    revolut:94,  george:0   },
-  {date:"2026-04-26",label:"26.04.",spend:0,    leads:0,   showUp:0, revenue:11351, roas:0,    sales:45, day0:8, day7:20,partial:false,kurs:5050, masterclass:5467, revolut:814, george:0   },
-  {date:"2026-04-19",label:"19.04.",spend:7243, leads:598, showUp:20,revenue:16320, roas:2.253,sales:50, day0:6, day7:7, partial:false,kurs:2376, masterclass:13419,revolut:485, george:0   },
-  {date:"2026-04-12",label:"12.04.",spend:9932, leads:1259,showUp:21,revenue:3649,  roas:0.367,sales:24, day0:3, day7:13,partial:false,kurs:3267, masterclass:0,    revolut:282, george:0   },
-  {date:"2026-04-05",label:"05.04.",spend:2431, leads:281, showUp:22,revenue:7335,  roas:3.017,sales:45, day0:6, day7:34,partial:false,kurs:6237, masterclass:0,    revolut:908, george:0   },
-  {date:"2026-03-29",label:"29.03.",spend:6569, leads:470, showUp:24,revenue:3267,  roas:0.497,sales:19, day0:2, day7:9, partial:false,kurs:3073, masterclass:0,    revolut:94,  george:0   },
-  {date:"2026-03-22",label:"22.03.",spend:10852,leads:950, showUp:28,revenue:12282, roas:1.132,sales:60, day0:24,day7:17,partial:false,kurs:7826, masterclass:3976, revolut:0,   george:0   },
-  {date:"2026-03-15",label:"15.03.",spend:6654, leads:523, showUp:28,revenue:10218, roas:1.536,sales:49, day0:16,day7:20,partial:false,kurs:10098,masterclass:0,    revolut:0,   george:0   },
-  {date:"2026-03-08",label:"08.03.",spend:9432, leads:782, showUp:24,revenue:10559, roas:1.119,sales:54, day0:18,day7:13,partial:false,kurs:10202,masterclass:0,    revolut:297, george:0   },
-  {date:"2026-03-01",label:"01.03.",spend:21098,leads:1863,showUp:25,revenue:15281, roas:0.724,sales:89, day0:45,day7:18,partial:false,kurs:14553,masterclass:0,    revolut:594, george:94  },
-  {date:"2026-02-22",label:"22.02.",spend:12978,leads:1400,showUp:32,revenue:17089, roas:1.317,sales:85, day0:37,day7:29,partial:false,kurs:16335,masterclass:0,    revolut:0,   george:94  },
-  {date:"2026-02-15",label:"15.02.",spend:8878, leads:964, showUp:33,revenue:23563, roas:2.654,sales:112,day0:37,day7:55,partial:false,kurs:22081,masterclass:0,    revolut:297, george:705 },
-  {date:"2026-02-08",label:"08.02.",spend:5390, leads:720, showUp:25,revenue:11106, roas:2.060,sales:62, day0:18,day7:34,partial:false,kurs:10098,masterclass:0,    revolut:297, george:611 },
-  {date:"2026-02-01",label:"01.02.",spend:8325, leads:1041,showUp:14,revenue:12330, roas:1.481,sales:75, day0:25,day7:21,partial:false,kurs:11339,masterclass:0,    revolut:0,   george:564 },
-  {date:"2026-01-25",label:"25.01.",spend:6819, leads:792, showUp:36,revenue:10183, roas:1.493,sales:81, day0:25,day7:40,partial:false,kurs:8613, masterclass:0,    revolut:0,   george:893 },
-  {date:"2026-01-18",label:"18.01.",spend:3384, leads:389, showUp:28,revenue:10587, roas:3.129,sales:47, day0:5, day7:32,partial:false,kurs:9110, masterclass:0,    revolut:0,   george:376 },
+  {d:"2026-05-03",l:"03.05.",spend:3078, leads:551, su:17, rev:1282,  roas:0.42,s:7,  d0:6, d7:0, partial:1,kurs:1188,mc:0,    rev2:94,  geo:0  },
+  {d:"2026-04-26",l:"26.04.",spend:0,    leads:0,   su:0,  rev:11351, roas:0,   s:45, d0:8, d7:20,partial:0,kurs:5050,mc:5467, rev2:814, geo:0  },
+  {d:"2026-04-19",l:"19.04.",spend:7243, leads:598, su:20, rev:16320, roas:2.25,s:50, d0:6, d7:7, partial:0,kurs:2376,mc:13419,rev2:485, geo:0  },
+  {d:"2026-04-12",l:"12.04.",spend:9932, leads:1259,su:21, rev:3649,  roas:0.37,s:24, d0:3, d7:13,partial:0,kurs:3267,mc:0,    rev2:282, geo:0  },
+  {d:"2026-04-05",l:"05.04.",spend:2431, leads:281, su:22, rev:7335,  roas:3.02,s:45, d0:6, d7:34,partial:0,kurs:6237,mc:0,    rev2:908, geo:0  },
+  {d:"2026-03-29",l:"29.03.",spend:6569, leads:470, su:24, rev:3267,  roas:0.50,s:19, d0:2, d7:9, partial:0,kurs:3073,mc:0,    rev2:94,  geo:0  },
+  {d:"2026-03-22",l:"22.03.",spend:10852,leads:950, su:28, rev:12282, roas:1.13,s:60, d0:24,d7:17,partial:0,kurs:7826,mc:3976, rev2:0,   geo:0  },
+  {d:"2026-03-15",l:"15.03.",spend:6654, leads:523, su:28, rev:10218, roas:1.54,s:49, d0:16,d7:20,partial:0,kurs:10098,mc:0,   rev2:0,   geo:0  },
+  {d:"2026-03-08",l:"08.03.",spend:9432, leads:782, su:24, rev:10559, roas:1.12,s:54, d0:18,d7:13,partial:0,kurs:10202,mc:0,   rev2:297, geo:0  },
+  {d:"2026-03-01",l:"01.03.",spend:21098,leads:1863,su:25, rev:15281, roas:0.72,s:89, d0:45,d7:18,partial:0,kurs:14553,mc:0,   rev2:594, geo:94 },
+  {d:"2026-02-22",l:"22.02.",spend:12978,leads:1400,su:32, rev:17089, roas:1.32,s:85, d0:37,d7:29,partial:0,kurs:16335,mc:0,   rev2:0,   geo:94 },
+  {d:"2026-02-15",l:"15.02.",spend:8878, leads:964, su:33, rev:23563, roas:2.65,s:112,d0:37,d7:55,partial:0,kurs:22081,mc:0,   rev2:297, geo:705},
+  {d:"2026-02-08",l:"08.02.",spend:5390, leads:720, su:25, rev:11106, roas:2.06,s:62, d0:18,d7:34,partial:0,kurs:10098,mc:0,   rev2:297, geo:611},
+  {d:"2026-02-01",l:"01.02.",spend:8325, leads:1041,su:14, rev:12330, roas:1.48,s:75, d0:25,d7:21,partial:0,kurs:11339,mc:0,   rev2:0,   geo:564},
+  {d:"2026-01-25",l:"25.01.",spend:6819, leads:792, su:36, rev:10183, roas:1.49,s:81, d0:25,d7:40,partial:0,kurs:8613, mc:0,   rev2:0,   geo:893},
+  {d:"2026-01-18",l:"18.01.",spend:3384, leads:389, su:28, rev:10587, roas:3.13,s:47, d0:5, d7:32,partial:0,kurs:9110, mc:0,   rev2:0,   geo:376},
 ];
 
-const META = [
-  {name:"ML 30.03. Testing ABO DACH",         spend:6919,leads:674,cpl:10.27,freq:1.53,ctr:4.72,budget:230},
-  {name:"ML 23.04. Webinar-Funnel LLA 1%",    spend:4693,leads:642,cpl:7.31, freq:1.82,ctr:7.48,budget:156},
-  {name:"ML 06.04. Broad Cost Cap CBO",       spend:2504,leads:259,cpl:9.67, freq:1.29,ctr:4.13,budget:83 },
-  {name:"ML 27.04. Webinar-Funnel LLA 3%",    spend:1405,leads:201,cpl:6.99, freq:1.41,ctr:7.14,budget:47 },
-  {name:"ML 07.04. LLA 1% Purchase CBO",      spend:1994,leads:216,cpl:9.23, freq:1.46,ctr:6.05,budget:66 },
-  {name:"ML 07.04. LLA 3% Purchase CBO",      spend:1964,leads:222,cpl:8.85, freq:1.30,ctr:5.83,budget:65 },
-  {name:"ML 15.04. VSL-Funnel LLA 1%",        spend:1060,leads:230,cpl:4.61, freq:1.46,ctr:8.43,budget:35 },
-  {name:"ML 07.04. CBO Interest Scale",       spend:580, leads:56, cpl:10.36,freq:1.16,ctr:4.26,budget:19 },
-  {name:"ML 06.04. CBO Scale",                spend:543, leads:61, cpl:8.90, freq:1.16,ctr:7.48,budget:18 },
-  {name:"ML 04.05. Community LLA 1%",         spend:317, leads:36, cpl:8.81, freq:1.15,ctr:7.18,budget:11 },
+const META=[
+  {n:"ML 30.03. Testing ABO DACH",        sp:6919,le:674,cpl:10.27,fr:1.53,ctr:4.72,bud:230},
+  {n:"ML 23.04. Webinar-Funnel LLA 1%",   sp:4693,le:642,cpl:7.31, fr:1.82,ctr:7.48,bud:156},
+  {n:"ML 06.04. Broad Cost Cap CBO",      sp:2504,le:259,cpl:9.67, fr:1.29,ctr:4.13,bud:83 },
+  {n:"ML 27.04. Webinar-Funnel LLA 3%",   sp:1405,le:201,cpl:6.99, fr:1.41,ctr:7.14,bud:47 },
+  {n:"ML 07.04. LLA 1% Purchase CBO",     sp:1994,le:216,cpl:9.23, fr:1.46,ctr:6.05,bud:66 },
+  {n:"ML 07.04. LLA 3% Purchase CBO",     sp:1964,le:222,cpl:8.85, fr:1.30,ctr:5.83,bud:65 },
+  {n:"ML 15.04. VSL-Funnel LLA 1%",       sp:1060,le:230,cpl:4.61, fr:1.46,ctr:8.43,bud:35 },
+  {n:"ML 07.04. CBO Interest Scale",      sp:580, le:56, cpl:10.36,fr:1.16,ctr:4.26,bud:19 },
+  {n:"ML 06.04. CBO Scale",               sp:543, le:61, cpl:8.90, fr:1.16,ctr:7.48,bud:18 },
+  {n:"ML 04.05. Community LLA 1%",        sp:317, le:36, cpl:8.81, fr:1.15,ctr:7.18,bud:11 },
 ];
 
-// ═══════════ HELPERS ════════════════════════════════════════════════════
-const eur  = n => "€" + Math.round(n||0).toLocaleString("de-DE");
-const f2   = n => (n||0).toFixed(2);
-const pct  = (a,b) => b > 0 ? Math.round(a/b*100) : 0;
-const rc   = r => r>=1.5?"green":r>=1.0?"yellow":"red";
-const suC  = s => s>=28?"green":s>=22?"yellow":"red";
-const cplC = c => !c?"gray":c<=10?"green":c<=13?"yellow":"red";
+// ══════════════════════════════════════════════════
+// HELPERS
+// ══════════════════════════════════════════════════
+const eur  = n=>"€"+Math.round(n||0).toLocaleString("de-DE");
+const f2   = n=>(n||0).toFixed(2);
+const pct  = (a,b)=>b>0?Math.round(a/b*100):0;
+const rc   = r=>r>=1.5?"green":r>=1.0?"yellow":"red";
+const bc   = r=>r>=1.5?"b-green":r>=1.0?"b-yellow":"b-red";
+const suC  = s=>s>=28?"green":s>=22?"yellow":"red";
+const cplC = c=>!c?"gray":c<=10?"green":c<=13?"yellow":"red";
 
-function badge(text, type) {
-  return `<span class="badge badge-${type}">${text}</span>`;
+// ══════════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════════
+let view="last4", expandW=null, expandM=null, aiRes={}, aiRunning=false;
+
+function ws(){return view==="last4"?WEBINARS.slice(0,4):WEBINARS}
+
+// ══════════════════════════════════════════════════
+// TOP STATS
+// ══════════════════════════════════════════════════
+function renderStats(){
+  const w=ws();
+  const rev  =w.reduce((a,x)=>a+x.rev,0);
+  const spend=w.reduce((a,x)=>a+x.spend,0);
+  const sales=w.reduce((a,x)=>a+x.s,0);
+  const roas =spend>0?rev/spend:0;
+  const su   =w.filter(x=>x.su>0).reduce((a,x,_,arr)=>a+x.su/arr.length,0);
+  const d0   =w.reduce((a,x)=>a+x.d0,0);
+  const d7   =w.reduce((a,x)=>a+x.d7,0);
+  const ml30 =META.reduce((a,c)=>a+c.sp,0);
+  const leads=META.reduce((a,c)=>a+c.le,0);
+  const cpl  =leads>0?ml30/leads:0;
+
+  document.getElementById("top-stats").innerHTML=[
+    {label:"Gesamt-Revenue",  value:eur(rev),            sub:`${sales} Käufe`,               badge:roas>=1.5?"up":roas>=1?"neutral":"down", badgeText:f2(roas)+"x ROAS"},
+    {label:"Ad Spend",        value:eur(spend),           sub:`${w.length} Webinare`,          badge:"neutral",badgeText:`${w.filter(x=>x.spend>0).length} mit Spend`},
+    {label:"Ø Show-Up",       value:Math.round(su)+"%",   sub:"Registrierungen → Anwesend",    badge:su>=28?"up":su>=22?"neutral":"down",badgeText:su>=28?"Gut":"Optimierbar"},
+    {label:"Delay: Tag 7",    value:pct(d7,sales)+"%",    sub:"kaufen erst vor nächstem Webinar",badge:"neutral",badgeText:`Tag 0: ${pct(d0,sales)}%`},
+  ].map(c=>`
+    <div class="stat-card">
+      <div class="stat-label">${c.label}</div>
+      <div class="stat-value">${c.value}</div>
+      <div class="stat-sub">${c.sub}</div>
+      <div class="stat-badge ${c.badge}">${c.badgeText}</div>
+    </div>`).join("");
 }
 
-// ═══════════ STATE ═══════════════════════════════════════════════════════
-let currentView = "last4";
-let expandedW = null;
-let expandedM = null;
-let aiResults = {};
-let aiRunning = false;
+// ══════════════════════════════════════════════════
+// CHART
+// ══════════════════════════════════════════════════
+function renderChart(){
+  const w=ws();
+  const maxR=Math.max(...w.map(x=>x.roas),2);
+  const bars=w.slice().reverse().map(x=>{
+    const h=x.roas>0?Math.min(x.roas/maxR*100,100):2;
+    const col=x.roas>=1.5?"#059669":x.roas>=1?"#d97706":"#dc2626";
+    const bg =x.roas>=1.5?"#ecfdf5":x.roas>=1?"#fffbeb":"#fef2f2";
+    return `<div class="chart-bar" style="height:${h}%;background:${col};opacity:.7" title="${x.l}: ${f2(x.roas)}x ROAS — ${eur(x.rev)}"></div>`;
+  }).join("");
+  const labels=w.slice().reverse().map(x=>`<div class="chart-label">${x.l}</div>`).join("");
+  document.getElementById("chart-bars").innerHTML=bars;
+  document.getElementById("chart-labels").innerHTML=labels;
 
-function getWebinars() {
-  return currentView === "last4" ? WEBINARS.slice(0,4) : WEBINARS;
+  // Reference line at 1.5x
+  const target=document.querySelector(".chart-canvas");
+  if(target&&!target.querySelector(".ref-line")){
+    const line=document.createElement("div");
+    line.className="ref-line";
+    const pos=Math.min(1.5/maxR*100,100);
+    line.style.cssText=`position:absolute;left:0;right:0;bottom:${pos}%;border-top:1px dashed #059669;opacity:.4;pointer-events:none`;
+    target.appendChild(line);
+  }
 }
 
-// ═══════════ KPI ════════════════════════════════════════════════════════
-function renderKPI() {
-  const ws = getWebinars();
-  const totRev   = ws.reduce((a,w)=>a+w.revenue,0);
-  const totSpend = ws.reduce((a,w)=>a+w.spend,0);
-  const totSales = ws.reduce((a,w)=>a+w.sales,0);
-  const avgRoas  = totSpend>0?totRev/totSpend:0;
-  const avgSU    = ws.filter(w=>w.showUp>0).reduce((a,w,_,arr)=>a+w.showUp/arr.length,0);
-  const allD0    = ws.reduce((a,w)=>a+w.day0,0);
-  const allD7    = ws.reduce((a,w)=>a+w.day7,0);
+// ══════════════════════════════════════════════════
+// WEBINAR TABLE
+// ══════════════════════════════════════════════════
+function renderWebinars(){
+  const COLS="100px 80px 120px 75px 80px 70px 65px 75px 100px";
+  document.getElementById("w-head").style.gridTemplateColumns=COLS;
+  document.getElementById("w-head").innerHTML=
+    ["Datum","Show%","Revenue","Käufe","ROAS","Tag 0","Tag 7","Leads","Spend"]
+    .map(h=>`<span class="th">${h}</span>`).join("");
 
-  const cards = [
-    {label:"Revenue",   value:eur(totRev),          sub:`${totSales} Käufe`,          color:rc(avgRoas)},
-    {label:"Ad Spend",  value:eur(totSpend),         sub:`${ws.length} Webinare`,      color:"gray"},
-    {label:"Ø ROAS",    value:f2(avgRoas)+"x",       sub:"TC Revenue ÷ Spend",         color:rc(avgRoas)},
-    {label:"Show-Up Ø", value:Math.round(avgSU)+"%", sub:"aller Webinare",             color:suC(avgSU)},
-    {label:"Tag 0",     value:pct(allD0,totSales)+"%",sub:"kaufen am Webinar-Tag",     color:"purple"},
-    {label:"Tag 7",     value:pct(allD7,totSales)+"%",sub:"vor nächstem Webinar",      color:"orange"},
+  const PRODS=[
+    {k:"kurs", color:"#7c3aed",label:"Meilenkurs"},
+    {k:"mc",   color:"#d97706",label:"Masterclass"},
+    {k:"rev2", color:"#059669",label:"Revolut/KB"},
+    {k:"geo",  color:"#2563eb",label:"George"},
   ];
 
-  document.getElementById("kpi-grid").innerHTML = cards.map(c=>
-    `<div class="kpi-card">
-      <div class="kpi-label">${c.label}</div>
-      <div class="kpi-value ${c.color}">${c.value}</div>
-      <div class="kpi-sub">${c.sub}</div>
-    </div>`
-  ).join("");
-}
-
-// ═══════════ WEBINAR TABLE ═══════════════════════════════════════════════
-function renderWebinars() {
-  const ws = getWebinars();
-  const maxRev = Math.max(...WEBINARS.map(w=>w.revenue));
-  const COLS = "100px 1fr 100px 70px 80px 70px 70px 80px 90px";
-
-  const PRODS = [
-    {k:"kurs",       color:"#818cf8", label:"Meilenkurs"},
-    {k:"masterclass",color:"#f59e0b", label:"Masterclass"},
-    {k:"revolut",    color:"#22c55e", label:"Revolut"},
-    {k:"george",     color:"#38bdf8", label:"George"},
-  ];
-
-  let html = "";
-  ws.forEach(w => {
-    const isExp = expandedW === w.date;
-    const barW  = Math.max(Math.min(w.revenue/maxRev*100,100),5);
-    const bars  = PRODS.filter(p=>w[p.k]>0).map(p=>
-      `<div class="prod-bar" style="background:${p.color};width:${Math.max(pct(w[p.k],w.revenue)*0.6,6)}px" title="${p.label}: ${eur(w[p.k])}"></div>`
+  let html="";
+  ws().forEach(w=>{
+    const isExp=expandW===w.d;
+    const dots=PRODS.filter(p=>w[p.k]>0).map(p=>
+      `<div class="prod-dot" style="background:${p.color}" title="${p.label}: ${eur(w[p.k])}"></div>`
     ).join("");
 
-    const roasBadge = w.roas>0 ? badge(f2(w.roas)+"x", rc(w.roas)) : '<span class="gray">—</span>';
-
-    html += `
-    <div class="table-row${isExp?" expanded":""}" style="grid-template-columns:${COLS}" onclick="toggleW('${w.date}')">
+    html+=`
+    <div class="t-row${isExp?" exp":""}" style="grid-template-columns:${COLS}" onclick="toggleW('${w.d}')">
       <div>
-        <div style="font-size:14px;font-weight:600">${w.label}</div>
-        ${w.partial?'<div style="font-size:10px;color:#9ca3af;margin-top:2px">laufend</div>':''}
-        ${w.spend===0&&!w.partial?'<div style="font-size:10px;color:#ca8a04;margin-top:2px">carry</div>':''}
+        <div class="td-main">${w.l}</div>
+        ${w.partial?'<div style="font-size:11px;color:#9ca3af;margin-top:1px">laufend</div>':''}
+        ${!w.spend&&!w.partial?'<div style="font-size:11px;color:#d97706;margin-top:1px">carry-over</div>':''}
       </div>
-      <div class="prod-bars">${bars}</div>
-      <div style="font-size:17px;font-weight:700">${eur(w.revenue)}</div>
-      <div style="font-size:16px;font-weight:700">${w.sales}</div>
-      <div>${roasBadge}</div>
-      <div class="${suC(w.showUp)}">${w.showUp>0?w.showUp+"%":"—"}</div>
-      <div class="purple" style="font-weight:500">${pct(w.day0,w.sales)}%</div>
-      <div class="orange" style="font-weight:500">${pct(w.day7,w.sales)}%</div>
-      <div class="gray">${w.spend>0?eur(w.spend):"—"}</div>
+      <div class="${suC(w.su)}" style="font-size:15px;font-weight:600">${w.su>0?w.su+"%":"—"}</div>
+      <div class="td-big">${eur(w.rev)}</div>
+      <div style="font-size:18px;font-weight:700;color:#111">${w.s}</div>
+      <div>${w.roas>0?`<span class="badge ${bc(w.roas)}">${f2(w.roas)}x</span>`:'<span class="gray">—</span>'}</div>
+      <div class="purple" style="font-weight:600">${pct(w.d0,w.s)}%</div>
+      <div class="orange" style="font-weight:600">${pct(w.d7,w.s)}%</div>
+      <div class="td gray">${w.leads||"—"}</div>
+      <div class="td gray">${w.spend>0?eur(w.spend):"—"}</div>
     </div>`;
 
-    if (isExp) {
-      const detailCards = PRODS.map(p => {
-        const v = w[p.k]||0;
-        return `<div class="detail-card">
-          <div class="detail-label">
-            <span class="detail-dot" style="background:${v>0?p.color:'#e5e7eb'}"></span>
-            ${p.label}
-          </div>
-          <div class="detail-value" style="color:${v>0?p.color:'#d1d5db'}">${v>0?eur(v):"—"}</div>
-          ${v>0?`<div class="detail-sub">${pct(v,w.revenue)}% of revenue</div>`:""}
-        </div>`;
-      }).join("");
-
-      const avgOrder = w.sales>0?eur(w.revenue/w.sales):"—";
-      const cpl      = w.leads>0?eur(w.spend/w.leads):"—";
-
-      html += `
-      <div class="row-detail">
-        <div class="detail-grid">
-          ${detailCards}
-          <div class="detail-card">
-            <div class="detail-label">CPL</div>
-            <div class="detail-value ${cplC(w.leads>0?w.spend/w.leads:0)}">${cpl}</div>
-          </div>
-          <div class="detail-card">
-            <div class="detail-label">Ø Order</div>
-            <div class="detail-value">${avgOrder}</div>
-          </div>
-          <div class="detail-card">
-            <div class="detail-label">Delay-Split</div>
-            <div class="detail-value" style="font-size:13px">
-              <span class="purple">Tag 0: ${w.day0}</span><br>
-              <span class="orange">Tag 7: ${w.day7}</span>
-            </div>
-          </div>
+    if(isExp){
+      const cards=[
+        ...PRODS.map(p=>({label:p.label,value:w[p.k]>0?eur(w[p.k]):"—",sub:w[p.k]>0?pct(w[p.k],w.rev)+"%":"",color:w[p.k]>0?p.color:"#d1d5db"})),
+        {label:"CPL",value:w.leads>0?"€"+f2(w.spend/w.leads):"—",sub:"",color:w.leads>0?({green:"#059669",yellow:"#d97706",red:"#dc2626",gray:"#9ca3af"}[cplC(w.leads>0?w.spend/w.leads:0)]):"#d1d5db"},
+        {label:"Ø Order",value:w.s>0?eur(w.rev/w.s):"—",sub:"",color:"#111"},
+        {label:"Delay Split",value:`<span style="color:#7c3aed">Tag 0: ${w.d0}</span>`,sub:`<span style="color:#ea580c">Tag 7: ${w.d7}</span>`,color:"#111",html:1},
+      ];
+      html+=`<div class="expand-row">
+        <div class="expand-grid">
+          ${cards.map(c=>`<div class="expand-card">
+            <div class="expand-label">${c.label}</div>
+            <div class="expand-value" style="color:${c.color}">${c.value}</div>
+            ${c.sub?`<div class="expand-sub">${c.sub}</div>`:""}
+          </div>`).join("")}
         </div>
       </div>`;
     }
   });
-
-  document.getElementById("webinar-table").innerHTML = html;
+  document.getElementById("w-body").innerHTML=html;
 }
 
-// ═══════════ META TABLE ══════════════════════════════════════════════════
-function renderMeta() {
-  const COLS = "2fr 90px 70px 80px 65px 65px 100px";
-  const totalSpend = META.reduce((a,c)=>a+c.spend,0);
-  const totalLeads = META.reduce((a,c)=>a+c.leads,0);
-  document.getElementById("meta-meta").textContent =
-    `Windsor.ai · 30T · ${eur(totalSpend)} · ${totalLeads} Leads`;
+// ══════════════════════════════════════════════════
+// META TABLE
+// ══════════════════════════════════════════════════
+function renderMeta(){
+  const tsp=META.reduce((a,c)=>a+c.sp,0);
+  const tle=META.reduce((a,c)=>a+c.le,0);
+  document.getElementById("meta-meta").textContent=`Windsor.ai · ${eur(tsp)} · ${tle} Leads`;
 
-  let html = "";
-  META.forEach(c => {
-    const res   = aiResults[c.name];
-    const isExp = expandedM === c.name;
-    const VERDICT = {
-      scale:{label:"SCALE",   cls:"badge-green"},
-      hold: {label:"HOLD",    cls:"badge-yellow"},
-      test: {label:"TEST",    cls:"badge-purple"},
-      pause:{label:"PAUSE",   cls:"badge-red"},
-    };
+  const VCFG={
+    scale:{label:"SCALE +20%", cls:"b-green"},
+    hold: {label:"HOLD",       cls:"b-yellow"},
+    test: {label:"TESTEN",     cls:"b-blue"},
+    pause:{label:"PAUSE",      cls:"b-red"},
+  };
+  const COLS="2fr 90px 70px 80px 65px 65px 110px";
+  let html="";
+  META.forEach(c=>{
+    const res=aiRes[c.n];
+    const isExp=expandM===c.n;
+    let kiBadge='<span style="font-size:12px;color:#d1d5db">→ analysieren</span>';
+    if(res){const vc=VCFG[res.verdict]||VCFG.hold;kiBadge=`<span class="badge ${vc.cls}">${vc.label}</span>`;}
 
-    let aiBadge = '<span style="font-size:11px;color:#d1d5db">→ analysieren</span>';
-    if (res) {
-      const vc = VERDICT[res.verdict]||VERDICT.hold;
-      aiBadge = `<span class="badge ${vc.cls}">${vc.label}</span>`;
-    }
-
-    html += `
-    <div class="table-row${isExp?" expanded":""}" style="grid-template-columns:${COLS}" onclick="clickMeta('${c.name.replace(/'/g,"\\'")}')">
-      <div style="font-size:13px;font-weight:500;color:#374151;padding-right:16px;line-height:1.4">${c.name}</div>
-      <div class="gray">${eur(c.spend)}</div>
-      <div style="font-weight:600">${c.leads||"—"}</div>
-      <div class="${cplC(c.cpl)}" style="font-weight:600">${c.cpl>0?"€"+f2(c.cpl):"—"}</div>
+    html+=`
+    <div class="t-row${isExp?" exp":""}" style="grid-template-columns:${COLS}" onclick="clickM(this,'${c.n.replace(/'/g,"\\'")}')">
+      <div style="font-size:13px;font-weight:500;color:#374151;padding-right:16px;line-height:1.4">${c.n}</div>
+      <div class="td">${eur(c.sp)}</div>
+      <div style="font-weight:600;font-size:15px">${c.le||"—"}</div>
+      <div class="${cplC(c.cpl)}" style="font-weight:600;font-size:15px">${c.cpl>0?"€"+f2(c.cpl):"—"}</div>
       <div class="${c.ctr>=5?"green":"yellow"}">${c.ctr.toFixed(1)}%</div>
-      <div class="${c.freq>=2?"red":c.freq>=1.5?"yellow":"gray"}">${c.freq.toFixed(2)}</div>
-      <div>${aiBadge}</div>
+      <div class="${c.fr>=2?"red":c.fr>=1.5?"yellow":"gray"}">${c.fr.toFixed(2)}</div>
+      <div>${kiBadge}</div>
     </div>`;
 
-    if (res && isExp) {
-      const sigCol  = {high:"#16a34a",medium:"#ca8a04",low:"#dc2626"}[res.signal]||"#666";
-      const trustCol= {high:"#16a34a",medium:"#ca8a04",low:"#dc2626"}[res.trust]||"#666";
-      const audCol  = {deep:"#16a34a",medium:"#ca8a04",saturating:"#dc2626"}[res.audience]||"#666";
-      const budChange = res.budget_recommended && res.budget_recommended!==c.budget
-        ? `<div class="budget-change">
-            <span style="font-size:12px;color:#9ca3af;text-decoration:line-through">€${c.budget}/T</span>
-            <span style="font-size:14px;font-weight:700;color:${res.verdict==="scale"?"#16a34a":"#dc2626"}">→ €${res.budget_recommended}/T</span>
-          </div>` : "";
-
-      html += `
-      <div class="ai-detail">
-        <div class="ai-grid">
-          <div class="ai-cell">
-            <div class="ai-label">Signal: <span style="color:${sigCol};font-weight:600">${res.signal}</span></div>
-            <div class="ai-value">${res.signal_reason}</div>
-          </div>
-          <div class="ai-cell">
-            <div class="ai-label">Trust: <span style="color:${trustCol};font-weight:600">${res.trust}</span></div>
-            <div class="ai-value">${res.trust_reason}</div>
-          </div>
-          <div class="ai-cell">
-            <div class="ai-label">Audience: <span style="color:${audCol};font-weight:600">${res.audience}</span></div>
-            <div class="ai-value">${res.audience_reason}</div>
-          </div>
-          <div class="ai-cell ai-divider">
-            <div class="ai-label">Aktion</div>
-            <div class="ai-value" style="font-weight:500">${res.action}</div>
-            ${budChange}
-          </div>
-        </div>
-      </div>`;
+    if(res&&isExp){
+      const SC={high:"#059669",medium:"#d97706",low:"#dc2626"};
+      const AC={deep:"#059669",medium:"#d97706",saturating:"#dc2626"};
+      const budLine=res.budget_recommended&&res.budget_recommended!==c.bud
+        ?`<div style="display:flex;align-items:center;gap:8px;margin-top:8px">
+            <span style="font-size:12px;color:#9ca3af;text-decoration:line-through">€${c.bud}/T</span>
+            <span style="font-size:15px;font-weight:700;color:${res.verdict==="scale"?"#059669":"#dc2626"}">→ €${res.budget_recommended}/T</span>
+          </div>`:""
+      html+=`<div class="ai-detail"><div class="ai-grid">
+        <div><div class="ai-label">Signal: <span style="color:${SC[res.signal]||"#666"};font-weight:700">${res.signal}</span></div><div class="ai-val">${res.signal_reason}</div></div>
+        <div><div class="ai-label">Trust: <span style="color:${SC[res.trust]||"#666"};font-weight:700">${res.trust}</span></div><div class="ai-val">${res.trust_reason}</div></div>
+        <div><div class="ai-label">Audience: <span style="color:${AC[res.audience]||"#666"};font-weight:700">${res.audience}</span></div><div class="ai-val">${res.audience_reason}</div></div>
+        <div class="ai-divider"><div class="ai-label">Aktion</div><div class="ai-val" style="font-weight:500">${res.action}</div>${budLine}</div>
+      </div></div>`;
     }
   });
-
-  document.getElementById("meta-table").innerHTML = html;
+  document.getElementById("m-body").innerHTML=html;
 }
 
-// ═══════════ EVENTS ══════════════════════════════════════════════════════
-function toggleW(date) {
-  expandedW = expandedW===date ? null : date;
-  renderWebinars();
+// ══════════════════════════════════════════════════
+// EVENTS
+// ══════════════════════════════════════════════════
+function toggleW(d){expandW=expandW===d?null:d;renderWebinars();}
+function clickM(el,name){
+  if(!aiRes[name]&&!aiRunning){analyzeOne(name);}
+  else{expandM=expandM===name?null:name;renderMeta();}
+}
+function setView(v){
+  view=v;expandW=null;
+  document.getElementById("btn-last4").classList.toggle("active",v==="last4");
+  document.getElementById("btn-all").classList.toggle("active",v==="all");
+  document.getElementById("page-sub").textContent=v==="last4"
+    ?"Letzte 4 Webinare · ThriveCart Attribution · Sonntag 10:00 Stichtag"
+    :"Alle Webinare 2026 · ThriveCart Attribution · Sonntag 10:00 Stichtag";
+  renderStats();renderChart();renderWebinars();
 }
 
-function clickMeta(name) {
-  if (!aiResults[name] && !aiRunning) {
-    analyzeOne(name);
-  } else {
-    expandedM = expandedM===name ? null : name;
-    renderMeta();
-  }
-}
+// ══════════════════════════════════════════════════
+// AI
+// ══════════════════════════════════════════════════
+const SYS=`Meta Ads Analyst für "Meilenweit Voraus" (Kurs €297, Webinar sonntags, 40% Käufe Tag 7). CPL Ziel ≤€12, Freq <3.0. Antworte NUR als JSON: {"signal":"high"|"medium"|"low","signal_reason":"max 7W","trust":"high"|"medium"|"low","trust_reason":"max 7W","audience":"deep"|"medium"|"saturating","audience_reason":"max 7W","verdict":"scale"|"hold"|"test"|"pause","action":"max 10W","budget_recommended":number}`;
 
-function setView(v) {
-  currentView = v;
-  document.getElementById("btn-last4").classList.toggle("active", v==="last4");
-  document.getElementById("btn-all").classList.toggle("active", v==="all");
-  expandedW = null;
-  renderKPI();
-  renderWebinars();
-}
-
-// ═══════════ AI ══════════════════════════════════════════════════════════
-const AI_SYS = `Meta Ads Analyst für "Meilenweit Voraus" (Kurs €297, Webinar sonntags, 40% Käufe Tag 7). CPL Ziel ≤€12, Freq <3.0, CTR gut >5%. Meta sieht nur ~3% Käufe. Antworte NUR als JSON: {"signal":"high"|"medium"|"low","signal_reason":"max 7W","trust":"high"|"medium"|"low","trust_reason":"max 7W","audience":"deep"|"medium"|"saturating","audience_reason":"max 7W","verdict":"scale"|"hold"|"test"|"pause","verdict_label":"max 4W","action":"max 10W","budget_recommended":number}`;
-
-async function analyzeOne(name) {
-  const c = META.find(m=>m.name===name);
-  if (!c) return;
-
-  try {
-    const res = await fetch("/api/claude", {
-      method:"POST", headers:{"Content-Type":"application/json"},
-      body: JSON.stringify({
-        model:"claude-sonnet-4-20250514", max_tokens:400, system:AI_SYS,
-        messages:[{role:"user",content:`${c.name}\nSpend:€${c.spend} Leads:${c.leads} CPL:€${f2(c.cpl)} CTR:${c.ctr}% Freq:${c.freq} Budget:€${c.budget}/T`}]
-      })
-    });
-    const d = await res.json();
-    const text = (d.content?.[0]?.text||"{}").replace(/```json|```/g,"").trim();
-    aiResults[name] = JSON.parse(text);
-    expandedM = name;
-  } catch(e) {
-    console.error("AI error:", e);
-  }
+async function analyzeOne(name){
+  const c=META.find(m=>m.n===name);if(!c)return;
+  try{
+    const r=await fetch("/api/claude",{method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:400,system:SYS,
+        messages:[{role:"user",content:`${c.n}\nSpend:€${c.sp} Leads:${c.le} CPL:€${f2(c.cpl)} CTR:${c.ctr}% Freq:${c.fr} Budget:€${c.bud}/T`}]})});
+    const d=await r.json();
+    aiRes[name]=JSON.parse((d.content?.[0]?.text||"{}").replace(/```json|```/g,"").trim());
+    expandM=name;
+  }catch(e){console.error(e);}
   renderMeta();
 }
 
-async function analyzeAll() {
-  if (aiRunning) return;
-  aiRunning = true;
-  const btn = document.getElementById("ai-btn");
-  btn.innerHTML = '<div class="spin"></div> Analysiere…';
-  btn.disabled = true;
-
-  for (const c of META) {
-    await analyzeOne(c.name);
-    await new Promise(r=>setTimeout(r,250));
-  }
-
-  aiRunning = false;
-  btn.innerHTML = "✦ KI-Analyse";
-  btn.disabled = false;
+async function analyzeAll(){
+  if(aiRunning)return;
+  aiRunning=true;
+  const btn=document.getElementById("ai-btn");
+  btn.innerHTML='<div class="spin"></div> Analysiere…';btn.disabled=true;
+  for(const c of META){await analyzeOne(c.n);await new Promise(r=>setTimeout(r,250));}
+  aiRunning=false;btn.innerHTML="✦ KI-Analyse";btn.disabled=false;
 }
 
-// ═══════════ INIT ════════════════════════════════════════════════════════
-renderKPI();
-renderWebinars();
-renderMeta();
+// ══════════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════════
+renderStats();renderChart();renderWebinars();renderMeta();
 </script>
 </body>
 </html>
