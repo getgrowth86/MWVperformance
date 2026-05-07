@@ -10,11 +10,12 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Poppins',sans-serif;background:#f5f5f7;color:#111}
+html{font-size:16px}
+body{font-family:'Poppins',sans-serif;background:#f5f5f7;color:#111;min-width:1100px}
 @keyframes spin{to{transform:rotate(360deg)}}
 .card{background:#fff;border:1px solid #e5e7eb;border-radius:14px;box-shadow:0 1px 3px rgba(0,0,0,.04)}
 .hov:hover{background:#f9fafb!important;cursor:pointer}
-select,input{font-family:'Poppins',sans-serif}
+select,input{font-family:'Poppins',sans-serif;font-size:13px}
 ::-webkit-scrollbar{width:6px;height:6px}
 ::-webkit-scrollbar-track{background:#f1f1f1;border-radius:3px}
 ::-webkit-scrollbar-thumb{background:#d1d5db;border-radius:3px}
@@ -140,7 +141,7 @@ function ProductBar({w,maxRev}) {
 
 function FilterBar({filters,setFilters}) {
   return (
-    <div className="card" style={{padding:"12px 18px"}}>
+    <div className="card" style={{padding:"16px 22px"}}>
       <div style={{display:"flex",gap:12,alignItems:"flex-end",flexWrap:"wrap"}}>
 
         <div>
@@ -248,11 +249,11 @@ function KPIStrip({webinars,meta}) {
   return (
     <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(120px,1fr))",gap:9}}>
       {cards.map(({l,v,s,c,a,t})=>(
-        <div key={l} className="card" style={{padding:"11px 14px",borderTop:`3px solid ${a||"#e5e7eb"}`,position:"relative"}}>
+        <div key={l} className="card" style={{padding:"16px 18px",borderTop:`3px solid ${a||"#e5e7eb"}`,position:"relative"}}>
           <span style={{position:"absolute",top:7,right:8,background:t==="LIVE"?"#dcfce7":"#e0e7ff",color:t==="LIVE"?"#16a34a":"#6366f1",fontSize:7,fontWeight:700,borderRadius:3,padding:"1px 5px",...P}}>{t}</span>
-          <div style={{fontSize:8,color:"#9ca3af",textTransform:"uppercase",letterSpacing:1.5,fontWeight:600,marginBottom:4,...P}}>{l}</div>
-          <div style={{fontSize:18,fontWeight:800,color:c||"#111",...P}}>{v}</div>
-          <div style={{fontSize:9,color:"#d1d5db",marginTop:2,...P}}>{s}</div>
+          <div style={{fontSize:10,color:"#9ca3af",textTransform:"uppercase",letterSpacing:1.5,fontWeight:600,marginBottom:5,...P}}>{l}</div>
+          <div style={{fontSize:22,fontWeight:800,color:c||"#111",...P}}>{v}</div>
+          <div style={{fontSize:11,color:"#d1d5db",marginTop:3,...P}}>{s}</div>
         </div>
       ))}
     </div>
@@ -268,7 +269,7 @@ function WebinarTable({webinars}) {
   return (
     <div className="card" style={{overflow:"hidden"}}>
       <div style={{padding:"12px 18px",borderBottom:"1px solid #f3f4f6",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-        <span style={{fontSize:11,fontWeight:700,color:"#374151",...P}}>📅 Webinar-Attribution — Sonntag 10:00 Stichtag ({webinars.length} Webinare)</span>
+        <span style={{fontSize:13,fontWeight:700,color:"#374151",...P}}>📅 Webinar-Attribution — Sonntag 10:00 Stichtag ({webinars.length} Webinare)</span>
         <div style={{display:"flex",gap:6}}>
           {Object.entries(PROD_CFG).map(([k,v])=>(
             <div key={k} style={{display:"flex",alignItems:"center",gap:3}}>
@@ -298,14 +299,14 @@ function WebinarTable({webinars}) {
                 padding:"9px 18px",borderBottom:"1px solid #f3f4f6",background:w.partial?"#fafafa":"#fff",alignItems:"center"}}>
 
               <div style={{display:"flex",alignItems:"center",gap:3}}>
-                <span style={{fontSize:10,fontWeight:700,color:"#374151",...P}}>{w.label}</span>
+                <span style={{fontSize:12,fontWeight:700,color:"#374151",...P}}>{w.label}</span>
                 {w.partial&&<span style={{fontSize:7,color:"#9ca3af",fontWeight:600,...P}}>laufend</span>}
                 {w.spend===0&&!w.partial&&<span style={{fontSize:7,color:"#f59e0b",fontWeight:700,...P}}>CARRY</span>}
               </div>
               <div style={{fontSize:10,color:"#6b7280",...P}}>{w.spend>0?eur(w.spend):"—"}</div>
               <div style={{fontSize:10,color:w.leads>0?"#6b7280":"#d1d5db",...P}}>{w.leads||"—"}</div>
               <div style={{fontSize:10,color:su(w.showUp),fontWeight:w.showUp>=25?700:400,...P}}>{w.showUp>0?w.showUp+"%":"—"}</div>
-              <div style={{fontSize:13,fontWeight:800,color:"#111",...P}}>{w.sales}</div>
+              <div style={{fontSize:15,fontWeight:800,color:"#111",...P}}>{w.sales}</div>
               <div style={{fontSize:9,color:"#9ca3af",...P}}>
                 <span style={{color:"#6366f1",fontWeight:700}}>{pct(w.day0,w.sales)}%</span> / <span style={{color:"#f59e0b",fontWeight:700}}>{pct(w.day7,w.sales)}%</span>
               </div>
@@ -378,7 +379,7 @@ function MetaTable({campaigns}) {
   return (
     <div className="card" style={{overflow:"hidden"}}>
       <div style={{padding:"12px 18px",borderBottom:"1px solid #f3f4f6",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-        <span style={{fontSize:11,fontWeight:700,color:"#374151",...P}}>📣 Meta Kampagnen — live (Windsor.ai · letzte 30T)</span>
+        <span style={{fontSize:13,fontWeight:700,color:"#374151",...P}}>📣 Meta Kampagnen — live (Windsor.ai · letzte 30T)</span>
         <div style={{display:"flex",gap:8,alignItems:"center"}}>
           {analyzed>0&&<Tag label={`${scaleCount} Scale`} color="#16a34a" bg="#f0fdf4" border="#bbf7d0"/>}
           <button onClick={analyzeAll} disabled={aiRunning}
@@ -401,7 +402,7 @@ function MetaTable({campaigns}) {
             <div className="hov" onClick={()=>!res&&!loading&&analyzeOne(c)}
               style={{display:"grid",gridTemplateColumns:"2fr 72px 65px 68px 58px 58px 90px",
                 padding:"9px 18px",borderBottom:"1px solid #f3f4f6",alignItems:"center"}}>
-              <div style={{fontSize:10,fontWeight:600,color:"#374151",lineHeight:1.3,paddingRight:8,...P}}>{c.name}</div>
+              <div style={{fontSize:11,fontWeight:600,color:"#374151",lineHeight:1.4,paddingRight:8,...P}}>{c.name}</div>
               <div style={{fontSize:10,color:"#6b7280",...P}}>{eur(c.spend)}</div>
               <div style={{fontSize:10,fontWeight:700,color:"#374151",...P}}>{c.leads||"—"}</div>
               <div style={{fontSize:11,fontWeight:700,color:cc(c.cpl),...P}}>{c.cpl>0?"€"+f2(c.cpl):"—"}</div>
@@ -611,7 +612,7 @@ function App() {
   return (
     <div style={{minHeight:"100vh",background:"#f5f5f7"}}>
       {/* HEADER */}
-      <div style={{background:"#fff",borderBottom:"1px solid #e5e7eb",padding:"12px 24px",position:"sticky",top:0,zIndex:100,display:"flex",alignItems:"center",justifyContent:"space-between",gap:12,...P}}>
+      <div style={{background:"#fff",borderBottom:"1px solid #e5e7eb",padding:"16px 32px",position:"sticky",top:0,zIndex:100,display:"flex",alignItems:"center",justifyContent:"space-between",gap:12,...P}}>
         <div>
           <div style={{fontSize:9,color:"#c8c8c8",letterSpacing:2,fontWeight:600,marginBottom:1}}>MEILENWEIT VORAUS</div>
           <div style={{fontSize:17,fontWeight:800,color:"#111"}}>Performance Dashboard</div>
@@ -619,14 +620,14 @@ function App() {
         <div style={{display:"flex",gap:3,background:"#f3f4f6",border:"1px solid #e5e7eb",borderRadius:9,padding:3}}>
           {tabs.map(t=>(
             <button key={t.id} onClick={()=>setActiveTab(t.id)}
-              style={{background:activeTab===t.id?"#fff":"transparent",color:activeTab===t.id?"#111":"#9ca3af",border:activeTab===t.id?"1px solid #e5e7eb":"1px solid transparent",borderRadius:6,padding:"5px 13px",fontSize:10,fontWeight:600,cursor:"pointer",...P,boxShadow:activeTab===t.id?"0 1px 2px rgba(0,0,0,.06)":"none"}}>
+              style={{background:activeTab===t.id?"#fff":"transparent",color:activeTab===t.id?"#111":"#9ca3af",border:activeTab===t.id?"1px solid #e5e7eb":"1px solid transparent",borderRadius:6,padding:"7px 16px",fontSize:11,fontWeight:600,cursor:"pointer",...P,boxShadow:activeTab===t.id?"0 1px 2px rgba(0,0,0,.06)":"none"}}>
               {t.label}
             </button>
           ))}
         </div>
       </div>
 
-      <div style={{padding:"18px 24px",display:"flex",flexDirection:"column",gap:14}}>
+      <div style={{padding:"24px 32px",display:"flex",flexDirection:"column",gap:18,maxWidth:1600,margin:"0 auto",width:"100%"}}>
 
         {/* FILTER BAR — always visible */}
         <FilterBar filters={filters} setFilters={setFilters}/>
