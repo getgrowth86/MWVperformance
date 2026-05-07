@@ -1,0 +1,9 @@
+{
+  "name": "mw-proxy",
+  "version": "1.0.0",
+  "description": "Meilenweit Voraus — WebinarGeek Proxy + Meta CAPI Bridge",
+  "private": true,
+  "engines": {
+    "node": ">=18"
+  }
+}
