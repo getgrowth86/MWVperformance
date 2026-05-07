@@ -4,436 +4,471 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>Meilenweit Voraus — Performance</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { font-size: 14px; -webkit-font-smoothing: antialiased; }
-  body { font-family: 'Inter', sans-serif; background: #f5f6fa; color: #111; min-height: 100vh; }
-  ::-webkit-scrollbar { width: 4px; height: 4px; }
-  ::-webkit-scrollbar-track { background: #f3f4f6; }
-  ::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 2px; }
-  select, input, button { font-family: 'Inter', sans-serif; }
-  @keyframes spin { to { transform: rotate(360deg); } }
-  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+*{box-sizing:border-box;margin:0;padding:0}
+html{font-size:14px;-webkit-font-smoothing:antialiased}
+body{font-family:'Inter',sans-serif;background:#f5f6fa;color:#111;min-height:100vh}
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:#f1f1f1}
+::-webkit-scrollbar-thumb{background:#d1d5db;border-radius:2px}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+
+/* Layout */
+.header{background:#fff;border-bottom:1px solid #e5e7eb;padding:0 32px;position:sticky;top:0;z-index:100}
+.header-inner{max-width:1400px;margin:0 auto;height:56px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-size:14px;font-weight:700;color:#111;letter-spacing:-0.3px}
+.wrap{max-width:1400px;margin:0 auto;padding:24px 32px 60px}
+
+/* Toggle */
+.toggle{display:flex;gap:2px;background:#f3f4f6;border-radius:6px;padding:2px}
+.toggle button{border:none;border-radius:4px;padding:5px 14px;font-size:12px;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer;transition:all .1s;background:transparent;color:#6b7280}
+.toggle button.active{background:#fff;color:#111;box-shadow:0 1px 2px rgba(0,0,0,.06)}
+
+/* KPI Grid */
+.kpi-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:1px;background:#e5e7eb;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden;margin-bottom:24px}
+.kpi-card{background:#fff;padding:20px 24px}
+.kpi-label{font-size:11px;color:#9ca3af;font-weight:500;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.kpi-value{font-size:26px;font-weight:700;letter-spacing:-0.5px;line-height:1}
+.kpi-sub{font-size:11px;color:#9ca3af;margin-top:4px}
+
+/* Section */
+.section{margin-bottom:24px}
+.section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.section-title{font-size:12px;font-weight:600;color:#9ca3af;text-transform:uppercase;letter-spacing:1px}
+.section-meta{font-size:11px;color:#9ca3af}
+
+/* Table */
+.table{background:#fff;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden}
+.table-head{display:grid;padding:12px 20px;background:#f9fafb;border-bottom:1px solid #e5e7eb}
+.th{font-size:11px;color:#9ca3af;font-weight:500;text-transform:uppercase;letter-spacing:.8px}
+.table-row{display:grid;padding:15px 20px;border-bottom:1px solid #f3f4f6;cursor:pointer;transition:background .1s;align-items:center}
+.table-row:last-child{border-bottom:none}
+.table-row:hover{background:#f9fafb}
+.table-row.expanded{background:#f9fafb}
+
+/* Expanded detail */
+.row-detail{background:#f9fafb;border-bottom:1px solid #e5e7eb;padding:16px 20px;animation:fadeIn .15s ease}
+.detail-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:1px;background:#e5e7eb;border:1px solid #e5e7eb;border-radius:8px;overflow:hidden}
+.detail-card{background:#fff;padding:14px 16px}
+.detail-label{font-size:11px;color:#9ca3af;margin-bottom:4px;display:flex;align-items:center;gap:5px}
+.detail-dot{width:6px;height:6px;border-radius:50%;display:inline-block}
+.detail-value{font-size:18px;font-weight:700}
+.detail-sub{font-size:10px;color:#9ca3af;margin-top:2px}
+
+/* Badges */
+.badge{border-radius:4px;padding:2px 8px;font-size:11px;font-weight:600;letter-spacing:.3px;display:inline-block}
+.badge-green{background:#f0fdf4;color:#16a34a;border:1px solid #bbf7d0}
+.badge-yellow{background:#fefce8;color:#ca8a04;border:1px solid #fde68a}
+.badge-red{background:#fef2f2;color:#dc2626;border:1px solid #fecaca}
+.badge-purple{background:#f5f3ff;color:#7c3aed;border:1px solid #ddd6fe}
+
+/* Product bars */
+.prod-bars{display:flex;gap:3px;align-items:center}
+.prod-bar{height:4px;border-radius:2px;opacity:.8;min-width:6px}
+
+/* Meta AI row */
+.ai-detail{background:#f9fafb;border-bottom:1px solid #e5e7eb;padding:16px 20px;animation:fadeIn .15s ease}
+.ai-grid{display:grid;grid-template-columns:1fr 1fr 1fr 1.2fr;gap:16px}
+.ai-cell .ai-label{font-size:11px;color:#9ca3af;margin-bottom:3px}
+.ai-cell .ai-value{font-size:12px;color:#374151;line-height:1.4}
+.ai-divider{border-left:1px solid #e5e7eb;padding-left:16px}
+.budget-change{display:flex;align-items:center;gap:8px;margin-top:8px}
+
+/* Button */
+.btn{border:none;border-radius:6px;padding:7px 16px;font-size:12px;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer;transition:all .1s;background:#111;color:#fff;display:flex;align-items:center;gap:5px}
+.btn:hover{opacity:.85}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.spin{width:12px;height:12px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite}
+
+/* Footer */
+.footer{text-align:center;font-size:11px;color:#d1d5db;padding-top:16px}
+
+/* Colors */
+.green{color:#16a34a}.yellow{color:#ca8a04}.red{color:#dc2626}.purple{color:#7c3aed}.blue{color:#2563eb}.orange{color:#ea580c}.gray{color:#9ca3af}
 </style>
 </head>
 <body>
-<div id="root"></div>
-<script type="text/babel">
-const { useState, useMemo } = React;
 
-// ═══════════ DATA ════════════════════════════════════════════════════════════
+<div class="header">
+  <div class="header-inner">
+    <div class="logo">Meilenweit Voraus</div>
+    <div style="display:flex;align-items:center;gap:12px">
+      <span style="font-size:11px;color:#9ca3af">Zeitraum:</span>
+      <div class="toggle">
+        <button class="active" id="btn-last4" onclick="setView('last4')">Letzte 4</button>
+        <button id="btn-all" onclick="setView('all')">Alle</button>
+      </div>
+    </div>
+  </div>
+</div>
 
+<div class="wrap">
+  <!-- KPI -->
+  <div class="kpi-grid" id="kpi-grid"></div>
+
+  <!-- Webinar Table -->
+  <div class="section">
+    <div class="section-head">
+      <span class="section-title">Webinar-Performance</span>
+      <span class="section-meta">Sonntag 10:00 Attribution · ThriveCart CSV</span>
+    </div>
+    <div class="table">
+      <div class="table-head" style="grid-template-columns:100px 1fr 100px 70px 80px 70px 70px 80px 90px">
+        <span class="th">Datum</span>
+        <span class="th">Produkte</span>
+        <span class="th">Revenue</span>
+        <span class="th">Käufe</span>
+        <span class="th">ROAS</span>
+        <span class="th">Show%</span>
+        <span class="th">Tag 0</span>
+        <span class="th">Tag 7</span>
+        <span class="th">Spend</span>
+      </div>
+      <div id="webinar-table"></div>
+    </div>
+  </div>
+
+  <!-- Meta Table -->
+  <div class="section">
+    <div class="section-head">
+      <span class="section-title">Meta Kampagnen</span>
+      <div style="display:flex;align-items:center;gap:12px">
+        <span class="section-meta" id="meta-meta"></span>
+        <button class="btn" id="ai-btn" onclick="analyzeAll()">✦ KI-Analyse</button>
+      </div>
+    </div>
+    <div class="table">
+      <div class="table-head" style="grid-template-columns:2fr 90px 70px 80px 65px 65px 100px">
+        <span class="th">Kampagne</span>
+        <span class="th">Spend</span>
+        <span class="th">Leads</span>
+        <span class="th">CPL</span>
+        <span class="th">CTR</span>
+        <span class="th">Freq</span>
+        <span class="th">KI</span>
+      </div>
+      <div id="meta-table"></div>
+    </div>
+  </div>
+
+  <div class="footer">MEILENWEIT VORAUS · ThriveCart CSV · Meta Windsor.ai · Sonntag 10:00 Attribution · Claude AI</div>
+</div>
+
+<script>
+// ═══════════ DATA ════════════════════════════════════════════════════════
 const WEBINARS = [
-  {date:"2026-05-03",label:"03.05.",spend:3078, leads:551, showUp:17,revenue:1282,  roas:0.417,sales:7,  day0:6, day7:0, partial:true, kurs:1188, masterclass:0,    revolut:94,  george:0,  },
-  {date:"2026-04-26",label:"26.04.",spend:0,    leads:0,   showUp:0, revenue:11351, roas:0,    sales:45, day0:8, day7:20,partial:false,kurs:5050, masterclass:5467, revolut:814, george:0,  },
-  {date:"2026-04-19",label:"19.04.",spend:7243, leads:598, showUp:20,revenue:16320, roas:2.253,sales:50, day0:6, day7:7, partial:false,kurs:2376, masterclass:13419,revolut:485, george:0,  },
-  {date:"2026-04-12",label:"12.04.",spend:9932, leads:1259,showUp:21,revenue:3649,  roas:0.367,sales:24, day0:3, day7:13,partial:false,kurs:3267, masterclass:0,    revolut:282, george:0,  },
-  {date:"2026-04-05",label:"05.04.",spend:2431, leads:281, showUp:22,revenue:7335,  roas:3.017,sales:45, day0:6, day7:34,partial:false,kurs:6237, masterclass:0,    revolut:908, george:0,  },
-  {date:"2026-03-29",label:"29.03.",spend:6569, leads:470, showUp:24,revenue:3267,  roas:0.497,sales:19, day0:2, day7:9, partial:false,kurs:3073, masterclass:0,    revolut:94,  george:0,  },
-  {date:"2026-03-22",label:"22.03.",spend:10852,leads:950, showUp:28,revenue:12282, roas:1.132,sales:60, day0:24,day7:17,partial:false,kurs:7826, masterclass:3976, revolut:0,   george:0,  },
-  {date:"2026-03-15",label:"15.03.",spend:6654, leads:523, showUp:28,revenue:10218, roas:1.536,sales:49, day0:16,day7:20,partial:false,kurs:10098,masterclass:0,    revolut:0,   george:0,  },
-  {date:"2026-03-08",label:"08.03.",spend:9432, leads:782, showUp:24,revenue:10559, roas:1.119,sales:54, day0:18,day7:13,partial:false,kurs:10202,masterclass:0,    revolut:297, george:0,  },
-  {date:"2026-03-01",label:"01.03.",spend:21098,leads:1863,showUp:25,revenue:15281, roas:0.724,sales:89, day0:45,day7:18,partial:false,kurs:14553,masterclass:0,    revolut:594, george:94, },
-  {date:"2026-02-22",label:"22.02.",spend:12978,leads:1400,showUp:32,revenue:17089, roas:1.317,sales:85, day0:37,day7:29,partial:false,kurs:16335,masterclass:0,    revolut:0,   george:94, },
-  {date:"2026-02-15",label:"15.02.",spend:8878, leads:964, showUp:33,revenue:23563, roas:2.654,sales:112,day0:37,day7:55,partial:false,kurs:22081,masterclass:0,    revolut:297, george:705,},
-  {date:"2026-02-08",label:"08.02.",spend:5390, leads:720, showUp:25,revenue:11106, roas:2.060,sales:62, day0:18,day7:34,partial:false,kurs:10098,masterclass:0,    revolut:297, george:611,},
-  {date:"2026-02-01",label:"01.02.",spend:8325, leads:1041,showUp:14,revenue:12330, roas:1.481,sales:75, day0:25,day7:21,partial:false,kurs:11339,masterclass:0,    revolut:0,   george:564,},
-  {date:"2026-01-25",label:"25.01.",spend:6819, leads:792, showUp:36,revenue:10183, roas:1.493,sales:81, day0:25,day7:40,partial:false,kurs:8613, masterclass:0,    revolut:0,   george:893,},
-  {date:"2026-01-18",label:"18.01.",spend:3384, leads:389, showUp:28,revenue:10587, roas:3.129,sales:47, day0:5, day7:32,partial:false,kurs:9110, masterclass:0,    revolut:0,   george:376,},
+  {date:"2026-05-03",label:"03.05.",spend:3078, leads:551, showUp:17,revenue:1282,  roas:0.417,sales:7,  day0:6, day7:0, partial:true, kurs:1188, masterclass:0,    revolut:94,  george:0   },
+  {date:"2026-04-26",label:"26.04.",spend:0,    leads:0,   showUp:0, revenue:11351, roas:0,    sales:45, day0:8, day7:20,partial:false,kurs:5050, masterclass:5467, revolut:814, george:0   },
+  {date:"2026-04-19",label:"19.04.",spend:7243, leads:598, showUp:20,revenue:16320, roas:2.253,sales:50, day0:6, day7:7, partial:false,kurs:2376, masterclass:13419,revolut:485, george:0   },
+  {date:"2026-04-12",label:"12.04.",spend:9932, leads:1259,showUp:21,revenue:3649,  roas:0.367,sales:24, day0:3, day7:13,partial:false,kurs:3267, masterclass:0,    revolut:282, george:0   },
+  {date:"2026-04-05",label:"05.04.",spend:2431, leads:281, showUp:22,revenue:7335,  roas:3.017,sales:45, day0:6, day7:34,partial:false,kurs:6237, masterclass:0,    revolut:908, george:0   },
+  {date:"2026-03-29",label:"29.03.",spend:6569, leads:470, showUp:24,revenue:3267,  roas:0.497,sales:19, day0:2, day7:9, partial:false,kurs:3073, masterclass:0,    revolut:94,  george:0   },
+  {date:"2026-03-22",label:"22.03.",spend:10852,leads:950, showUp:28,revenue:12282, roas:1.132,sales:60, day0:24,day7:17,partial:false,kurs:7826, masterclass:3976, revolut:0,   george:0   },
+  {date:"2026-03-15",label:"15.03.",spend:6654, leads:523, showUp:28,revenue:10218, roas:1.536,sales:49, day0:16,day7:20,partial:false,kurs:10098,masterclass:0,    revolut:0,   george:0   },
+  {date:"2026-03-08",label:"08.03.",spend:9432, leads:782, showUp:24,revenue:10559, roas:1.119,sales:54, day0:18,day7:13,partial:false,kurs:10202,masterclass:0,    revolut:297, george:0   },
+  {date:"2026-03-01",label:"01.03.",spend:21098,leads:1863,showUp:25,revenue:15281, roas:0.724,sales:89, day0:45,day7:18,partial:false,kurs:14553,masterclass:0,    revolut:594, george:94  },
+  {date:"2026-02-22",label:"22.02.",spend:12978,leads:1400,showUp:32,revenue:17089, roas:1.317,sales:85, day0:37,day7:29,partial:false,kurs:16335,masterclass:0,    revolut:0,   george:94  },
+  {date:"2026-02-15",label:"15.02.",spend:8878, leads:964, showUp:33,revenue:23563, roas:2.654,sales:112,day0:37,day7:55,partial:false,kurs:22081,masterclass:0,    revolut:297, george:705 },
+  {date:"2026-02-08",label:"08.02.",spend:5390, leads:720, showUp:25,revenue:11106, roas:2.060,sales:62, day0:18,day7:34,partial:false,kurs:10098,masterclass:0,    revolut:297, george:611 },
+  {date:"2026-02-01",label:"01.02.",spend:8325, leads:1041,showUp:14,revenue:12330, roas:1.481,sales:75, day0:25,day7:21,partial:false,kurs:11339,masterclass:0,    revolut:0,   george:564 },
+  {date:"2026-01-25",label:"25.01.",spend:6819, leads:792, showUp:36,revenue:10183, roas:1.493,sales:81, day0:25,day7:40,partial:false,kurs:8613, masterclass:0,    revolut:0,   george:893 },
+  {date:"2026-01-18",label:"18.01.",spend:3384, leads:389, showUp:28,revenue:10587, roas:3.129,sales:47, day0:5, day7:32,partial:false,kurs:9110, masterclass:0,    revolut:0,   george:376 },
 ];
 
 const META = [
-  {name:"ML 30.03. Testing ABO DACH",          spend:6919,leads:674,cpl:10.27,freq:1.53,ctr:4.72,budget:230},
-  {name:"ML 23.04. Webinar-Funnel LLA 1%",     spend:4693,leads:642,cpl:7.31, freq:1.82,ctr:7.48,budget:156},
-  {name:"ML 06.04. Broad Cost Cap CBO",        spend:2504,leads:259,cpl:9.67, freq:1.29,ctr:4.13,budget:83 },
-  {name:"ML 27.04. Webinar-Funnel LLA 3%",     spend:1405,leads:201,cpl:6.99, freq:1.41,ctr:7.14,budget:47 },
-  {name:"ML 07.04. LLA 1% Purchase CBO",       spend:1994,leads:216,cpl:9.23, freq:1.46,ctr:6.05,budget:66 },
-  {name:"ML 07.04. LLA 3% Purchase CBO",       spend:1964,leads:222,cpl:8.85, freq:1.30,ctr:5.83,budget:65 },
-  {name:"ML 15.04. VSL-Funnel LLA 1%",         spend:1060,leads:230,cpl:4.61, freq:1.46,ctr:8.43,budget:35 },
-  {name:"ML 07.04. CBO Interest Scale",        spend:580, leads:56, cpl:10.36,freq:1.16,ctr:4.26,budget:19 },
-  {name:"ML 06.04. CBO Scale Highest Volume",  spend:543, leads:61, cpl:8.90, freq:1.16,ctr:7.48,budget:18 },
-  {name:"ML 04.05. Community LLA 1%",          spend:317, leads:36, cpl:8.81, freq:1.15,ctr:7.18,budget:11 },
+  {name:"ML 30.03. Testing ABO DACH",         spend:6919,leads:674,cpl:10.27,freq:1.53,ctr:4.72,budget:230},
+  {name:"ML 23.04. Webinar-Funnel LLA 1%",    spend:4693,leads:642,cpl:7.31, freq:1.82,ctr:7.48,budget:156},
+  {name:"ML 06.04. Broad Cost Cap CBO",       spend:2504,leads:259,cpl:9.67, freq:1.29,ctr:4.13,budget:83 },
+  {name:"ML 27.04. Webinar-Funnel LLA 3%",    spend:1405,leads:201,cpl:6.99, freq:1.41,ctr:7.14,budget:47 },
+  {name:"ML 07.04. LLA 1% Purchase CBO",      spend:1994,leads:216,cpl:9.23, freq:1.46,ctr:6.05,budget:66 },
+  {name:"ML 07.04. LLA 3% Purchase CBO",      spend:1964,leads:222,cpl:8.85, freq:1.30,ctr:5.83,budget:65 },
+  {name:"ML 15.04. VSL-Funnel LLA 1%",        spend:1060,leads:230,cpl:4.61, freq:1.46,ctr:8.43,budget:35 },
+  {name:"ML 07.04. CBO Interest Scale",       spend:580, leads:56, cpl:10.36,freq:1.16,ctr:4.26,budget:19 },
+  {name:"ML 06.04. CBO Scale",                spend:543, leads:61, cpl:8.90, freq:1.16,ctr:7.48,budget:18 },
+  {name:"ML 04.05. Community LLA 1%",         spend:317, leads:36, cpl:8.81, freq:1.15,ctr:7.18,budget:11 },
 ];
 
-// ═══════════ HELPERS ═════════════════════════════════════════════════════════
-
+// ═══════════ HELPERS ════════════════════════════════════════════════════
 const eur  = n => "€" + Math.round(n||0).toLocaleString("de-DE");
 const f2   = n => (n||0).toFixed(2);
 const pct  = (a,b) => b > 0 ? Math.round(a/b*100) : 0;
+const rc   = r => r>=1.5?"green":r>=1.0?"yellow":"red";
+const suC  = s => s>=28?"green":s>=22?"yellow":"red";
+const cplC = c => !c?"gray":c<=10?"green":c<=13?"yellow":"red";
 
-const roasColor  = r => r >= 1.5 ? "#22c55e" : r >= 1.0 ? "#f59e0b" : "#ef4444";
-const roasBadge  = r => r >= 1.5 ? "#f0fdf4" : r >= 1.0 ? "#fefce8" : "#fef2f2";
-const cplColor   = c => !c ? "#666" : c <= 10 ? "#22c55e" : c <= 13 ? "#f59e0b" : "#ef4444";
-const suColor    = s => s >= 28 ? "#22c55e" : s >= 22 ? "#f59e0b" : "#ef4444";
+function badge(text, type) {
+  return `<span class="badge badge-${type}">${text}</span>`;
+}
 
-const AI_SYS = `Meta Ads Analyst für "Meilenweit Voraus" (Kurs €297, Webinar sonntags, 40% Käufe Tag 7).
-CPL Ziel ≤€12, Freq <3.0, CTR gut >5%. Meta sieht nur ~3% Käufe. Antworte NUR als JSON:
-{"signal":"high"|"medium"|"low","signal_reason":"max 7W","trust":"high"|"medium"|"low","trust_reason":"max 7W","audience":"deep"|"medium"|"saturating","audience_reason":"max 7W","verdict":"scale"|"hold"|"test"|"pause","verdict_label":"max 4W","action":"max 10W","budget_recommended":number}`;
+// ═══════════ STATE ═══════════════════════════════════════════════════════
+let currentView = "last4";
+let expandedW = null;
+let expandedM = null;
+let aiResults = {};
+let aiRunning = false;
 
-async function runAI(c) {
-  const res = await fetch(window.location.origin+"/api/claude", {
-    method:"POST", headers:{"Content-Type":"application/json"},
-    body: JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:400,system:AI_SYS,
-      messages:[{role:"user",content:`${c.name}\nSpend:€${c.spend} Leads:${c.leads} CPL:€${f2(c.cpl)} CTR:${c.ctr}% Freq:${c.freq} Budget:€${c.budget}/T`}]})
+function getWebinars() {
+  return currentView === "last4" ? WEBINARS.slice(0,4) : WEBINARS;
+}
+
+// ═══════════ KPI ════════════════════════════════════════════════════════
+function renderKPI() {
+  const ws = getWebinars();
+  const totRev   = ws.reduce((a,w)=>a+w.revenue,0);
+  const totSpend = ws.reduce((a,w)=>a+w.spend,0);
+  const totSales = ws.reduce((a,w)=>a+w.sales,0);
+  const avgRoas  = totSpend>0?totRev/totSpend:0;
+  const avgSU    = ws.filter(w=>w.showUp>0).reduce((a,w,_,arr)=>a+w.showUp/arr.length,0);
+  const allD0    = ws.reduce((a,w)=>a+w.day0,0);
+  const allD7    = ws.reduce((a,w)=>a+w.day7,0);
+
+  const cards = [
+    {label:"Revenue",   value:eur(totRev),          sub:`${totSales} Käufe`,          color:rc(avgRoas)},
+    {label:"Ad Spend",  value:eur(totSpend),         sub:`${ws.length} Webinare`,      color:"gray"},
+    {label:"Ø ROAS",    value:f2(avgRoas)+"x",       sub:"TC Revenue ÷ Spend",         color:rc(avgRoas)},
+    {label:"Show-Up Ø", value:Math.round(avgSU)+"%", sub:"aller Webinare",             color:suC(avgSU)},
+    {label:"Tag 0",     value:pct(allD0,totSales)+"%",sub:"kaufen am Webinar-Tag",     color:"purple"},
+    {label:"Tag 7",     value:pct(allD7,totSales)+"%",sub:"vor nächstem Webinar",      color:"orange"},
+  ];
+
+  document.getElementById("kpi-grid").innerHTML = cards.map(c=>
+    `<div class="kpi-card">
+      <div class="kpi-label">${c.label}</div>
+      <div class="kpi-value ${c.color}">${c.value}</div>
+      <div class="kpi-sub">${c.sub}</div>
+    </div>`
+  ).join("");
+}
+
+// ═══════════ WEBINAR TABLE ═══════════════════════════════════════════════
+function renderWebinars() {
+  const ws = getWebinars();
+  const maxRev = Math.max(...WEBINARS.map(w=>w.revenue));
+  const COLS = "100px 1fr 100px 70px 80px 70px 70px 80px 90px";
+
+  const PRODS = [
+    {k:"kurs",       color:"#818cf8", label:"Meilenkurs"},
+    {k:"masterclass",color:"#f59e0b", label:"Masterclass"},
+    {k:"revolut",    color:"#22c55e", label:"Revolut"},
+    {k:"george",     color:"#38bdf8", label:"George"},
+  ];
+
+  let html = "";
+  ws.forEach(w => {
+    const isExp = expandedW === w.date;
+    const barW  = Math.max(Math.min(w.revenue/maxRev*100,100),5);
+    const bars  = PRODS.filter(p=>w[p.k]>0).map(p=>
+      `<div class="prod-bar" style="background:${p.color};width:${Math.max(pct(w[p.k],w.revenue)*0.6,6)}px" title="${p.label}: ${eur(w[p.k])}"></div>`
+    ).join("");
+
+    const roasBadge = w.roas>0 ? badge(f2(w.roas)+"x", rc(w.roas)) : '<span class="gray">—</span>';
+
+    html += `
+    <div class="table-row${isExp?" expanded":""}" style="grid-template-columns:${COLS}" onclick="toggleW('${w.date}')">
+      <div>
+        <div style="font-size:14px;font-weight:600">${w.label}</div>
+        ${w.partial?'<div style="font-size:10px;color:#9ca3af;margin-top:2px">laufend</div>':''}
+        ${w.spend===0&&!w.partial?'<div style="font-size:10px;color:#ca8a04;margin-top:2px">carry</div>':''}
+      </div>
+      <div class="prod-bars">${bars}</div>
+      <div style="font-size:17px;font-weight:700">${eur(w.revenue)}</div>
+      <div style="font-size:16px;font-weight:700">${w.sales}</div>
+      <div>${roasBadge}</div>
+      <div class="${suC(w.showUp)}">${w.showUp>0?w.showUp+"%":"—"}</div>
+      <div class="purple" style="font-weight:500">${pct(w.day0,w.sales)}%</div>
+      <div class="orange" style="font-weight:500">${pct(w.day7,w.sales)}%</div>
+      <div class="gray">${w.spend>0?eur(w.spend):"—"}</div>
+    </div>`;
+
+    if (isExp) {
+      const detailCards = PRODS.map(p => {
+        const v = w[p.k]||0;
+        return `<div class="detail-card">
+          <div class="detail-label">
+            <span class="detail-dot" style="background:${v>0?p.color:'#e5e7eb'}"></span>
+            ${p.label}
+          </div>
+          <div class="detail-value" style="color:${v>0?p.color:'#d1d5db'}">${v>0?eur(v):"—"}</div>
+          ${v>0?`<div class="detail-sub">${pct(v,w.revenue)}% of revenue</div>`:""}
+        </div>`;
+      }).join("");
+
+      const avgOrder = w.sales>0?eur(w.revenue/w.sales):"—";
+      const cpl      = w.leads>0?eur(w.spend/w.leads):"—";
+
+      html += `
+      <div class="row-detail">
+        <div class="detail-grid">
+          ${detailCards}
+          <div class="detail-card">
+            <div class="detail-label">CPL</div>
+            <div class="detail-value ${cplC(w.leads>0?w.spend/w.leads:0)}">${cpl}</div>
+          </div>
+          <div class="detail-card">
+            <div class="detail-label">Ø Order</div>
+            <div class="detail-value">${avgOrder}</div>
+          </div>
+          <div class="detail-card">
+            <div class="detail-label">Delay-Split</div>
+            <div class="detail-value" style="font-size:13px">
+              <span class="purple">Tag 0: ${w.day0}</span><br>
+              <span class="orange">Tag 7: ${w.day7}</span>
+            </div>
+          </div>
+        </div>
+      </div>`;
+    }
   });
-  const d = await res.json();
-  return JSON.parse((d.content?.[0]?.text||"{}").replace(/```json|```/g,"").trim());
+
+  document.getElementById("webinar-table").innerHTML = html;
 }
 
-// ═══════════ COMPONENTS ══════════════════════════════════════════════════════
+// ═══════════ META TABLE ══════════════════════════════════════════════════
+function renderMeta() {
+  const COLS = "2fr 90px 70px 80px 65px 65px 100px";
+  const totalSpend = META.reduce((a,c)=>a+c.spend,0);
+  const totalLeads = META.reduce((a,c)=>a+c.leads,0);
+  document.getElementById("meta-meta").textContent =
+    `Windsor.ai · 30T · ${eur(totalSpend)} · ${totalLeads} Leads`;
 
-function Spin() {
-  return <div style={{width:13,height:13,border:"2px solid #e5e7eb",borderTopColor:"#6366f1",borderRadius:"50%",animation:"spin .7s linear infinite",flexShrink:0}}/>;
+  let html = "";
+  META.forEach(c => {
+    const res   = aiResults[c.name];
+    const isExp = expandedM === c.name;
+    const VERDICT = {
+      scale:{label:"SCALE",   cls:"badge-green"},
+      hold: {label:"HOLD",    cls:"badge-yellow"},
+      test: {label:"TEST",    cls:"badge-purple"},
+      pause:{label:"PAUSE",   cls:"badge-red"},
+    };
+
+    let aiBadge = '<span style="font-size:11px;color:#d1d5db">→ analysieren</span>';
+    if (res) {
+      const vc = VERDICT[res.verdict]||VERDICT.hold;
+      aiBadge = `<span class="badge ${vc.cls}">${vc.label}</span>`;
+    }
+
+    html += `
+    <div class="table-row${isExp?" expanded":""}" style="grid-template-columns:${COLS}" onclick="clickMeta('${c.name.replace(/'/g,"\\'")}')">
+      <div style="font-size:13px;font-weight:500;color:#374151;padding-right:16px;line-height:1.4">${c.name}</div>
+      <div class="gray">${eur(c.spend)}</div>
+      <div style="font-weight:600">${c.leads||"—"}</div>
+      <div class="${cplC(c.cpl)}" style="font-weight:600">${c.cpl>0?"€"+f2(c.cpl):"—"}</div>
+      <div class="${c.ctr>=5?"green":"yellow"}">${c.ctr.toFixed(1)}%</div>
+      <div class="${c.freq>=2?"red":c.freq>=1.5?"yellow":"gray"}">${c.freq.toFixed(2)}</div>
+      <div>${aiBadge}</div>
+    </div>`;
+
+    if (res && isExp) {
+      const sigCol  = {high:"#16a34a",medium:"#ca8a04",low:"#dc2626"}[res.signal]||"#666";
+      const trustCol= {high:"#16a34a",medium:"#ca8a04",low:"#dc2626"}[res.trust]||"#666";
+      const audCol  = {deep:"#16a34a",medium:"#ca8a04",saturating:"#dc2626"}[res.audience]||"#666";
+      const budChange = res.budget_recommended && res.budget_recommended!==c.budget
+        ? `<div class="budget-change">
+            <span style="font-size:12px;color:#9ca3af;text-decoration:line-through">€${c.budget}/T</span>
+            <span style="font-size:14px;font-weight:700;color:${res.verdict==="scale"?"#16a34a":"#dc2626"}">→ €${res.budget_recommended}/T</span>
+          </div>` : "";
+
+      html += `
+      <div class="ai-detail">
+        <div class="ai-grid">
+          <div class="ai-cell">
+            <div class="ai-label">Signal: <span style="color:${sigCol};font-weight:600">${res.signal}</span></div>
+            <div class="ai-value">${res.signal_reason}</div>
+          </div>
+          <div class="ai-cell">
+            <div class="ai-label">Trust: <span style="color:${trustCol};font-weight:600">${res.trust}</span></div>
+            <div class="ai-value">${res.trust_reason}</div>
+          </div>
+          <div class="ai-cell">
+            <div class="ai-label">Audience: <span style="color:${audCol};font-weight:600">${res.audience}</span></div>
+            <div class="ai-value">${res.audience_reason}</div>
+          </div>
+          <div class="ai-cell ai-divider">
+            <div class="ai-label">Aktion</div>
+            <div class="ai-value" style="font-weight:500">${res.action}</div>
+            ${budChange}
+          </div>
+        </div>
+      </div>`;
+    }
+  });
+
+  document.getElementById("meta-table").innerHTML = html;
 }
 
-function Badge({label, color="#22c55e", bg="#052e16"}) {
-  return (
-    <span style={{background:bg,color,borderRadius:4,padding:"2px 8px",fontSize:11,fontWeight:600,letterSpacing:0.3,display:"inline-block",border:`1px solid ${color}33`}}>
-      {label}
-    </span>
-  );
+// ═══════════ EVENTS ══════════════════════════════════════════════════════
+function toggleW(date) {
+  expandedW = expandedW===date ? null : date;
+  renderWebinars();
 }
 
-// ═══════════ MAIN APP ════════════════════════════════════════════════════════
-
-export default function App() {
-  const [view, setView] = useState("last4"); // last4 | all
-  const [expanded, setExpanded] = useState(null);
-  const [aiResults, setAiResults] = useState({});
-  const [aiLoading, setAiLoading] = useState({});
-  const [aiRunning, setAiRunning] = useState(false);
-  const [metaExpanded, setMetaExpanded] = useState(null);
-
-  const webinars = useMemo(() =>
-    view === "last4" ? WEBINARS.slice(0, 4) : WEBINARS
-  , [view]);
-
-  // Aggregates
-  const totRev   = webinars.reduce((a,w)=>a+w.revenue,0);
-  const totSpend = webinars.reduce((a,w)=>a+w.spend,0);
-  const totSales = webinars.reduce((a,w)=>a+w.sales,0);
-  const avgRoas  = totSpend > 0 ? totRev/totSpend : 0;
-  const avgSU    = webinars.filter(w=>w.showUp>0).reduce((a,w,_,arr)=>a+w.showUp/arr.length,0);
-  const allD0    = webinars.reduce((a,w)=>a+w.day0,0);
-  const allD7    = webinars.reduce((a,w)=>a+w.day7,0);
-  const metaSpend= META.reduce((a,c)=>a+c.spend,0);
-  const metaLeads= META.reduce((a,c)=>a+c.leads,0);
-
-  // AI
-  async function analyzeOne(c) {
-    setAiLoading(l=>({...l,[c.name]:true}));
-    try { const r=await runAI(c); setAiResults(p=>({...p,[c.name]:r})); } catch{}
-    setAiLoading(l=>({...l,[c.name]:false}));
+function clickMeta(name) {
+  if (!aiResults[name] && !aiRunning) {
+    analyzeOne(name);
+  } else {
+    expandedM = expandedM===name ? null : name;
+    renderMeta();
   }
-  async function analyzeAll() {
-    setAiRunning(true);
-    for(const c of META){ await analyzeOne(c); await new Promise(r=>setTimeout(r,250)); }
-    setAiRunning(false);
-  }
-
-  const VERDICT = {
-    scale:{label:"SCALE",    color:"#22c55e", bg:"#052e16"},
-    hold: {label:"HOLD",     color:"#f59e0b", bg:"#1c1400"},
-    test: {label:"TEST",     color:"#818cf8", bg:"#1e1b4b"},
-    pause:{label:"PAUSE",    color:"#ef4444", bg:"#1c0505"},
-  };
-
-  const S = {
-    // Layout
-    page:   {minHeight:"100vh",background:"#f5f6fa",padding:"0 0 60px"},
-    wrap:   {maxWidth:1400,margin:"0 auto",padding:"0 32px"},
-
-    // Header
-    header: {background:"#fff",borderBottom:"1px solid #e5e7eb",padding:"0 32px",position:"sticky",top:0,zIndex:100},
-    headerInner:{maxWidth:1400,margin:"0 auto",height:56,display:"flex",alignItems:"center",justifyContent:"space-between"},
-
-    // KPI cards
-    kpiGrid:{display:"grid",gridTemplateColumns:"repeat(6,1fr)",gap:1,background:"#e5e7eb",border:"1px solid #e5e7eb",borderRadius:12,overflow:"hidden",marginBottom:24},
-    kpiCard:{background:"#fff",padding:"20px 24px"},
-    kpiLabel:{fontSize:11,color:"#9ca3af",fontWeight:500,textTransform:"uppercase",letterSpacing:1,marginBottom:8},
-    kpiValue:{fontSize:26,fontWeight:700,letterSpacing:-0.5,lineHeight:1},
-    kpiSub:  {fontSize:11,color:"#9ca3af",marginTop:4},
-
-    // Section
-    section:{marginBottom:24},
-    sectionHead:{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:12},
-    sectionTitle:{fontSize:13,fontWeight:600,color:"#9ca3af",textTransform:"uppercase",letterSpacing:1},
-
-    // Table
-    table:  {background:"#fff",border:"1px solid #e5e7eb",borderRadius:12,overflow:"hidden"},
-    thead:  {display:"grid",padding:"12px 20px",background:"#f9fafb",borderBottom:"1px solid #e5e7eb"},
-    th:     {fontSize:11,color:"#9ca3af",fontWeight:500,textTransform:"uppercase",letterSpacing:0.8},
-    trow:   {display:"grid",padding:"16px 20px",borderBottom:"1px solid #f3f4f6",cursor:"pointer",transition:"background 0.1s"},
-    td:     {fontSize:14,color:"#6b7280"},
-    tdBig:  {fontSize:18,fontWeight:700,color:"#111",letterSpacing:-0.3},
-
-    // Buttons
-    btn:    {border:"none",borderRadius:6,padding:"7px 16px",fontSize:12,fontWeight:600,cursor:"pointer",transition:"all 0.1s"},
-    btnPrim:{background:"#111",color:"#fff"},
-    btnAct: {background:"#fff",color:"#000"},
-    btnSm:  {border:"none",borderRadius:4,padding:"4px 10px",fontSize:11,fontWeight:600,cursor:"pointer",background:"#f3f4f6",color:"#6b7280"},
-  };
-
-  // Webinar columns
-  const WCols = "120px 1fr 80px 70px 80px 70px 80px 120px 90px";
-  // Meta columns
-  const MCols = "2fr 90px 70px 80px 65px 65px 100px";
-
-  return (
-    <div style={S.page}>
-
-      {/* ── HEADER ── */}
-      <div style={S.header}>
-        <div style={S.headerInner}>
-          <div style={{display:"flex",alignItems:"center",gap:24}}>
-            <div style={{fontSize:13,fontWeight:700,color:"#111",letterSpacing:-0.3}}>Meilenweit Voraus</div>
-            <div style={{width:1,height:16,background:"#222"}}/>
-            <div style={{display:"flex",gap:2}}>
-              {[["webinare","Webinare"],["kampagnen","Kampagnen"]].map(([id,label])=>(
-                <div key={id} style={{display:"none"}}/>
-              ))}
-            </div>
-          </div>
-          <div style={{display:"flex",gap:8,alignItems:"center"}}>
-            <span style={{fontSize:11,color:"#9ca3af"}}>Zeitraum:</span>
-            <div style={{display:"flex",gap:2,background:"#f3f4f6",borderRadius:6,padding:2}}>
-              {[["last4","Letzte 4"],["all","Alle"]].map(([v,l])=>(
-                <button key={v} onClick={()=>setView(v)} style={{
-                  ...S.btn,
-                  background:view===v?"#fff":"transparent",
-                  color:view===v?"#000":"#6b7280",
-                  padding:"4px 12px",fontSize:11
-                }}>{l}</button>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div style={S.wrap}>
-        <div style={{height:28}}/>
-
-        {/* ── KPI STRIP ── */}
-        <div style={S.kpiGrid}>
-          {[
-            {label:"Revenue",      value:eur(totRev),      sub:`${totSales} Käufe`, color:roasColor(avgRoas)},
-            {label:"Ad Spend",     value:eur(totSpend),    sub:`${webinars.length} Webinare`, color:"#fff"},
-            {label:"Ø ROAS",       value:f2(avgRoas)+"x",  sub:"TC Revenue ÷ Spend", color:roasColor(avgRoas)},
-            {label:"Show-Up Ø",    value:Math.round(avgSU)+"%", sub:"aller Webinare", color:suColor(avgSU)},
-            {label:"Tag 0",        value:pct(allD0,totSales)+"%", sub:"kaufen am Webinar-Tag", color:"#818cf8"},
-            {label:"Tag 7",        value:pct(allD7,totSales)+"%", sub:"vor nächstem Webinar", color:"#f59e0b"},
-          ].map(({label,value,sub,color})=>(
-            <div key={label} style={S.kpiCard}>
-              <div style={S.kpiLabel}>{label}</div>
-              <div style={{...S.kpiValue,color}}>{value}</div>
-              <div style={S.kpiSub}>{sub}</div>
-            </div>
-          ))}
-        </div>
-
-        {/* ── WEBINAR TABLE ── */}
-        <div style={S.section}>
-          <div style={S.sectionHead}>
-            <span style={S.sectionTitle}>Webinar-Performance</span>
-            <span style={{fontSize:11,color:"#9ca3af"}}>Sonntag 10:00 Attribution · TC CSV</span>
-          </div>
-
-          <div style={S.table}>
-            {/* Header */}
-            <div style={{...S.thead,gridTemplateColumns:WCols}}>
-              {["Datum","Produkte","Revenue","Käufe","ROAS","Show%","Tag0","Tag7","Spend"].map(h=>(
-                <div key={h} style={S.th}>{h}</div>
-              ))}
-            </div>
-
-            {webinars.map((w,i)=>{
-              const isExp = expanded===w.date;
-              const products = [
-                {k:"kurs",label:"Meilenkurs",color:"#818cf8"},
-                {k:"masterclass",label:"Masterclass",color:"#f59e0b"},
-                {k:"revolut",label:"Revolut",color:"#22c55e"},
-                {k:"george",label:"George",color:"#38bdf8"},
-              ].filter(p=>w[p.k]>0);
-
-              return (
-                <div key={w.date}>
-                  <div
-                    onClick={()=>setExpanded(isExp?null:w.date)}
-                    style={{
-                      ...S.trow, gridTemplateColumns:WCols,
-                      background:isExp?"#f9fafb":"transparent",
-                      borderBottom:i<webinars.length-1||isExp?"1px solid #1a1a1a":"none",
-                    }}
-                    onMouseEnter={e=>e.currentTarget.style.background="#f9fafb"}
-                    onMouseLeave={e=>e.currentTarget.style.background=isExp?"#f9fafb":"transparent"}
-                  >
-                    <div>
-                      <div style={{fontSize:14,fontWeight:600,color:"#fff"}}>{w.label}</div>
-                      {w.partial&&<div style={{fontSize:10,color:"#9ca3af",marginTop:2}}>laufend</div>}
-                      {w.spend===0&&!w.partial&&<div style={{fontSize:10,color:"#f59e0b",marginTop:2}}>carry</div>}
-                    </div>
-
-                    {/* Product bars */}
-                    <div style={{display:"flex",gap:4,alignItems:"center",flexWrap:"wrap"}}>
-                      {products.map(p=>(
-                        <div key={p.k} style={{height:4,borderRadius:2,background:p.color,width:`${Math.max(pct(w[p.k],w.revenue),8)}%`,maxWidth:40,minWidth:8,opacity:0.8}} title={`${p.label}: ${eur(w[p.k])}`}/>
-                      ))}
-                    </div>
-
-                    <div style={{...S.tdBig,color:"#fff"}}>{eur(w.revenue)}</div>
-                    <div style={{...S.tdBig,fontSize:16}}>{w.sales}</div>
-                    <div>
-                      {w.roas>0
-                        ? <Badge label={f2(w.roas)+"x"} color={roasColor(w.roas)} bg={roasBadge(w.roas)}/>
-                        : <span style={{color:"#333"}}>—</span>}
-                    </div>
-                    <div style={{...S.td,color:suColor(w.showUp)}}>{w.showUp>0?w.showUp+"%":"—"}</div>
-                    <div style={{...S.td,color:"#818cf8",fontWeight:500}}>{pct(w.day0,w.sales)}%</div>
-                    <div style={{...S.td,color:"#f59e0b",fontWeight:500}}>{pct(w.day7,w.sales)}%</div>
-                    <div style={{...S.td,color:"#444"}}>{w.spend>0?eur(w.spend):"—"}</div>
-                  </div>
-
-                  {/* Expanded product detail */}
-                  {isExp&&(
-                    <div style={{background:"#f9fafb",borderBottom:"1px solid #e5e7eb",padding:"16px 20px",animation:"fadeIn 0.15s ease"}}>
-                      <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(160px,1fr))",gap:1,background:"#e5e7eb",border:"1px solid #e5e7eb",borderRadius:8,overflow:"hidden"}}>
-                        {[
-                          {k:"kurs",label:"Meilenkurs",color:"#818cf8"},
-                          {k:"masterclass",label:"Masterclass",color:"#f59e0b"},
-                          {k:"revolut",label:"Revolut/KB",color:"#22c55e"},
-                          {k:"george",label:"George",color:"#38bdf8"},
-                        ].map(({k,label,color})=>{
-                          const v = w[k]||0;
-                          return (
-                            <div key={k} style={{background:"#fff",padding:"14px 16px"}}>
-                              <div style={{fontSize:11,color:"#9ca3af",marginBottom:4,display:"flex",alignItems:"center",gap:5}}>
-                                <div style={{width:6,height:6,borderRadius:"50%",background:v>0?color:"#222"}}/>
-                                {label}
-                              </div>
-                              <div style={{fontSize:18,fontWeight:700,color:v>0?color:"#222"}}>{v>0?eur(v):"—"}</div>
-                              {v>0&&<div style={{fontSize:10,color:"#333",marginTop:2}}>{pct(v,w.revenue)}% of revenue</div>}
-                            </div>
-                          );
-                        })}
-                        <div style={{background:"#fff",padding:"14px 16px"}}>
-                          <div style={{fontSize:11,color:"#444",marginBottom:4}}>CPL</div>
-                          <div style={{fontSize:18,fontWeight:700,color:w.leads>0?cplColor(w.spend/w.leads):"#222"}}>
-                            {w.leads>0?("€"+f2(w.spend/w.leads)):"—"}
-                          </div>
-                        </div>
-                        <div style={{background:"#fff",padding:"14px 16px"}}>
-                          <div style={{fontSize:11,color:"#444",marginBottom:4}}>Ø Order Value</div>
-                          <div style={{fontSize:18,fontWeight:700,color:"#fff"}}>
-                            {w.sales>0?eur(w.revenue/w.sales):"—"}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* ── META CAMPAIGNS ── */}
-        <div style={S.section}>
-          <div style={S.sectionHead}>
-            <span style={S.sectionTitle}>Meta Kampagnen</span>
-            <div style={{display:"flex",gap:8,alignItems:"center"}}>
-              <span style={{fontSize:11,color:"#9ca3af"}}>Windsor.ai · 30T · {eur(metaSpend)} · {metaLeads} Leads</span>
-              <button
-                onClick={analyzeAll} disabled={aiRunning}
-                style={{...S.btn,...S.btnPrim,display:"flex",alignItems:"center",gap:5,opacity:aiRunning?0.5:1}}
-              >
-                {aiRunning?<><Spin/>Analysiere…</>:<>✦ KI-Analyse</>}
-              </button>
-            </div>
-          </div>
-
-          <div style={S.table}>
-            <div style={{...S.thead,gridTemplateColumns:MCols}}>
-              {["Kampagne","Spend","Leads","CPL","CTR","Freq","KI"].map(h=>(
-                <div key={h} style={S.th}>{h}</div>
-              ))}
-            </div>
-
-            {META.map((c,i)=>{
-              const res = aiResults[c.name];
-              const loading = aiLoading[c.name];
-              const vc = res ? VERDICT[res.verdict] : null;
-              const isExp = metaExpanded===c.name;
-
-              return (
-                <div key={c.name}>
-                  <div
-                    onClick={()=>{ if(!res&&!loading) analyzeOne(c); else setMetaExpanded(isExp?null:c.name); }}
-                    style={{
-                      ...S.trow, gridTemplateColumns:MCols,
-                      background:isExp?"#f9fafb":"transparent",
-                      borderBottom:i<META.length-1||isExp?"1px solid #1a1a1a":"none",
-                    }}
-                    onMouseEnter={e=>e.currentTarget.style.background="#f9fafb"}
-                    onMouseLeave={e=>e.currentTarget.style.background=isExp?"#f9fafb":"transparent"}
-                  >
-                    <div style={{fontSize:13,fontWeight:500,color:"#374151",paddingRight:16,lineHeight:1.4}}>{c.name}</div>
-                    <div style={{...S.td}}>{eur(c.spend)}</div>
-                    <div style={{...S.td,fontWeight:600,color:"#fff"}}>{c.leads||"—"}</div>
-                    <div style={{fontSize:14,fontWeight:600,color:cplColor(c.cpl)}}>{c.cpl>0?"€"+f2(c.cpl):"—"}</div>
-                    <div style={{...S.td,color:c.ctr>=5?"#22c55e":"#f59e0b"}}>{c.ctr.toFixed(1)}%</div>
-                    <div style={{...S.td,color:c.freq>=2?"#ef4444":c.freq>=1.5?"#f59e0b":"#666"}}>{c.freq.toFixed(2)}</div>
-                    <div>
-                      {loading&&<div style={{display:"flex",alignItems:"center",gap:6}}><Spin/><span style={{fontSize:11,color:"#444"}}>…</span></div>}
-                      {!loading&&!res&&<span style={{fontSize:11,color:"#d1d5db"}}>→ analysieren</span>}
-                      {res&&vc&&<Badge label={vc.label} color={vc.color} bg={vc.bg}/>}
-                    </div>
-                  </div>
-
-                  {res&&isExp&&(
-                    <div style={{background:"#f9fafb",borderBottom:"1px solid #e5e7eb",padding:"16px 20px",animation:"fadeIn 0.15s ease"}}>
-                      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr 1.2fr",gap:16}}>
-                        {[["Signal",res.signal,res.signal_reason],["Trust",res.trust,res.trust_reason],["Audience",res.audience,res.audience_reason]].map(([l,level,reason])=>{
-                          const col = {high:"#22c55e",medium:"#f59e0b",low:"#ef4444",deep:"#22c55e",saturating:"#ef4444"}[level]||"#666";
-                          return (
-                            <div key={l}>
-                              <div style={{fontSize:11,color:"#444",marginBottom:3}}>{l}: <span style={{color:col,fontWeight:600}}>{level}</span></div>
-                              <div style={{fontSize:12,color:"#6b7280",lineHeight:1.4}}>{reason}</div>
-                            </div>
-                          );
-                        })}
-                        <div style={{borderLeft:"1px solid #e5e7eb",paddingLeft:16}}>
-                          <div style={{fontSize:11,color:"#444",marginBottom:3}}>Aktion</div>
-                          <div style={{fontSize:12,color:"#374151",fontWeight:500,lineHeight:1.4}}>{res.action}</div>
-                          {res.budget_recommended&&res.budget_recommended!==c.budget&&(
-                            <div style={{display:"flex",alignItems:"center",gap:8,marginTop:8}}>
-                              <span style={{fontSize:12,color:"#444",textDecoration:"line-through"}}>€{c.budget}/T</span>
-                              <span style={{fontSize:14,fontWeight:700,color:res.verdict==="scale"?"#22c55e":"#ef4444"}}>→ €{res.budget_recommended}/T</span>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* ── FOOTER ── */}
-        <div style={{textAlign:"center",fontSize:11,color:"#d1d5db",paddingTop:16}}>
-          MEILENWEIT VORAUS · ThriveCart CSV · Meta Windsor.ai · Sonntag 10:00 Attribution · Claude AI
-        </div>
-      </div>
-    </div>
-  );
 }
 
-ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+function setView(v) {
+  currentView = v;
+  document.getElementById("btn-last4").classList.toggle("active", v==="last4");
+  document.getElementById("btn-all").classList.toggle("active", v==="all");
+  expandedW = null;
+  renderKPI();
+  renderWebinars();
+}
+
+// ═══════════ AI ══════════════════════════════════════════════════════════
+const AI_SYS = `Meta Ads Analyst für "Meilenweit Voraus" (Kurs €297, Webinar sonntags, 40% Käufe Tag 7). CPL Ziel ≤€12, Freq <3.0, CTR gut >5%. Meta sieht nur ~3% Käufe. Antworte NUR als JSON: {"signal":"high"|"medium"|"low","signal_reason":"max 7W","trust":"high"|"medium"|"low","trust_reason":"max 7W","audience":"deep"|"medium"|"saturating","audience_reason":"max 7W","verdict":"scale"|"hold"|"test"|"pause","verdict_label":"max 4W","action":"max 10W","budget_recommended":number}`;
+
+async function analyzeOne(name) {
+  const c = META.find(m=>m.name===name);
+  if (!c) return;
+
+  try {
+    const res = await fetch("/api/claude", {
+      method:"POST", headers:{"Content-Type":"application/json"},
+      body: JSON.stringify({
+        model:"claude-sonnet-4-20250514", max_tokens:400, system:AI_SYS,
+        messages:[{role:"user",content:`${c.name}\nSpend:€${c.spend} Leads:${c.leads} CPL:€${f2(c.cpl)} CTR:${c.ctr}% Freq:${c.freq} Budget:€${c.budget}/T`}]
+      })
+    });
+    const d = await res.json();
+    const text = (d.content?.[0]?.text||"{}").replace(/```json|```/g,"").trim();
+    aiResults[name] = JSON.parse(text);
+    expandedM = name;
+  } catch(e) {
+    console.error("AI error:", e);
+  }
+  renderMeta();
+}
+
+async function analyzeAll() {
+  if (aiRunning) return;
+  aiRunning = true;
+  const btn = document.getElementById("ai-btn");
+  btn.innerHTML = '<div class="spin"></div> Analysiere…';
+  btn.disabled = true;
+
+  for (const c of META) {
+    await analyzeOne(c.name);
+    await new Promise(r=>setTimeout(r,250));
+  }
+
+  aiRunning = false;
+  btn.innerHTML = "✦ KI-Analyse";
+  btn.disabled = false;
+}
+
+// ═══════════ INIT ════════════════════════════════════════════════════════
+renderKPI();
+renderWebinars();
+renderMeta();
 </script>
 </body>
 </html>
