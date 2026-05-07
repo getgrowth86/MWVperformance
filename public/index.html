@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Meilenweit Voraus — Performance</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Poppins',sans-serif;background:#f5f5f7;color:#111}
+@keyframes spin{to{transform:rotate(360deg)}}
+.card{background:#fff;border:1px solid #e5e7eb;border-radius:14px;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.hov:hover{background:#f9fafb!important;cursor:pointer}
+select,input{font-family:'Poppins',sans-serif}
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:#f1f1f1;border-radius:3px}
+::-webkit-scrollbar-thumb{background:#d1d5db;border-radius:3px}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const {useState,useEffect,useMemo,useCallback} = React;
+const PROXY = window.location.origin;
+const P = {fontFamily:"'Poppins',sans-serif"};
+
+// ═══════════ DATA ═══════════════════════════════════════════════════════════
+
+const WEBINARS_RAW = [
+  {date:"2026-05-03",label:"03.05.",spend:3078, leads:551, showUp:17,revenue:1282,  roas:0.417,sales:7,  day0:6, day7:0, partial:true, kurs:1188, kurs_rate:0,  masterclass:0,    revolut:94,  george:0,   reise:0 },
+  {date:"2026-04-26",label:"26.04.",spend:0,    leads:0,   showUp:0, revenue:11351, roas:0,    sales:45, day0:8, day7:20,partial:false,kurs:5050, kurs_rate:0,  masterclass:5467, revolut:814, george:0,   reise:20},
+  {date:"2026-04-19",label:"19.04.",spend:7243, leads:598, showUp:20,revenue:16320, roas:2.253,sales:50, day0:6, day7:7, partial:false,kurs:2376, kurs_rate:0,  masterclass:13419,revolut:485, george:0,   reise:40},
+  {date:"2026-04-12",label:"12.04.",spend:9932, leads:1259,showUp:21,revenue:3649,  roas:0.367,sales:24, day0:3, day7:13,partial:false,kurs:3267, kurs_rate:90, masterclass:0,    revolut:282, george:0,   reise:10},
+  {date:"2026-04-05",label:"05.04.",spend:2431, leads:281, showUp:22,revenue:7335,  roas:3.017,sales:45, day0:6, day7:34,partial:false,kurs:6237, kurs_rate:180,masterclass:0,    revolut:908, george:0,   reise:10},
+  {date:"2026-03-29",label:"29.03.",spend:6569, leads:470, showUp:24,revenue:3267,  roas:0.497,sales:19, day0:2, day7:9, partial:false,kurs:3073, kurs_rate:90, masterclass:0,    revolut:94,  george:0,   reise:10},
+  {date:"2026-03-22",label:"22.03.",spend:10852,leads:950, showUp:28,revenue:12282, roas:1.132,sales:60, day0:24,day7:17,partial:false,kurs:7826, kurs_rate:450,masterclass:3976, revolut:0,   george:0,   reise:30},
+  {date:"2026-03-15",label:"15.03.",spend:6654, leads:523, showUp:28,revenue:10218, roas:1.536,sales:49, day0:16,day7:20,partial:false,kurs:10098,kurs_rate:90, masterclass:0,    revolut:0,   george:0,   reise:30},
+  {date:"2026-03-08",label:"08.03.",spend:9432, leads:782, showUp:24,revenue:10559, roas:1.119,sales:54, day0:18,day7:13,partial:false,kurs:10202,kurs_rate:0,  masterclass:0,    revolut:297, george:0,   reise:60},
+  {date:"2026-03-01",label:"01.03.",spend:21098,leads:1863,showUp:25,revenue:15281, roas:0.724,sales:89, day0:45,day7:18,partial:false,kurs:14553,kurs_rate:0,  masterclass:0,    revolut:594, george:94,  reise:40},
+  {date:"2026-02-22",label:"22.02.",spend:12978,leads:1400,showUp:32,revenue:17089, roas:1.317,sales:85, day0:37,day7:29,partial:false,kurs:16335,kurs_rate:630,masterclass:0,    revolut:0,   george:94,  reise:30},
+  {date:"2026-02-15",label:"15.02.",spend:8878, leads:964, showUp:33,revenue:23563, roas:2.654,sales:112,day0:37,day7:55,partial:false,kurs:22081,kurs_rate:450,masterclass:0,    revolut:297, george:705, reise:30},
+  {date:"2026-02-08",label:"08.02.",spend:5390, leads:720, showUp:25,revenue:11106, roas:2.060,sales:62, day0:18,day7:34,partial:false,kurs:10098,kurs_rate:90, masterclass:0,    revolut:297, george:611, reise:10},
+  {date:"2026-02-01",label:"01.02.",spend:8325, leads:1041,showUp:14,revenue:12330, roas:1.481,sales:75, day0:25,day7:21,partial:false,kurs:11339,kurs_rate:90, masterclass:0,    revolut:0,   george:564, reise:40},
+  {date:"2026-01-25",label:"25.01.",spend:6819, leads:792, showUp:36,revenue:10183, roas:1.493,sales:81, day0:25,day7:40,partial:false,kurs:8613, kurs_rate:360,masterclass:0,    revolut:0,   george:893, reise:20},
+  {date:"2026-01-18",label:"18.01.",spend:3384, leads:389, showUp:28,revenue:10587, roas:3.129,sales:47, day0:5, day7:32,partial:false,kurs:9110, kurs_rate:180,masterclass:0,    revolut:0,   george:376, reise:30},
+];
+
+const META_RAW = [
+  {name:"ML 30.03. Testing ABO DACH",           spend:6919,leads:674, cpl:10.27,freq:1.53,ctr:4.72,budget:230,status:"active"},
+  {name:"ML 23.04. Webinar-Funnel LLA 1%",      spend:4693,leads:642, cpl:7.31, freq:1.82,ctr:7.48,budget:156,status:"active"},
+  {name:"ML 06.04. Broad Cost Cap CBO",         spend:2504,leads:259, cpl:9.67, freq:1.29,ctr:4.13,budget:83, status:"active"},
+  {name:"ML 27.04. Webinar-Funnel LLA 3%",      spend:1405,leads:201, cpl:6.99, freq:1.41,ctr:7.14,budget:47, status:"active"},
+  {name:"ML 07.04. LLA 1% Purchase CBO",        spend:1994,leads:216, cpl:9.23, freq:1.46,ctr:6.05,budget:66, status:"active"},
+  {name:"ML 07.04. LLA 3% Purchase CBO",        spend:1964,leads:222, cpl:8.85, freq:1.30,ctr:5.83,budget:65, status:"active"},
+  {name:"ML 15.04. VSL-Funnel LLA 1%",          spend:1060,leads:230, cpl:4.61, freq:1.46,ctr:8.43,budget:35, status:"active"},
+  {name:"ML 07.04. CBO Interest Scale",         spend:580, leads:56,  cpl:10.36,freq:1.16,ctr:4.26,budget:19, status:"active"},
+  {name:"ML 06.04. CBO Scale Highest Volume",   spend:543, leads:61,  cpl:8.90, freq:1.16,ctr:7.48,budget:18, status:"active"},
+  {name:"ML 04.05. Community LLA 1%",           spend:317, leads:36,  cpl:8.81, freq:1.15,ctr:7.18,budget:11, status:"active"},
+  {name:"ML 04.05. Community LLA 3%",           spend:86,  leads:8,   cpl:10.80,freq:1.06,ctr:7.36,budget:3,  status:"active"},
+  {name:"ML 04.05. U.S. Community LLA 1%",      spend:87,  leads:6,   cpl:14.48,freq:1.04,ctr:8.97,budget:3,  status:"active"},
+  {name:"ML 07.04. Insta Profile",              spend:536, leads:0,   cpl:0,    freq:1.23,ctr:6.09,budget:18, status:"active"},
+  {name:"ML 05.05. Retargeting CBO",            spend:8,   leads:0,   cpl:0,    freq:1.05,ctr:5.35,budget:0,  status:"active"},
+];
+
+const PROD_CFG = {
+  kurs:      {label:"Meilenkurs",  color:"#6366f1",bg:"#eef2ff"},
+  kurs_rate: {label:"Rate",        color:"#818cf8",bg:"#f0f0ff"},
+  masterclass:{label:"Masterclass",color:"#f59e0b",bg:"#fefce8"},
+  revolut:   {label:"Revolut/KB",  color:"#10b981",bg:"#f0fdf4"},
+  george:    {label:"George",      color:"#3b82f6",bg:"#eff6ff"},
+  reise:     {label:"Reise Mgr",   color:"#8b5cf6",bg:"#f5f3ff"},
+};
+
+// ═══════════ HELPERS ═════════════════════════════════════════════════════════
+
+const eur  = n => "€"+Math.round(n||0).toLocaleString("de-DE");
+const f2   = n => (n||0).toFixed(2);
+const pct  = (a,b) => b>0?Math.round(a/b*100):0;
+const rc   = r => r>=1.5?"#16a34a":r>=1.0?"#ca8a04":"#dc2626";
+const rbg  = r => r>=1.5?"#f0fdf4":r>=1.0?"#fefce8":"#fef2f2";
+const rbd  = r => r>=1.5?"#bbf7d0":r>=1.0?"#fde68a":"#fecaca";
+const cc   = c => !c?"#9ca3af":c<=10?"#16a34a":c<=14?"#ca8a04":"#dc2626";
+const su   = s => s>=30?"#16a34a":s>=22?"#ca8a04":"#dc2626";
+
+// ═══════════ AI ANALYSIS ═════════════════════════════════════════════════════
+
+const AI_SYS = `Meta Ads Analyst für "Meilenweit Voraus" (Kurs €297, Webinar sonntags, 40% Käufe Tag 7).
+CPL Ziel ≤€12, Freq <3.0, CTR gut >5%. Meta sieht nur ~3% Käufe. Antworte NUR als JSON:
+{"signal":"high"|"medium"|"low","signal_reason":"max 7W","trust":"high"|"medium"|"low","trust_reason":"max 7W","audience":"deep"|"medium"|"saturating","audience_reason":"max 7W","verdict":"scale"|"hold"|"test"|"pause","verdict_label":"max 4W","action":"max 10W","budget_recommended":number}`;
+
+async function runAI(c) {
+  const res = await fetch(PROXY+"/api/claude",{
+    method:"POST",headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:400,system:AI_SYS,
+      messages:[{role:"user",content:`${c.name}\nSpend:€${c.spend} Leads:${c.leads} CPL:€${f2(c.cpl)} CTR:${c.ctr}% Freq:${c.freq} Budget:€${c.budget}/T`}]})
+  });
+  const d = await res.json();
+  return JSON.parse((d.content?.[0]?.text||"{}").replace(/```json|```/g,"").trim());
+}
+
+const VERDICT = {
+  scale:{label:"SCALE +20%",color:"#16a34a",bg:"#f0fdf4",border:"#bbf7d0"},
+  hold: {label:"HOLD",      color:"#ca8a04",bg:"#fefce8",border:"#fde68a"},
+  test: {label:"TESTEN",    color:"#6366f1",bg:"#eef2ff",border:"#c7d2fe"},
+  pause:{label:"PAUSE",     color:"#dc2626",bg:"#fef2f2",border:"#fecaca"},
+};
+
+// ═══════════ SMALL COMPONENTS ════════════════════════════════════════════════
+
+const Spin = ({s=14}) => <div style={{width:s,height:s,border:"2px solid #e5e7eb",borderTopColor:"#6366f1",borderRadius:"50%",animation:"spin .7s linear infinite",flexShrink:0}}/>;
+
+const Tag = ({label,color="#6b7280",bg="#f3f4f6",border="#e5e7eb"}) => (
+  <span style={{background:bg,border:`1px solid ${border}`,color,borderRadius:5,padding:"2px 7px",fontSize:9,fontWeight:700,...P}}>{label}</span>
+);
+
+const FilterLabel = ({children}) => (
+  <div style={{fontSize:9,color:"#9ca3af",fontWeight:600,textTransform:"uppercase",letterSpacing:1,marginBottom:4,...P}}>{children}</div>
+);
+
+function ProductBar({w,maxRev}) {
+  const keys = ["kurs","kurs_rate","masterclass","revolut","george","reise"];
+  const total = keys.reduce((a,k)=>a+(w[k]||0),0);
+  if (!total) return <span style={{fontSize:9,color:"#d1d5db"}}>—</span>;
+  const barW = Math.min(total/maxRev*100,100);
+  return (
+    <div style={{width:"100%"}}>
+      <div style={{display:"flex",height:7,borderRadius:4,overflow:"hidden",width:`${barW}%`,minWidth:4}}>
+        {keys.map(k=>{ const v=w[k]||0; if(!v) return null;
+          return <div key={k} title={`${PROD_CFG[k].label}: ${eur(v)}`} style={{flex:v,background:PROD_CFG[k].color,opacity:.85}}/>;
+        })}
+      </div>
+    </div>
+  );
+}
+
+// ═══════════ FILTER BAR ═══════════════════════════════════════════════════════
+
+function FilterBar({filters,setFilters}) {
+  return (
+    <div className="card" style={{padding:"12px 18px"}}>
+      <div style={{display:"flex",gap:12,alignItems:"flex-end",flexWrap:"wrap"}}>
+
+        <div>
+          <FilterLabel>Zeitraum</FilterLabel>
+          <select value={filters.period} onChange={e=>setFilters(f=>({...f,period:e.target.value}))}
+            style={{border:"1px solid #e5e7eb",borderRadius:7,padding:"5px 10px",fontSize:11,color:"#374151",background:"#fff",...P}}>
+            <option value="all">Alle Webinare</option>
+            <option value="q1_26">Q1 2026 (Jan–Mär)</option>
+            <option value="q2_26">Q2 2026 (Apr–)</option>
+            <option value="last4">Letzte 4 Webinare</option>
+          </select>
+        </div>
+
+        <div>
+          <FilterLabel>Min. ROAS</FilterLabel>
+          <select value={filters.minRoas} onChange={e=>setFilters(f=>({...f,minRoas:Number(e.target.value)}))}
+            style={{border:"1px solid #e5e7eb",borderRadius:7,padding:"5px 10px",fontSize:11,color:"#374151",background:"#fff",...P}}>
+            <option value={0}>Alle</option>
+            <option value={1}>≥ 1.0x</option>
+            <option value={1.5}>≥ 1.5x ✅</option>
+            <option value={2}>≥ 2.0x 🔥</option>
+          </select>
+        </div>
+
+        <div>
+          <FilterLabel>Show-Up</FilterLabel>
+          <select value={filters.minShowUp} onChange={e=>setFilters(f=>({...f,minShowUp:Number(e.target.value)}))}
+            style={{border:"1px solid #e5e7eb",borderRadius:7,padding:"5px 10px",fontSize:11,color:"#374151",background:"#fff",...P}}>
+            <option value={0}>Alle</option>
+            <option value={20}>≥ 20%</option>
+            <option value={25}>≥ 25%</option>
+            <option value={30}>≥ 30%</option>
+          </select>
+        </div>
+
+        <div>
+          <FilterLabel>Produkt</FilterLabel>
+          <select value={filters.product} onChange={e=>setFilters(f=>({...f,product:e.target.value}))}
+            style={{border:"1px solid #e5e7eb",borderRadius:7,padding:"5px 10px",fontSize:11,color:"#374151",background:"#fff",...P}}>
+            <option value="all">Alle Produkte</option>
+            <option value="kurs">Nur Meilenkurs</option>
+            <option value="masterclass">Mit Masterclass</option>
+            <option value="revolut">Mit Revolut/KB</option>
+          </select>
+        </div>
+
+        <div>
+          <FilterLabel>Delay-Typ</FilterLabel>
+          <select value={filters.delay} onChange={e=>setFilters(f=>({...f,delay:e.target.value}))}
+            style={{border:"1px solid #e5e7eb",borderRadius:7,padding:"5px 10px",fontSize:11,color:"#374151",background:"#fff",...P}}>
+            <option value="all">Alle</option>
+            <option value="tag0">Tag-0-Heavy (>40%)</option>
+            <option value="tag7">Tag-7-Heavy (>40%)</option>
+          </select>
+        </div>
+
+        <div>
+          <FilterLabel>CPL max.</FilterLabel>
+          <select value={filters.maxCpl} onChange={e=>setFilters(f=>({...f,maxCpl:Number(e.target.value)}))}
+            style={{border:"1px solid #e5e7eb",borderRadius:7,padding:"5px 10px",fontSize:11,color:"#374151",background:"#fff",...P}}>
+            <option value={999}>Alle</option>
+            <option value={8}>≤ €8</option>
+            <option value={10}>≤ €10</option>
+            <option value={12}>≤ €12</option>
+          </select>
+        </div>
+
+        <div style={{marginLeft:"auto"}}>
+          <button onClick={()=>setFilters({period:"all",minRoas:0,minShowUp:0,product:"all",delay:"all",maxCpl:999})}
+            style={{background:"#f3f4f6",border:"1px solid #e5e7eb",borderRadius:7,padding:"5px 12px",fontSize:10,fontWeight:600,color:"#6b7280",cursor:"pointer",...P}}>
+            ↺ Reset
+          </button>
+        </div>
+
+      </div>
+    </div>
+  );
+}
+
+// ═══════════ KPI STRIP ═══════════════════════════════════════════════════════
+
+function KPIStrip({webinars,meta}) {
+  const totRev   = webinars.reduce((a,w)=>a+w.revenue,0);
+  const totSpend = webinars.reduce((a,w)=>a+w.spend,0);
+  const totSales = webinars.reduce((a,w)=>a+w.sales,0);
+  const avgRoas  = totSpend>0?totRev/totSpend:0;
+  const metaSpend= meta.reduce((a,c)=>a+c.spend,0);
+  const metaLeads= meta.reduce((a,c)=>a+c.leads,0);
+  const avgCpl   = metaLeads>0?metaSpend/metaLeads:0;
+  const allDay0  = webinars.reduce((a,w)=>a+w.day0,0);
+  const allDay7  = webinars.reduce((a,w)=>a+w.day7,0);
+  const allS     = webinars.reduce((a,w)=>a+w.sales,0);
+  const avgSU    = webinars.filter(w=>w.showUp>0).reduce((a,w,_,arr)=>a+w.showUp/arr.length,0);
+
+  const cards = [
+    {l:"TC Revenue",    v:eur(totRev),  s:`${totSales} Käufe`,    c:"#16a34a",a:"#16a34a",t:"CSV"},
+    {l:"Ad Spend",      v:eur(totSpend),s:"alle Webinare",         c:null,     a:"#6366f1",t:"CSV"},
+    {l:"Ø ROAS",        v:f2(avgRoas)+"x",s:"TC ÷ Spend",         c:rc(avgRoas),a:rc(avgRoas),t:"CSV"},
+    {l:"Meta Spend 30T",v:eur(metaSpend),s:"Windsor.ai live",      c:null,     a:"#6366f1",t:"LIVE"},
+    {l:"Leads 30T",     v:metaLeads.toLocaleString("de-DE"),s:`CPL Ø €${f2(avgCpl)}`,c:cc(avgCpl),a:cc(avgCpl),t:"LIVE"},
+    {l:"Ø Show-Up",     v:Math.round(avgSU)+"%",s:"aller Webinare",c:su(avgSU),a:su(avgSU),t:"CSV"},
+    {l:"Delay Tag 0",   v:pct(allDay0,allS)+"%",s:"Sonntag direkt",c:"#6366f1",a:"#6366f1",t:"CSV"},
+    {l:"Delay Tag 7",   v:pct(allDay7,allS)+"%",s:"vor nächstem Webinar",c:"#f59e0b",a:"#f59e0b",t:"CSV"},
+  ];
+  return (
+    <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(120px,1fr))",gap:9}}>
+      {cards.map(({l,v,s,c,a,t})=>(
+        <div key={l} className="card" style={{padding:"11px 14px",borderTop:`3px solid ${a||"#e5e7eb"}`,position:"relative"}}>
+          <span style={{position:"absolute",top:7,right:8,background:t==="LIVE"?"#dcfce7":"#e0e7ff",color:t==="LIVE"?"#16a34a":"#6366f1",fontSize:7,fontWeight:700,borderRadius:3,padding:"1px 5px",...P}}>{t}</span>
+          <div style={{fontSize:8,color:"#9ca3af",textTransform:"uppercase",letterSpacing:1.5,fontWeight:600,marginBottom:4,...P}}>{l}</div>
+          <div style={{fontSize:18,fontWeight:800,color:c||"#111",...P}}>{v}</div>
+          <div style={{fontSize:9,color:"#d1d5db",marginTop:2,...P}}>{s}</div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// ═══════════ WEBINAR TABLE ════════════════════════════════════════════════════
+
+function WebinarTable({webinars}) {
+  const [expanded,setExpanded] = useState(null);
+  const maxRev = Math.max(...WEBINARS_RAW.map(w=>w.revenue));
+
+  return (
+    <div className="card" style={{overflow:"hidden"}}>
+      <div style={{padding:"12px 18px",borderBottom:"1px solid #f3f4f6",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+        <span style={{fontSize:11,fontWeight:700,color:"#374151",...P}}>📅 Webinar-Attribution — Sonntag 10:00 Stichtag ({webinars.length} Webinare)</span>
+        <div style={{display:"flex",gap:6}}>
+          {Object.entries(PROD_CFG).map(([k,v])=>(
+            <div key={k} style={{display:"flex",alignItems:"center",gap:3}}>
+              <div style={{width:8,height:8,borderRadius:2,background:v.color}}/>
+              <span style={{fontSize:8,color:"#9ca3af",...P}}>{v.label}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div style={{display:"grid",gridTemplateColumns:"65px 75px 60px 52px 55px 55px 68px 140px 68px",padding:"7px 18px",background:"#f9fafb",borderBottom:"1px solid #f3f4f6"}}>
+        {["Datum","Spend","Leads","Show%","Sales","Tag0/7","Revenue","Produkte","ROAS"].map(h=>(
+          <div key={h} style={{fontSize:8,color:"#9ca3af",fontWeight:600,textTransform:"uppercase",letterSpacing:.8,...P}}>{h}</div>
+        ))}
+      </div>
+
+      {webinars.length===0 && (
+        <div style={{padding:"24px 18px",textAlign:"center",fontSize:11,color:"#9ca3af"}}>Keine Webinare für aktive Filter</div>
+      )}
+
+      {webinars.map((w,i)=>{
+        const isExp = expanded===w.date;
+        return (
+          <div key={w.date}>
+            <div className="hov" onClick={()=>setExpanded(isExp?null:w.date)}
+              style={{display:"grid",gridTemplateColumns:"65px 75px 60px 52px 55px 55px 68px 140px 68px",
+                padding:"9px 18px",borderBottom:"1px solid #f3f4f6",background:w.partial?"#fafafa":"#fff",alignItems:"center"}}>
+
+              <div style={{display:"flex",alignItems:"center",gap:3}}>
+                <span style={{fontSize:10,fontWeight:700,color:"#374151",...P}}>{w.label}</span>
+                {w.partial&&<span style={{fontSize:7,color:"#9ca3af",fontWeight:600,...P}}>laufend</span>}
+                {w.spend===0&&!w.partial&&<span style={{fontSize:7,color:"#f59e0b",fontWeight:700,...P}}>CARRY</span>}
+              </div>
+              <div style={{fontSize:10,color:"#6b7280",...P}}>{w.spend>0?eur(w.spend):"—"}</div>
+              <div style={{fontSize:10,color:w.leads>0?"#6b7280":"#d1d5db",...P}}>{w.leads||"—"}</div>
+              <div style={{fontSize:10,color:su(w.showUp),fontWeight:w.showUp>=25?700:400,...P}}>{w.showUp>0?w.showUp+"%":"—"}</div>
+              <div style={{fontSize:13,fontWeight:800,color:"#111",...P}}>{w.sales}</div>
+              <div style={{fontSize:9,color:"#9ca3af",...P}}>
+                <span style={{color:"#6366f1",fontWeight:700}}>{pct(w.day0,w.sales)}%</span> / <span style={{color:"#f59e0b",fontWeight:700}}>{pct(w.day7,w.sales)}%</span>
+              </div>
+              <div style={{fontSize:11,fontWeight:700,color:rc(w.roas),...P}}>{eur(w.revenue)}</div>
+              <div style={{paddingRight:6}}><ProductBar w={w} maxRev={maxRev}/></div>
+              <span style={{background:rbg(w.roas),border:`1px solid ${rbd(w.roas)}`,color:rc(w.roas),borderRadius:5,padding:"2px 6px",fontSize:10,fontWeight:700,...P}}>
+                {w.roas>0?f2(w.roas)+"x":"—"}
+              </span>
+            </div>
+
+            {isExp&&(
+              <div style={{background:"#fafbff",borderBottom:"1px solid #f0f0ff",padding:"10px 18px"}}>
+                <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(110px,1fr))",gap:8}}>
+                  {Object.entries(PROD_CFG).map(([k,cfg])=>{
+                    const rev=w[k]||0; if(!rev) return null;
+                    return (
+                      <div key={k} style={{background:"#fff",border:`1px solid ${cfg.color}33`,borderLeft:`3px solid ${cfg.color}`,borderRadius:7,padding:"8px 10px"}}>
+                        <div style={{fontSize:8,color:cfg.color,fontWeight:700,marginBottom:1,...P}}>{cfg.label.toUpperCase()}</div>
+                        <div style={{fontSize:14,fontWeight:800,color:"#374151",...P}}>{eur(rev)}</div>
+                        <div style={{fontSize:9,color:"#9ca3af",...P}}>{pct(rev,w.revenue)}% des Umsatzes</div>
+                      </div>
+                    );
+                  })}
+                  <div style={{background:"#f9fafb",border:"1px solid #e5e7eb",borderRadius:7,padding:"8px 10px"}}>
+                    <div style={{fontSize:8,color:"#9ca3af",fontWeight:700,marginBottom:2,...P}}>DELAY-SPLIT</div>
+                    <div style={{fontSize:11,color:"#374151",fontWeight:600,...P}}>
+                      <span style={{color:"#6366f1"}}>Tag 0: {w.day0} ({pct(w.day0,w.sales)}%)</span><br/>
+                      <span style={{color:"#f59e0b"}}>Tag 7: {w.day7} ({pct(w.day7,w.sales)}%)</span>
+                    </div>
+                  </div>
+                  <div style={{background:"#f9fafb",border:"1px solid #e5e7eb",borderRadius:7,padding:"8px 10px"}}>
+                    <div style={{fontSize:8,color:"#9ca3af",fontWeight:700,marginBottom:2,...P}}>PERFORMANCE</div>
+                    <div style={{fontSize:9,color:"#374151",...P}}>
+                      {w.leads>0&&<div>Leads: {w.leads}</div>}
+                      {w.showUp>0&&<div>Show-Up: <span style={{color:su(w.showUp),fontWeight:700}}>{w.showUp}%</span></div>}
+                      <div>Ø Order: {eur(w.sales>0?w.revenue/w.sales:0)}</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+// ═══════════ META CAMPAIGNS ═══════════════════════════════════════════════════
+
+function MetaTable({campaigns}) {
+  const [aiResults,setAiResults] = useState({});
+  const [aiLoading,setAiLoading] = useState({});
+  const [aiRunning,setAiRunning] = useState(false);
+
+  async function analyzeOne(c) {
+    setAiLoading(l=>({...l,[c.name]:true}));
+    try { const r=await runAI(c); setAiResults(p=>({...p,[c.name]:r})); } catch{}
+    setAiLoading(l=>({...l,[c.name]:false}));
+  }
+  async function analyzeAll() {
+    setAiRunning(true);
+    for(const c of campaigns){await analyzeOne(c);await new Promise(r=>setTimeout(r,200));}
+    setAiRunning(false);
+  }
+
+  const analyzed = Object.keys(aiResults).length;
+  const scaleCount = Object.values(aiResults).filter(r=>r.verdict==="scale").length;
+
+  return (
+    <div className="card" style={{overflow:"hidden"}}>
+      <div style={{padding:"12px 18px",borderBottom:"1px solid #f3f4f6",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+        <span style={{fontSize:11,fontWeight:700,color:"#374151",...P}}>📣 Meta Kampagnen — live (Windsor.ai · letzte 30T)</span>
+        <div style={{display:"flex",gap:8,alignItems:"center"}}>
+          {analyzed>0&&<Tag label={`${scaleCount} Scale`} color="#16a34a" bg="#f0fdf4" border="#bbf7d0"/>}
+          <button onClick={analyzeAll} disabled={aiRunning}
+            style={{background:aiRunning?"#f3f4f6":"#111827",color:aiRunning?"#9ca3af":"#fff",border:"none",borderRadius:7,padding:"6px 14px",fontSize:10,fontWeight:700,cursor:aiRunning?"not-allowed":"pointer",display:"flex",alignItems:"center",gap:5,...P}}>
+            {aiRunning?<><Spin s={11}/>Analysiere…</>:<>✦ KI-Analyse</>}
+          </button>
+        </div>
+      </div>
+
+      <div style={{display:"grid",gridTemplateColumns:"2fr 72px 65px 68px 58px 58px 90px",padding:"7px 18px",background:"#f9fafb",borderBottom:"1px solid #f3f4f6"}}>
+        {["Kampagne","Spend","Leads","CPL","CTR","Freq","Bewertung"].map(h=>(
+          <div key={h} style={{fontSize:8,color:"#9ca3af",fontWeight:600,textTransform:"uppercase",letterSpacing:.8,...P}}>{h}</div>
+        ))}
+      </div>
+
+      {campaigns.map((c,i)=>{
+        const res=aiResults[c.name]; const loading=aiLoading[c.name]; const vc=res?VERDICT[res.verdict]:null;
+        return (
+          <div key={c.name}>
+            <div className="hov" onClick={()=>!res&&!loading&&analyzeOne(c)}
+              style={{display:"grid",gridTemplateColumns:"2fr 72px 65px 68px 58px 58px 90px",
+                padding:"9px 18px",borderBottom:"1px solid #f3f4f6",alignItems:"center"}}>
+              <div style={{fontSize:10,fontWeight:600,color:"#374151",lineHeight:1.3,paddingRight:8,...P}}>{c.name}</div>
+              <div style={{fontSize:10,color:"#6b7280",...P}}>{eur(c.spend)}</div>
+              <div style={{fontSize:10,fontWeight:700,color:"#374151",...P}}>{c.leads||"—"}</div>
+              <div style={{fontSize:11,fontWeight:700,color:cc(c.cpl),...P}}>{c.cpl>0?"€"+f2(c.cpl):"—"}</div>
+              <div style={{fontSize:10,color:c.ctr>=5?"#16a34a":"#ca8a04",...P}}>{c.ctr.toFixed(1)}%</div>
+              <div style={{fontSize:10,color:c.freq>=3?"#dc2626":c.freq>=2?"#ca8a04":"#6b7280",...P}}>{c.freq.toFixed(2)}</div>
+              <div>
+                {loading&&<div style={{display:"flex",alignItems:"center",gap:4}}><Spin s={11}/><span style={{fontSize:9,color:"#9ca3af",...P}}>…</span></div>}
+                {!loading&&!res&&<span style={{fontSize:9,color:"#c4c4c4",fontWeight:500,...P}}>↗ analysieren</span>}
+                {res&&vc&&<Tag label={vc.label} color={vc.color} bg={vc.bg} border={vc.border}/>}
+              </div>
+            </div>
+            {res&&(
+              <div style={{background:"#fafbff",borderBottom:"1px solid #f0f0ff",padding:"9px 18px",display:"grid",gridTemplateColumns:"1fr 1fr 1fr 1.2fr",gap:10}}>
+                {[["Signal",res.signal,res.signal_reason],["Trust",res.trust,res.trust_reason],["Audience",res.audience,res.audience_reason]].map(([l,level,reason])=>{
+                  const sc={high:"#16a34a",medium:"#ca8a04",low:"#dc2626",deep:"#16a34a",saturating:"#dc2626"}[level]||"#6b7280";
+                  return (
+                    <div key={l} style={{display:"flex",gap:5,alignItems:"flex-start"}}>
+                      <div style={{width:6,height:6,borderRadius:"50%",background:sc,marginTop:3,flexShrink:0}}/>
+                      <div>
+                        <div style={{fontSize:8,color:"#9ca3af",fontWeight:600,textTransform:"uppercase",...P}}>{l}: <span style={{color:sc}}>{level}</span></div>
+                        <div style={{fontSize:9,color:"#6b7280",lineHeight:1.4,marginTop:1,...P}}>{reason}</div>
+                      </div>
+                    </div>
+                  );
+                })}
+                <div style={{borderLeft:"1px solid #e5e7eb",paddingLeft:9}}>
+                  <div style={{fontSize:8,color:"#6366f1",fontWeight:700,textTransform:"uppercase",marginBottom:2,...P}}>Aktion</div>
+                  <div style={{fontSize:9,color:"#374151",fontWeight:600,lineHeight:1.4,...P}}>{res.action}</div>
+                  {res.budget_recommended&&res.budget_recommended!==c.budget&&(
+                    <div style={{display:"flex",alignItems:"center",gap:5,marginTop:4}}>
+                      <span style={{fontSize:9,color:"#9ca3af",textDecoration:"line-through",...P}}>€{c.budget}/T</span>
+                      <span style={{fontSize:12,fontWeight:800,color:res.verdict==="scale"?"#16a34a":"#dc2626",...P}}>→ €{res.budget_recommended}/T</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+// ═══════════ ROAS CHART ═══════════════════════════════════════════════════════
+
+function ROASChart({webinars}) {
+  const maxR = 3.5;
+  return (
+    <div className="card" style={{padding:"14px 16px",display:"flex",flexDirection:"column",gap:10}}>
+      <div style={{fontSize:11,fontWeight:700,color:"#374151",...P}}>ROAS-Trend</div>
+      <div style={{fontSize:8,color:"#9ca3af",...P}}>TC Revenue ÷ Spend · Sonntag 10:00</div>
+      <div style={{position:"relative",height:200}}>
+        {[0,0.5,1,1.5,2,2.5,3].map(v=>(
+          <div key={v} style={{position:"absolute",left:0,right:0,bottom:`${v/maxR*100}%`,borderTop:v===1.5?"1px dashed #16a34a55":"1px solid #f3f4f6"}}>
+            <span style={{position:"absolute",left:0,top:-8,fontSize:8,color:"#d1d5db",...P}}>{v}x</span>
+          </div>
+        ))}
+        <div style={{position:"absolute",left:18,right:0,bottom:0,top:0,display:"flex",alignItems:"flex-end",gap:3}}>
+          {[...webinars].reverse().map(w=>{
+            const h=w.roas>0?Math.min(w.roas/maxR*100,100):2;
+            return (
+              <div key={w.date} title={`${w.label}: ${f2(w.roas)}x — ${eur(w.revenue)}`}
+                style={{flex:1,display:"flex",flexDirection:"column",justifyContent:"flex-end",height:"100%"}}>
+                <div style={{width:"100%",height:`${h}%`,background:w.roas>0?rbg(w.roas):"#f3f4f6",border:`1px solid ${w.roas>0?rbd(w.roas):"#e5e7eb"}`,borderRadius:"3px 3px 0 0"}}/>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+      <div style={{display:"flex",gap:2,paddingLeft:18}}>
+        {[...webinars].reverse().map(w=>(
+          <div key={w.date} style={{flex:1,fontSize:7,color:"#d1d5db",textAlign:"center",overflow:"hidden",writingMode:"vertical-lr",transform:"rotate(180deg)",height:28,...P}}>{w.label}</div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ═══════════ DELAY CHART ══════════════════════════════════════════════════════
+
+function DelayChart({webinars}) {
+  const totalS = webinars.reduce((a,w)=>a+w.sales,0);
+  const d0 = webinars.reduce((a,w)=>a+w.day0,0);
+  const d7 = webinars.reduce((a,w)=>a+w.day7,0);
+  const mid = totalS-d0-d7;
+  return (
+    <div className="card" style={{padding:"14px 16px"}}>
+      <div style={{fontSize:11,fontWeight:700,color:"#374151",marginBottom:6,...P}}>Kaufzeitpunkt</div>
+      <div style={{fontSize:8,color:"#9ca3af",marginBottom:12,...P}}>Wann kaufen Leads nach dem Webinar?</div>
+      {[
+        ["Sonntag (Tag 0)","Direkt nach Webinar",pct(d0,totalS),"#6366f1"],
+        ["Mo–Fr (Tag 1–6)","Follow-up Sequenz",pct(mid,totalS),"#9ca3af"],
+        ["Sa/So (Tag 7)","Vor nächstem Webinar",pct(d7,totalS),"#f59e0b"],
+      ].map(([l,sub,p2,c])=>(
+        <div key={l} style={{marginBottom:10}}>
+          <div style={{display:"flex",justifyContent:"space-between",marginBottom:3}}>
+            <div>
+              <div style={{fontSize:10,fontWeight:600,color:"#374151",...P}}>{l}</div>
+              <div style={{fontSize:8,color:"#9ca3af",...P}}>{sub}</div>
+            </div>
+            <div style={{fontSize:18,fontWeight:800,color:c,...P}}>{p2}%</div>
+          </div>
+          <div style={{background:"#f3f4f6",borderRadius:3,height:6,overflow:"hidden"}}>
+            <div style={{width:`${p2}%`,height:"100%",background:c,borderRadius:3}}/>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// ═══════════ PRODUCT MIX ══════════════════════════════════════════════════════
+
+function ProductMix({webinars}) {
+  const totals = Object.keys(PROD_CFG).reduce((a,k)=>{
+    a[k]=webinars.reduce((s,w)=>s+(w[k]||0),0); return a;
+  },{});
+  const grand = Object.values(totals).reduce((a,v)=>a+v,0);
+  return (
+    <div className="card" style={{padding:"14px 16px"}}>
+      <div style={{fontSize:11,fontWeight:700,color:"#374151",marginBottom:6,...P}}>Produkt-Mix</div>
+      <div style={{fontSize:8,color:"#9ca3af",marginBottom:12,...P}}>Revenue-Anteil je Produkt</div>
+      {Object.entries(PROD_CFG).map(([k,cfg])=>{
+        const v=totals[k]; if(!v) return null;
+        const p2=pct(v,grand);
+        return (
+          <div key={k} style={{marginBottom:8}}>
+            <div style={{display:"flex",justifyContent:"space-between",marginBottom:2}}>
+              <span style={{fontSize:9,fontWeight:600,color:cfg.color,...P}}>{cfg.label}</span>
+              <span style={{fontSize:9,color:"#374151",fontWeight:700,...P}}>{eur(v)} <span style={{color:"#9ca3af",fontWeight:400}}>({p2}%)</span></span>
+            </div>
+            <div style={{background:"#f3f4f6",borderRadius:3,height:5}}>
+              <div style={{width:`${p2}%`,height:"100%",background:cfg.color,borderRadius:3}}/>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+// ═══════════ OPEN ITEMS ═══════════════════════════════════════════════════════
+
+function OpenItems() {
+  const items = [
+    ["KRITISCH","fbc-Bug auf FunnelCockpit fixen","Script in Header einfügen","#dc2626","#fef2f2","#fecaca"],
+    ["HOCH","Advanced Matching aktivieren","Meta Events Manager → Pixel → Einstellungen","#ca8a04","#fefce8","#fde68a"],
+    ["HOCH","Attendee LLA aufsetzen","WebinarGeek Audience Tool → Export → Meta hochladen","#ca8a04","#fefce8","#fde68a"],
+    ["HOCH","48 leere Kampagnen archivieren","Meta Ads Manager → Account aufräumen","#ca8a04","#fefce8","#fde68a"],
+    ["MITTEL","Purchaser Exclusions","Käufer aus Prospecting-Audience ausschließen","#6366f1","#eef2ff","#c7d2fe"],
+    ["MITTEL","Tag 1–6 Email-Sequenz ausbauen","40% kaufen Tag 7 — dazwischen mehr Druck","#6366f1","#eef2ff","#c7d2fe"],
+    ["MITTEL","VSL Attribution klären","Lead-Quelle × Show-Up Rate kreuzen","#6366f1","#eef2ff","#c7d2fe"],
+  ];
+  return (
+    <div className="card" style={{padding:"14px 18px"}}>
+      <div style={{fontSize:10,fontWeight:700,color:"#9ca3af",textTransform:"uppercase",letterSpacing:2,marginBottom:10,...P}}>🚀 Offene Punkte</div>
+      <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(185px,1fr))",gap:8}}>
+        {items.map(([p,l,s,c,bg,bd])=>(
+          <div key={l} style={{background:bg,border:`1px solid ${bd}`,borderLeft:`3px solid ${c}`,borderRadius:8,padding:"9px 11px"}}>
+            <div style={{fontSize:8,color:c,fontWeight:700,marginBottom:1,...P}}>{p}</div>
+            <div style={{fontSize:10,color:"#374151",fontWeight:600,marginBottom:2,...P}}>{l}</div>
+            <div style={{fontSize:9,color:"#9ca3af",...P}}>{s}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ═══════════ MAIN APP ═════════════════════════════════════════════════════════
+
+function App() {
+  const [filters,setFilters] = useState({period:"all",minRoas:0,minShowUp:0,product:"all",delay:"all",maxCpl:999});
+  const [activeTab,setActiveTab] = useState("overview");
+
+  const filteredWebinars = useMemo(()=>{
+    return WEBINARS_RAW.filter(w=>{
+      if(filters.period==="q1_26" && w.date>="2026-04-01") return false;
+      if(filters.period==="q2_26" && w.date<"2026-04-01") return false;
+      if(filters.period==="last4" && WEBINARS_RAW.indexOf(w)>=4) return false;
+      if(filters.minRoas>0 && w.roas<filters.minRoas && w.spend>0) return false;
+      if(filters.minShowUp>0 && w.showUp<filters.minShowUp && w.showUp>0) return false;
+      if(filters.product==="kurs" && (w.masterclass||0)>0) return false;
+      if(filters.product==="masterclass" && !(w.masterclass||0)) return false;
+      if(filters.product==="revolut" && !(w.revolut||0)) return false;
+      if(filters.delay==="tag0" && w.sales>0 && pct(w.day0,w.sales)<40) return false;
+      if(filters.delay==="tag7" && w.sales>0 && pct(w.day7,w.sales)<40) return false;
+      return true;
+    });
+  },[filters]);
+
+  const filteredMeta = useMemo(()=>{
+    return META_RAW.filter(c=>{
+      if(filters.maxCpl<999 && c.cpl>0 && c.cpl>filters.maxCpl) return false;
+      return true;
+    });
+  },[filters]);
+
+  const tabs = [
+    {id:"overview",label:"📊 Übersicht"},
+    {id:"webinars",label:"📅 Webinare"},
+    {id:"campaigns",label:"📣 Kampagnen"},
+    {id:"audiences",label:"🎯 Audiences"},
+  ];
+
+  return (
+    <div style={{minHeight:"100vh",background:"#f5f5f7"}}>
+      {/* HEADER */}
+      <div style={{background:"#fff",borderBottom:"1px solid #e5e7eb",padding:"12px 24px",position:"sticky",top:0,zIndex:100,display:"flex",alignItems:"center",justifyContent:"space-between",gap:12,...P}}>
+        <div>
+          <div style={{fontSize:9,color:"#c8c8c8",letterSpacing:2,fontWeight:600,marginBottom:1}}>MEILENWEIT VORAUS</div>
+          <div style={{fontSize:17,fontWeight:800,color:"#111"}}>Performance Dashboard</div>
+        </div>
+        <div style={{display:"flex",gap:3,background:"#f3f4f6",border:"1px solid #e5e7eb",borderRadius:9,padding:3}}>
+          {tabs.map(t=>(
+            <button key={t.id} onClick={()=>setActiveTab(t.id)}
+              style={{background:activeTab===t.id?"#fff":"transparent",color:activeTab===t.id?"#111":"#9ca3af",border:activeTab===t.id?"1px solid #e5e7eb":"1px solid transparent",borderRadius:6,padding:"5px 13px",fontSize:10,fontWeight:600,cursor:"pointer",...P,boxShadow:activeTab===t.id?"0 1px 2px rgba(0,0,0,.06)":"none"}}>
+              {t.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div style={{padding:"18px 24px",display:"flex",flexDirection:"column",gap:14}}>
+
+        {/* FILTER BAR — always visible */}
+        <FilterBar filters={filters} setFilters={setFilters}/>
+
+        {/* OVERVIEW TAB */}
+        {activeTab==="overview"&&(
+          <>
+            <KPIStrip webinars={filteredWebinars} meta={filteredMeta}/>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 220px",gap:14}}>
+              <WebinarTable webinars={filteredWebinars}/>
+              <div style={{display:"flex",flexDirection:"column",gap:14}}>
+                <ROASChart webinars={filteredWebinars}/>
+                <DelayChart webinars={filteredWebinars}/>
+              </div>
+            </div>
+            <MetaTable campaigns={filteredMeta}/>
+            <OpenItems/>
+          </>
+        )}
+
+        {/* WEBINARS TAB */}
+        {activeTab==="webinars"&&(
+          <>
+            <KPIStrip webinars={filteredWebinars} meta={filteredMeta}/>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:14}}>
+              <ROASChart webinars={filteredWebinars}/>
+              <div style={{display:"flex",flexDirection:"column",gap:14}}>
+                <DelayChart webinars={filteredWebinars}/>
+                <ProductMix webinars={filteredWebinars}/>
+              </div>
+            </div>
+            <WebinarTable webinars={filteredWebinars}/>
+          </>
+        )}
+
+        {/* CAMPAIGNS TAB */}
+        {activeTab==="campaigns"&&(
+          <>
+            <MetaTable campaigns={filteredMeta}/>
+          </>
+        )}
+
+        {/* AUDIENCES TAB */}
+        {activeTab==="audiences"&&(
+          <AudienceTool/>
+        )}
+
+        <div style={{textAlign:"center",fontSize:9,color:"#d1d5db",fontWeight:500}}>
+          MEILENWEIT VORAUS · Meta live (Windsor.ai) · ThriveCart (CSV, Sonntag 10:00 Attribution) · KI (Claude) · Stand: Mai 2026
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ═══════════ AUDIENCE TOOL (inline) ══════════════════════════════════════════
+
+async function wgFetch(path) {
+  const [pp,qp] = path.split("?");
+  const url = PROXY+"/api/webinargeek?path="+encodeURIComponent(pp)+(qp?"&"+qp:"");
+  const res = await fetch(url);
+  if(!res.ok) throw new Error(`${res.status}`);
+  return res.json();
+}
+
+async function sha256(s) {
+  const buf = await crypto.subtle.digest("SHA-256",new TextEncoder().encode(s.toLowerCase().trim()));
+  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,"0")).join("");
+}
+
+function downloadCSV(rows,filename) {
+  const csv=rows.map(r=>r.map(c=>`"${(c||"").toString().replace(/"/g,'""')}"`).join(",")).join("\n");
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"}));
+  a.download=filename; a.click();
+}
+
+function AudienceTool() {
+  const [webinars,setWebinars]=useState([]);
+  const [selected,setSelected]=useState(null);
+  const [broadcasts,setBroadcasts]=useState([]);
+  const [selBcast,setSelBcast]=useState(null);
+  const [subs,setSubs]=useState([]);
+  const [loading,setLoading]=useState({wg:false,bc:false,subs:false});
+  const [filter,setFilter]=useState("attendees");
+  const [minWatch,setMinWatch]=useState(15);
+  const [exporting,setExporting]=useState(false);
+  const [allSeed,setAllSeed]=useState([]);
+  const [loadingAll,setLoadingAll]=useState(false);
+  const [progress,setProgress]=useState({done:0,total:0});
+  const [error,setError]=useState(null);
+
+  useEffect(()=>{
+    setLoading(l=>({...l,wg:true}));
+    wgFetch("/webinars?per_page=100")
+      .then(d=>setWebinars(Array.isArray(d)?d:(d.webinars||d.data||[])))
+      .catch(e=>setError(e.message))
+      .finally(()=>setLoading(l=>({...l,wg:false})));
+  },[]);
+
+  useEffect(()=>{
+    if(!selected) return;
+    setLoading(l=>({...l,bc:true}));
+    setBroadcasts([]); setSelBcast(null); setSubs([]);
+    wgFetch(`/webinars/${selected.id}/broadcasts`)
+      .then(d=>{const list=Array.isArray(d)?d:(d.broadcasts||d.data||[]);setBroadcasts(list);if(list.length===1)setSelBcast(list[0]);})
+      .catch(e=>setError(e.message))
+      .finally(()=>setLoading(l=>({...l,bc:false})));
+  },[selected]);
+
+  useEffect(()=>{
+    if(!selBcast||!selected) return;
+    setLoading(l=>({...l,subs:true})); setSubs([]);
+    async function load(){let page=1,all=[];
+      while(true){
+        const d=await wgFetch(`/webinars/${selected.id}/broadcasts/${selBcast.id}/subscriptions?page=${page}&per_page=100`);
+        const items=Array.isArray(d)?d:(d.subscriptions||d.data||[]);
+        all=all.concat(items); if(items.length<100)break; page++;
+      } setSubs(all);
+    }
+    load().catch(e=>setError(e.message)).finally(()=>setLoading(l=>({...l,subs:false})));
+  },[selBcast,selected]);
+
+  const getW = s=>s.time_watched||s.view_time||s.viewing_time||0;
+  const isAtt = s=>getW(s)>0||s.attended===true;
+
+  const filtered = subs.filter(s=>{
+    if(filter==="attendees") return isAtt(s);
+    if(filter==="highstick") return isAtt(s)&&getW(s)>=minWatch*60;
+    if(filter==="noshow") return !isAtt(s);
+    return true;
+  });
+
+  const stats = {total:subs.length,attended:subs.filter(isAtt).length,
+    highstick:subs.filter(s=>isAtt(s)&&getW(s)>=minWatch*60).length,noshow:subs.filter(s=>!isAtt(s)).length};
+
+  async function exportMeta(data,filename){
+    setExporting(true);
+    const rows=[["email","phone","fn","ln"]];
+    for(const s of data){
+      const em=s.email||"",ph=(s.phone_number||s.phone||"").replace(/\s/g,"");
+      const fn=s.first_name||(s.name||"").split(" ")[0]||"";
+      const ln=s.last_name||(s.name||"").split(" ").slice(1).join(" ")||"";
+      rows.push([em?await sha256(em):"",ph?await sha256(ph):"",fn?await sha256(fn.toLowerCase()):"",ln?await sha256(ln.toLowerCase()):""]);
+    }
+    downloadCSV(rows,filename); setExporting(false);
+  }
+
+  async function loadAllSeed(){
+    setLoadingAll(true); setAllSeed([]);
+    setProgress({done:0,total:webinars.length});
+    const all=[];
+    for(let i=0;i<webinars.length;i++){
+      const w=webinars[i];
+      try{
+        const bcD=await wgFetch(`/webinars/${w.id}/broadcasts`);
+        const bcs=Array.isArray(bcD)?bcD:(bcD.broadcasts||bcD.data||[]);
+        for(const bc of bcs){
+          let page=1;
+          while(true){
+            const d=await wgFetch(`/webinars/${w.id}/broadcasts/${bc.id}/subscriptions?page=${page}&per_page=100`);
+            const items=Array.isArray(d)?d:(d.subscriptions||d.data||[]);
+            all.push(...items.filter(isAtt)); if(items.length<100)break; page++;
+          }
+        }
+      }catch{}
+      setProgress({done:i+1,total:webinars.length});
+    }
+    const seen=new Set();
+    setAllSeed(all.filter(s=>{if(!s.email||seen.has(s.email))return false;seen.add(s.email);return true;}));
+    setLoadingAll(false);
+  }
+
+  return (
+    <div style={{display:"flex",flexDirection:"column",gap:12}}>
+      {error&&<div style={{background:"#fef2f2",border:"1px solid #fecaca",borderRadius:10,padding:"10px 14px",color:"#dc2626",fontSize:11}}>{error}</div>}
+
+      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}}>
+        {/* Webinar select */}
+        <div className="card" style={{padding:"14px 16px"}}>
+          <div style={{fontSize:11,fontWeight:700,marginBottom:10,display:"flex",alignItems:"center",gap:6,...P}}>
+            📋 Webinar wählen {loading.wg&&<Spin s={12}/>}
+          </div>
+          <select onChange={e=>setSelected(webinars.find(x=>x.id==e.target.value)||null)}
+            style={{width:"100%",padding:"7px 10px",border:"1px solid #e5e7eb",borderRadius:7,fontSize:11,color:"#374151",background:"#fff",marginBottom:8,...P}}>
+            <option value="">— Webinar wählen ({webinars.length} geladen) —</option>
+            {webinars.map(w=><option key={w.id} value={w.id}>{w.title||w.name}</option>)}
+          </select>
+          {broadcasts.length>1&&(
+            <select onChange={e=>setSelBcast(broadcasts.find(x=>x.id==e.target.value)||null)}
+              style={{width:"100%",padding:"7px 10px",border:"1px solid #e5e7eb",borderRadius:7,fontSize:11,color:"#374151",background:"#fff",...P}}>
+              <option value="">— Session wählen —</option>
+              {broadcasts.map(bc=><option key={bc.id} value={bc.id}>{bc.start_time?new Date(bc.start_time*1000).toLocaleDateString("de-DE"):`Session ${bc.id}`}</option>)}
+            </select>
+          )}
+        </div>
+
+        {/* Mega Seed */}
+        <div className="card" style={{padding:"14px 16px"}}>
+          <div style={{fontSize:11,fontWeight:700,marginBottom:4,...P}}>🎯 Mega Seed — Alle Webinare</div>
+          <div style={{fontSize:10,color:"#6b7280",marginBottom:10,lineHeight:1.5,...P}}>Alle Attendees aus allen {webinars.length} Webinaren, dedupliziert. Größter LLA-Seed.</div>
+          {allSeed.length>0?(
+            <div style={{display:"flex",gap:8,alignItems:"center"}}>
+              <div style={{background:"#f0fdf4",border:"1px solid #bbf7d0",borderRadius:8,padding:"7px 12px",minWidth:90}}>
+                <div style={{fontSize:9,color:"#16a34a",fontWeight:700,...P}}>UNIQUE</div>
+                <div style={{fontSize:20,fontWeight:800,color:"#16a34a",...P}}>{allSeed.length.toLocaleString("de-DE")}</div>
+              </div>
+              <button onClick={()=>exportMeta(allSeed,"meta_ALL_attendees_seed.csv")} disabled={exporting}
+                style={{flex:1,background:"#111827",color:"#fff",border:"none",borderRadius:8,padding:"10px",fontSize:11,fontWeight:700,cursor:"pointer",...P}}>
+                {exporting?"Hashe…":"⬇ Meta CSV (SHA-256)"}
+              </button>
+            </div>
+          ):(
+            <button onClick={loadAllSeed} disabled={loadingAll||webinars.length===0}
+              style={{width:"100%",background:loadingAll?"#f3f4f6":"#6366f1",color:loadingAll?"#9ca3af":"#fff",border:"none",borderRadius:8,padding:"10px",fontSize:11,fontWeight:700,cursor:loadingAll?"not-allowed":"pointer",display:"flex",alignItems:"center",justifyContent:"center",gap:8,...P}}>
+              {loadingAll?<><Spin s={12}/>{progress.done}/{progress.total} Webinare…</>:`✦ Alle ${webinars.length} Webinare laden`}
+            </button>
+          )}
+        </div>
+      </div>
+
+      {/* Stats + Filter */}
+      {subs.length>0&&(
+        <div className="card" style={{padding:"12px 16px",display:"flex",alignItems:"center",gap:10,flexWrap:"wrap"}}>
+          {[["Gesamt",stats.total,"#6366f1","#eef2ff","#c7d2fe"],["Erschienen",stats.attended,"#16a34a","#f0fdf4","#bbf7d0"],[`>${minWatch}min`,stats.highstick,"#f59e0b","#fefce8","#fde68a"],["No-Show",stats.noshow,"#9ca3af","#f9fafb","#e5e7eb"]].map(([l,v,c,bg,bd])=>(
+            <div key={l} style={{background:bg,border:`1px solid ${bd}`,borderRadius:7,padding:"6px 10px",minWidth:70}}>
+              <div style={{fontSize:8,color:c,fontWeight:700,textTransform:"uppercase",...P}}>{l}</div>
+              <div style={{fontSize:18,fontWeight:800,color:c,...P}}>{v}</div>
+              <div style={{fontSize:8,color:"#9ca3af",...P}}>{pct(v,stats.total)}%</div>
+            </div>
+          ))}
+          <div style={{flex:1}}/>
+          <div style={{display:"flex",gap:3,background:"#f3f4f6",border:"1px solid #e5e7eb",borderRadius:7,padding:3}}>
+            {[["all","Alle"],["attendees","Erschienen"],["highstick",`>${minWatch}min`],["noshow","No-Show"]].map(([k,l])=>(
+              <button key={k} onClick={()=>setFilter(k)}
+                style={{background:filter===k?"#fff":"transparent",color:filter===k?"#111":"#9ca3af",border:filter===k?"1px solid #e5e7eb":"1px solid transparent",borderRadius:5,padding:"4px 10px",fontSize:10,fontWeight:600,cursor:"pointer",...P}}>
+                {l}
+              </button>
+            ))}
+          </div>
+          <div style={{display:"flex",alignItems:"center",gap:5}}>
+            <span style={{fontSize:9,color:"#9ca3af",...P}}>Min.Watch</span>
+            <input type="number" value={minWatch} min={1} max={120} onChange={e=>setMinWatch(Number(e.target.value))}
+              style={{width:46,border:"1px solid #e5e7eb",borderRadius:5,padding:"3px 6px",fontSize:10,textAlign:"center",...P}}/>
+            <span style={{fontSize:9,color:"#9ca3af",...P}}>min</span>
+          </div>
+          <div style={{display:"flex",gap:7}}>
+            <button onClick={()=>{const rows=[["Email","Vorname","Nachname","Telefon","Watch(min)","Erschienen"]];for(const s of filtered)rows.push([s.email||"",s.first_name||"",s.last_name||"",s.phone_number||"",Math.round(getW(s)/60),isAtt(s)?"Ja":"Nein"]);downloadCSV(rows,`wg_${filter}.csv`);}}
+              style={{background:"#f3f4f6",border:"1px solid #e5e7eb",borderRadius:6,padding:"5px 11px",fontSize:10,fontWeight:700,cursor:"pointer",...P}}>⬇ Raw CSV</button>
+            <button onClick={()=>exportMeta(filtered,`meta_${filter}.csv`)} disabled={exporting||!filtered.length}
+              style={{background:exporting?"#f3f4f6":"#111827",color:exporting?"#9ca3af":"#fff",border:"none",borderRadius:6,padding:"5px 11px",fontSize:10,fontWeight:700,cursor:"pointer",display:"flex",alignItems:"center",gap:4,...P}}>
+              {exporting?<><Spin s={11}/>Hashe…</>:"⬇ Meta Audience (SHA-256)"}
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Subs Table */}
+      {subs.length>0&&(
+        <div className="card" style={{overflow:"hidden"}}>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 130px 100px 80px 65px",padding:"7px 16px",background:"#f9fafb",borderBottom:"1px solid #f3f4f6"}}>
+            {["Email","Name","Watch Time","Telefon","Status"].map(h=>(
+              <div key={h} style={{fontSize:8,color:"#9ca3af",fontWeight:600,textTransform:"uppercase",letterSpacing:.8,...P}}>{h}</div>
+            ))}
+          </div>
+          {loading.subs&&<div style={{padding:"20px",display:"flex",alignItems:"center",justifyContent:"center",gap:8}}><Spin/><span style={{fontSize:11,color:"#9ca3af",...P}}>Lade…</span></div>}
+          <div style={{maxHeight:320,overflowY:"auto"}}>
+            {filtered.slice(0,200).map((s,i)=>{
+              const watched=Math.round(getW(s)/60); const att=isAtt(s);
+              const name=[s.first_name,s.last_name].filter(Boolean).join(" ")||s.name||"—";
+              return (
+                <div key={s.id||i} className="hov" style={{display:"grid",gridTemplateColumns:"1fr 130px 100px 80px 65px",padding:"8px 16px",borderBottom:"1px solid #f3f4f6",alignItems:"center"}}>
+                  <div style={{fontSize:10,color:"#374151",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",...P}}>{s.email||"—"}</div>
+                  <div style={{fontSize:10,color:"#6b7280",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",...P}}>{name}</div>
+                  <div>{watched>0?(<div><div style={{fontSize:10,fontWeight:700,color:watched>=minWatch?"#16a34a":"#ca8a04",...P}}>{watched} min</div><div style={{background:"#f3f4f6",borderRadius:2,height:3,marginTop:2,width:70,overflow:"hidden"}}><div style={{width:`${Math.min(watched/90*100,100)}%`,height:"100%",background:watched>=minWatch?"#16a34a":"#ca8a04"}}/></div></div>):<span style={{fontSize:9,color:"#d1d5db",...P}}>—</span>}</div>
+                  <div style={{fontSize:10,color:"#9ca3af",...P}}>{s.phone_number||s.phone||"—"}</div>
+                  <div>{att?<Tag label="ATTENDED" color="#16a34a" bg="#f0fdf4" border="#bbf7d0"/>:<Tag label="NO-SHOW" color="#9ca3af" bg="#f9fafb" border="#e5e7eb"/>}</div>
+                </div>
+              );
+            })}
+            {filtered.length>200&&<div style={{padding:"10px",textAlign:"center",fontSize:10,color:"#9ca3af",...P}}>+ {filtered.length-200} weitere im Export</div>}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+  </script>
+</body>
+</html>
