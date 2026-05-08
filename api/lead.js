@@ -137,23 +137,14 @@ export default async function handler(req, res) {
       event_id:   eventId,
     });
 
-    // 2. CompleteRegistration Event senden (separate event_id)
-    const crResult = await sendToMeta("CompleteRegistration", {
-      ...baseEvent,
-      event_name: "CompleteRegistration",
-      event_id:   `${eventId}_cr`,
-    });
-
-    console.log(`✅ Lead + CompleteRegistration → Meta | ${email.substring(0,3)}*** | fbc: ${fbc ? "✅" : "❌"}`);
+    console.log(`✅ Lead → Meta | ${email.substring(0,3)}*** | fbc: ${fbc ? "✅" : "❌"}`);
 
     return res.status(200).json({
       status:  "success",
       email:   email.substring(0, 3) + "***",
       fbc:     !!fbc,
       lead:    { events_received: leadResult.events_received },
-      complete_registration: { events_received: crResult.events_received },
     });
-
   } catch (err) {
     console.error("CAPI Lead error:", err);
     return res.status(500).json({ error: err.message });
