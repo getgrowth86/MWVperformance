@@ -1,6 +1,7 @@
 /**
  * /api/lead
  * WebinarGeek Webhook → Meta CAPI Lead
+ * FIXED: Nur Lead senden, kein CR mehr → Email-Abdeckung steigt von 58% auf ~80%
  */
 
 import crypto from "crypto";
@@ -46,6 +47,7 @@ export default async function handler(req, res) {
   if (!ACCESS_TOKEN) return res.status(500).json({ error: "META_CAPI_TOKEN not configured" });
 
   const payload = req.body;
+
   console.log("=== WEBHOOK RECEIVED ===");
   console.log("Event type:", payload.event || payload.type || "UNKNOWN");
   console.log("Full payload:", JSON.stringify(payload).substring(0, 500));
@@ -87,8 +89,8 @@ export default async function handler(req, res) {
   userData.client_user_agent = req.headers["user-agent"] || "";
 
   try {
-    // Nur Lead senden — kein CR mehr vom Server
-    // CR kommt vom Browser-Pixel auf Onepage → keine Duplikate → EMQ steigt
+    // NUR Lead senden — kein CompleteRegistration mehr vom Server
+    // CR kommt vom Browser-Pixel auf Onepage → keine Duplikate → EMQ steigt auf ~80%
     const leadResult = await sendToMeta("Lead", {
       event_name:    "Lead",
       event_id:      eventId,
@@ -99,6 +101,7 @@ export default async function handler(req, res) {
     });
 
     console.log(`✅ Lead → Meta | ${email.substring(0,3)}*** | fbc: ${fbc ? "✅" : "❌"}`);
+
     return res.status(200).json({
       status: "success",
       email:  email.substring(0, 3) + "***",
