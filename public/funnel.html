@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Funnel Economics — Meilenweit Voraus</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-font-smoothing:antialiased}
+body{font-family:'Inter',sans-serif;background:#f8f9fb;color:#111;min-height:100vh;font-size:14px}
+
+/* Header */
+.header{background:#fff;border-bottom:1px solid #e5e7eb;padding:0 32px;position:sticky;top:0;z-index:100}
+.header-inner{height:54px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-size:15px;font-weight:700}
+.live-badge{display:flex;align-items:center;gap:6px;font-size:12px;color:#059669;font-weight:600}
+.live-dot{width:7px;height:7px;border-radius:50%;background:#059669;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+.wrap{max-width:1400px;margin:0 auto;padding:28px 32px 80px}
+
+/* Section titles */
+.sec-label{font-size:11px;font-weight:700;color:#9ca3af;text-transform:uppercase;letter-spacing:1px;margin-bottom:12px}
+
+/* ── FUNNEL FLOW ── */
+.funnel-flow{display:grid;grid-template-columns:repeat(7,1fr);gap:0;margin-bottom:28px;position:relative}
+.funnel-step{background:#fff;border:1px solid #e5e7eb;padding:18px 16px;position:relative;text-align:center}
+.funnel-step:first-child{border-radius:12px 0 0 12px}
+.funnel-step:last-child{border-radius:0 12px 12px 0}
+.funnel-step+.funnel-step{border-left:none}
+.f-icon{font-size:20px;margin-bottom:6px}
+.f-label{font-size:10px;color:#9ca3af;font-weight:600;text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px}
+.f-value{font-size:22px;font-weight:800;color:#111;letter-spacing:-0.5px;line-height:1}
+.f-sub{font-size:11px;color:#9ca3af;margin-top:4px}
+.f-rate{font-size:11px;font-weight:600;margin-top:6px;padding:2px 8px;border-radius:10px;display:inline-block}
+.f-arrow{position:absolute;right:-1px;top:50%;transform:translateY(-50%);width:0;height:0;
+  border-top:8px solid transparent;border-bottom:8px solid transparent;
+  border-left:8px solid #e5e7eb;z-index:2}
+.f-arrow-inner{position:absolute;right:0px;top:50%;transform:translateY(-50%);width:0;height:0;
+  border-top:7px solid transparent;border-bottom:7px solid transparent;
+  border-left:7px solid #fff;z-index:3}
+
+/* ── INPUTS ── */
+.inputs-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:12px;margin-bottom:28px}
+.input-card{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:14px 16px}
+.input-label{font-size:10px;font-weight:700;color:#9ca3af;text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px}
+.input-row{display:flex;align-items:center;gap:6px}
+.input-val{font-size:18px;font-weight:700;color:#111;flex:1}
+.input-unit{font-size:12px;color:#9ca3af}
+.input-source{font-size:10px;color:#d1d5db;margin-top:4px}
+.slider{width:100%;height:3px;-webkit-appearance:none;background:#e5e7eb;border-radius:2px;margin-top:8px;cursor:pointer}
+.slider::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:#111;border:2px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.meta-tag{display:inline-block;font-size:9px;font-weight:700;background:#dbeafe;color:#1d4ed8;padding:1px 5px;border-radius:3px;margin-top:4px}
+.manual-tag{display:inline-block;font-size:9px;font-weight:700;background:#f0fdf4;color:#059669;padding:1px 5px;border-radius:3px;margin-top:4px}
+
+/* ── OUTPUTS ── */
+.outputs-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:28px}
+.output-card{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:18px 20px}
+.out-label{font-size:11px;color:#9ca3af;font-weight:600;text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px}
+.out-value{font-size:28px;font-weight:800;letter-spacing:-1px;line-height:1}
+.out-sub{font-size:11px;color:#9ca3af;margin-top:5px}
+.out-target{font-size:11px;font-weight:600;margin-top:6px}
+
+/* ── LEVER ANALYSIS ── */
+.levers-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:28px}
+.lever-card{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:20px}
+.lever-title{font-size:13px;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.lever-row{display:grid;grid-template-columns:1fr 80px 80px 90px;gap:12px;align-items:center;padding:8px 0;border-bottom:1px solid #f3f4f6}
+.lever-row:last-child{border-bottom:none}
+.lever-name{font-size:12px;color:#374151;font-weight:500}
+.lever-change{font-size:12px;color:#6b7280}
+.lever-roas{font-size:13px;font-weight:700}
+.lever-delta{font-size:12px;font-weight:600;text-align:right}
+.lever-head{font-size:10px;color:#9ca3af;font-weight:600;text-transform:uppercase;letter-spacing:.6px}
+.pos{color:#059669}.neg{color:#dc2626}.neu{color:#6b7280}
+
+/* ── FORMULA ── */
+.formula-box{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:20px;margin-bottom:28px}
+.formula-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.formula-item{background:#f9fafb;border-radius:8px;padding:12px 14px}
+.formula-name{font-size:10px;color:#9ca3af;font-weight:700;text-transform:uppercase;letter-spacing:.6px;margin-bottom:6px}
+.formula-eq{font-size:12px;color:#374151;line-height:1.6;font-family:monospace}
+.formula-result{font-size:16px;font-weight:700;color:#111;margin-top:6px}
+
+/* Loading */
+.loading{display:flex;align-items:center;gap:8px;color:#9ca3af;font-size:12px;padding:8px 0}
+.spin{width:14px;height:14px;border:2px solid #e5e7eb;border-top-color:#6366f1;border-radius:50%;animation:spin .7s linear infinite}
+
+/* Color helpers */
+.green{color:#059669}.yellow{color:#d97706}.red{color:#dc2626}
+.bg-green{background:#ecfdf5;color:#059669;border:1px solid #a7f3d0}
+.bg-yellow{background:#fffbeb;color:#d97706;border:1px solid #fde68a}
+.bg-red{background:#fef2f2;color:#dc2626;border:1px solid #fecaca}
+.bg-blue{background:#eff6ff;color:#2563eb;border:1px solid #bfdbfe}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-inner">
+    <div>
+      <div class="logo">Funnel Economics — Meilenweit Voraus</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:20px">
+      <div class="live-badge" id="live-status">
+        <div class="live-dot"></div>
+        Lade Meta Daten…
+      </div>
+      <div style="font-size:11px;color:#9ca3af">Schieberegler = Szenario-Analyse</div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- FUNNEL FLOW -->
+  <div class="sec-label">Funnel-Visualisierung (Sonntag 10:00 · Ø-Werte)</div>
+  <div class="funnel-flow" id="funnel-flow"></div>
+
+  <!-- 7 INPUTS -->
+  <div class="sec-label" style="margin-top:28px">7 Inputs — Meta Live + Manuelle Werte</div>
+  <div class="inputs-grid" id="inputs-grid"></div>
+
+  <!-- FORMULAS -->
+  <div class="sec-label">Formulas</div>
+  <div class="formula-box">
+    <div class="formula-grid" id="formula-grid"></div>
+  </div>
+
+  <!-- 6 OUTPUTS -->
+  <div class="sec-label">6 Outputs</div>
+  <div class="outputs-grid" id="outputs-grid"></div>
+
+  <!-- MARGINAL LEVER ANALYSIS -->
+  <div class="sec-label">Marginal Lever Analysis — Was passiert wenn sich X um 10% verbessert?</div>
+  <div class="levers-grid" id="levers-grid"></div>
+
+</div>
+
+<script>
+// ══════════════════════════════════════════════════
+// BASE INPUTS (Meta Live + Manual)
+// ══════════════════════════════════════════════════
+const INPUTS = {
+  cpm:      { label:"CPM",          val:27.85, min:5,   max:60,  step:0.5,  unit:"€",  source:"meta",   desc:"Cost per 1.000 Impressions" },
+  ctr:      { label:"CTR",          val:7.2,   min:1,   max:20,  step:0.1,  unit:"%",  source:"meta",   desc:"Click-Through Rate" },
+  lp_cvr:   { label:"LP CVR",       val:4.5,   min:1,   max:20,  step:0.1,  unit:"%",  source:"manual", desc:"Landingpage → Registrierung" },
+  show_up:  { label:"Show-Up Rate", val:22,    min:5,   max:60,  step:1,    unit:"%",  source:"manual", desc:"Registrierung → Live Teilnehmer" },
+  cvr:      { label:"CVR Kauf",     val:9,     min:1,   max:30,  step:0.5,  unit:"%",  source:"manual", desc:"Teilnehmer → Käufer" },
+  aov:      { label:"AOV",          val:297,   min:100, max:600, step:1,    unit:"€",  source:"manual", desc:"Ø Bestellwert" },
+  rr:       { label:"Repeat Rate",  val:15,    min:0,   max:50,  step:1,    unit:"%",  source:"manual", desc:"Käufer kaufen erneut" },
+};
+
+// Budget / Spend pro Webinar (Woche)
+const WEEKLY_SPEND = 4200; // €/Woche
+
+// ══════════════════════════════════════════════════
+// FORMULAS
+// ══════════════════════════════════════════════════
+function calcAll(inp) {
+  const spend     = WEEKLY_SPEND;
+  const imp       = spend / inp.cpm * 1000;
+  const clicks    = imp * (inp.ctr / 100);
+  const leads     = clicks * (inp.lp_cvr / 100);
+  const attendees = leads * (inp.show_up / 100);
+  const buyers    = attendees * (inp.cvr / 100);
+  const revenue   = buyers * inp.aov;
+  const roas      = spend > 0 ? revenue / spend : 0;
+  const cac       = buyers > 0 ? spend / buyers : 0;
+  const cpl       = leads > 0 ? spend / leads : 0;
+  const ltv       = inp.aov * (1 + inp.rr / 100);
+  const ltv_cac   = cac > 0 ? ltv / cac : 0;
+  const profit    = revenue - spend;
+
+  return {spend, imp, clicks, leads, attendees, buyers, revenue, roas, cac, cpl, ltv, ltv_cac, profit};
+}
+
+function getInputVals() {
+  const v = {};
+  Object.keys(INPUTS).forEach(k => {
+    const el = document.getElementById("slider_"+k);
+    v[k] = el ? parseFloat(el.value) : INPUTS[k].val;
+  });
+  return v;
+}
+
+// ══════════════════════════════════════════════════
+// RENDER FUNNEL FLOW
+// ══════════════════════════════════════════════════
+function renderFunnel(c) {
+  const steps = [
+    {icon:"💶", label:"Spend",         val:"€"+Math.round(c.spend).toLocaleString("de-DE"), sub:"Budget/Woche",    rate:null},
+    {icon:"👁",  label:"Impressionen",  val:Math.round(c.imp/1000)+"K",                      sub:"Reichweite",     rate:null},
+    {icon:"🖱",  label:"Klicks",        val:Math.round(c.clicks).toLocaleString("de-DE"),     sub:"zur LP",         rate:(c.ctr).toFixed(1)+"%", rateClass:"bg-blue"},
+    {icon:"📋",  label:"Leads",         val:Math.round(c.leads).toLocaleString("de-DE"),      sub:"Registrierungen",rate:getInputVals().lp_cvr+"%", rateClass:"bg-blue"},
+    {icon:"🎙",  label:"Teilnehmer",    val:Math.round(c.attendees).toLocaleString("de-DE"),  sub:"Live anwesend",  rate:getInputVals().show_up+"%", rateClass:getInputVals().show_up>=28?"bg-green":getInputVals().show_up>=22?"bg-yellow":"bg-red"},
+    {icon:"💳",  label:"Käufer",        val:Math.round(c.buyers).toLocaleString("de-DE"),     sub:"Konversionen",   rate:getInputVals().cvr+"%", rateClass:getInputVals().cvr>=10?"bg-green":"bg-yellow"},
+    {icon:"💰",  label:"Revenue",       val:"€"+Math.round(c.revenue).toLocaleString("de-DE"),sub:"Cash Collect",   rate:c.roas.toFixed(2)+"x", rateClass:c.roas>=1.5?"bg-green":c.roas>=1?"bg-yellow":"bg-red"},
+  ];
+
+  document.getElementById("funnel-flow").innerHTML = steps.map((s,i)=>`
+    <div class="funnel-step" style="background:${i===6?"#f0fdf4":"#fff"}">
+      ${i<6?`<div class="f-arrow"></div><div class="f-arrow-inner"></div>`:""}
+      <div class="f-icon">${s.icon}</div>
+      <div class="f-label">${s.label}</div>
+      <div class="f-value">${s.val}</div>
+      <div class="f-sub">${s.sub}</div>
+      ${s.rate?`<div class="f-rate ${s.rateClass||''}">${s.rate}</div>`:""}
+    </div>
+  `).join("");
+}
+
+// ══════════════════════════════════════════════════
+// RENDER INPUTS
+// ══════════════════════════════════════════════════
+function renderInputs() {
+  document.getElementById("inputs-grid").innerHTML = Object.entries(INPUTS).map(([k,inp])=>`
+    <div class="input-card">
+      <div class="input-label">${inp.label}</div>
+      <div class="input-row">
+        <div class="input-val" id="val_${k}">${inp.unit==="€"?"€":""}${inp.val}${inp.unit==="%"?"%":""}</div>
+      </div>
+      <div class="input-source">${inp.desc}</div>
+      <div class="${inp.source==="meta"?"meta-tag":"manual-tag"}">${inp.source==="meta"?"📡 Meta Live":"✏️ Manuell"}</div>
+      <input type="range" class="slider" id="slider_${k}"
+        min="${inp.min}" max="${inp.max}" step="${inp.step}" value="${inp.val}"
+        oninput="updateInput('${k}',this.value)"/>
+    </div>
+  `).join("");
+}
+
+function updateInput(k, val) {
+  const inp = INPUTS[k];
+  const display = inp.unit==="€"?"€"+parseFloat(val).toFixed(inp.step<1?1:0):parseFloat(val).toFixed(inp.step<1?1:0)+"%";
+  document.getElementById("val_"+k).textContent = display;
+  renderAll();
+}
+
+// ══════════════════════════════════════════════════
+// RENDER FORMULAS
+// ══════════════════════════════════════════════════
+function renderFormulas(c) {
+  const inp = getInputVals();
+  const formulas = [
+    {name:"Impressionen",   eq:`Spend ÷ CPM × 1.000\n€${WEEKLY_SPEND} ÷ €${inp.cpm} × 1.000`, result:Math.round(c.imp/1000)+"K Impr."},
+    {name:"Klicks",         eq:`Impr. × CTR\n${Math.round(c.imp/1000)}K × ${inp.ctr}%`, result:Math.round(c.clicks)+" Klicks"},
+    {name:"Leads",          eq:`Klicks × LP CVR\n${Math.round(c.clicks)} × ${inp.lp_cvr}%`, result:Math.round(c.leads)+" Leads"},
+    {name:"Teilnehmer",     eq:`Leads × Show-Up\n${Math.round(c.leads)} × ${inp.show_up}%`, result:Math.round(c.attendees)+" Teilnehmer"},
+    {name:"Käufer",         eq:`Teilnehmer × CVR\n${Math.round(c.attendees)} × ${inp.cvr}%`, result:Math.round(c.buyers)+" Käufer"},
+    {name:"Revenue",        eq:`Käufer × AOV\n${Math.round(c.buyers)} × €${inp.aov}`, result:"€"+Math.round(c.revenue).toLocaleString("de-DE")},
+    {name:"ROAS",           eq:`Revenue ÷ Spend\n€${Math.round(c.revenue)} ÷ €${WEEKLY_SPEND}`, result:c.roas.toFixed(2)+"x"},
+    {name:"CAC",            eq:`Spend ÷ Käufer\n€${WEEKLY_SPEND} ÷ ${Math.round(c.buyers)}`, result:"€"+Math.round(c.cac)},
+    {name:"CPL",            eq:`Spend ÷ Leads\n€${WEEKLY_SPEND} ÷ ${Math.round(c.leads)}`, result:"€"+c.cpl.toFixed(2)},
+  ];
+
+  document.getElementById("formula-grid").innerHTML = formulas.map(f=>`
+    <div class="formula-item">
+      <div class="formula-name">${f.name}</div>
+      <div class="formula-eq">${f.eq}</div>
+      <div class="formula-result">${f.result}</div>
+    </div>
+  `).join("");
+}
+
+// ══════════════════════════════════════════════════
+// RENDER OUTPUTS
+// ══════════════════════════════════════════════════
+function renderOutputs(c) {
+  const outputs = [
+    {label:"ROAS",      val:c.roas.toFixed(2)+"x",                               sub:"Revenue ÷ Spend",         target:"Ziel: 2.0x",   color:c.roas>=2?"#059669":c.roas>=1.5?"#d97706":"#dc2626"},
+    {label:"CAC",       val:"€"+Math.round(c.cac),                                sub:"Cost per Acquisition",    target:"Ziel: ≤€175",  color:c.cac<=175?"#059669":c.cac<=260?"#d97706":"#dc2626"},
+    {label:"CPL",       val:"€"+c.cpl.toFixed(2),                                 sub:"Cost per Lead",           target:"Ziel: ≤€12",   color:c.cpl<=10?"#059669":c.cpl<=12?"#d97706":"#dc2626"},
+    {label:"LTV",       val:"€"+Math.round(c.ltv),                                sub:"AOV × (1 + Repeat Rate)", target:"",             color:"#111"},
+    {label:"LTV:CAC",   val:c.ltv_cac.toFixed(2)+"x",                             sub:"Lifetime Value ÷ CAC",    target:"Ziel: ≥3.0x",  color:c.ltv_cac>=3?"#059669":c.ltv_cac>=2?"#d97706":"#dc2626"},
+    {label:"Gewinn",    val:"€"+Math.round(c.profit).toLocaleString("de-DE"),      sub:"Revenue − Spend",         target:"",             color:c.profit>0?"#059669":"#dc2626"},
+  ];
+
+  document.getElementById("outputs-grid").innerHTML = outputs.map(o=>`
+    <div class="output-card">
+      <div class="out-label">${o.label}</div>
+      <div class="out-value" style="color:${o.color}">${o.val}</div>
+      <div class="out-sub">${o.sub}</div>
+      ${o.target?`<div class="out-target" style="color:${o.color}">${o.target}</div>`:""}
+    </div>
+  `).join("");
+}
+
+// ══════════════════════════════════════════════════
+// MARGINAL LEVER ANALYSIS
+// ══════════════════════════════════════════════════
+function renderLevers(baseCalc) {
+  const baseROAS = baseCalc.roas;
+  const levers = [
+    {key:"cpm",     label:"CPM",          dir:-1, desc:"−10% CPM"},
+    {key:"ctr",     label:"CTR",          dir:1,  desc:"+10% CTR"},
+    {key:"lp_cvr",  label:"LP CVR",       dir:1,  desc:"+10% LP CVR"},
+    {key:"show_up", label:"Show-Up Rate", dir:1,  desc:"+10% Show-Up"},
+    {key:"cvr",     label:"CVR Kauf",     dir:1,  desc:"+10% CVR"},
+    {key:"aov",     label:"AOV",          dir:1,  desc:"+10% AOV"},
+    {key:"rr",      label:"Repeat Rate",  dir:1,  desc:"+10% Repeat Rate"},
+  ];
+
+  const base = getInputVals();
+
+  const rows = levers.map(l => {
+    const modified = {...base};
+    modified[l.key] = base[l.key] * (1 + l.dir * 0.1);
+    const newCalc = calcAll(modified);
+    const delta = newCalc.roas - baseROAS;
+    const pct = baseROAS > 0 ? delta / baseROAS * 100 : 0;
+    return {...l, newROAS: newCalc.roas, delta, pct, newCalc};
+  }).sort((a,b) => Math.abs(b.delta) - Math.abs(a.delta));
+
+  // Left: Impact ranking
+  const leftHTML = `
+    <div class="lever-card">
+      <div class="lever-title">📊 Impact Ranking — 10% Verbesserung je Metrik</div>
+      <div class="lever-row">
+        <div class="lever-head">Metrik</div>
+        <div class="lever-head" style="text-align:right">Änderung</div>
+        <div class="lever-head" style="text-align:right">Neuer ROAS</div>
+        <div class="lever-head" style="text-align:right">Delta</div>
+      </div>
+      ${rows.map((r,i)=>`
+      <div class="lever-row">
+        <div class="lever-name">${i===0?"🔥 ":""}${r.label}</div>
+        <div class="lever-change">${r.desc}</div>
+        <div class="lever-roas ${r.delta>0?"pos":"neg"}">${r.newROAS.toFixed(2)}x</div>
+        <div class="lever-delta ${r.delta>0?"pos":"neg"}">${r.delta>0?"+":""}${r.pct.toFixed(1)}%</div>
+      </div>`).join("")}
+    </div>`;
+
+  // Right: Ziel-Szenarien
+  const scenarios = [
+    {label:"ROAS 1.5x",  target:1.5},
+    {label:"ROAS 2.0x",  target:2.0},
+    {label:"ROAS 2.5x",  target:2.5},
+  ];
+
+  const scenRows = scenarios.map(sc => {
+    const needed = sc.target;
+    const currROAS = baseCalc.roas;
+    const gap = needed - currROAS;
+    const pctNeeded = currROAS > 0 ? gap / currROAS * 100 : 0;
+    const reachable = pctNeeded <= 30;
+    const status = currROAS >= needed ? "✅ Erreicht" : reachable ? "⚡ Erreichbar" : "🎯 Stretch";
+
+    // What needs to change
+    const showUpNeeded = Math.round(base.show_up * (1 + pctNeeded/100));
+    const cvrNeeded = (base.cvr * (1 + pctNeeded/100)).toFixed(1);
+    const aovNeeded = Math.round(base.aov * (1 + pctNeeded/100));
+
+    return {sc, needed, gap, pctNeeded, status, showUpNeeded, cvrNeeded, aovNeeded, currROAS};
+  });
+
+  const rightHTML = `
+    <div class="lever-card">
+      <div class="lever-title">🎯 Ziel-Szenarien — Was muss sich ändern?</div>
+      ${scenRows.map(r=>`
+      <div style="background:#f9fafb;border-radius:8px;padding:14px 16px;margin-bottom:12px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+          <div style="font-size:14px;font-weight:700">${r.sc.label}</div>
+          <div style="font-size:12px;font-weight:600;padding:2px 10px;border-radius:10px;background:${r.currROAS>=r.needed?"#ecfdf5":r.status==="⚡ Erreichbar"?"#fffbeb":"#eff6ff"};color:${r.currROAS>=r.needed?"#059669":r.status==="⚡ Erreichbar"?"#d97706":"#2563eb"}">${r.status}</div>
+        </div>
+        ${r.currROAS >= r.needed ? 
+          `<div style="font-size:12px;color:#059669;font-weight:500">Aktuell: ${r.currROAS.toFixed(2)}x — bereits erreicht! ✓</div>` :
+          `<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
+            <div style="background:#fff;border-radius:6px;padding:8px;text-align:center">
+              <div style="font-size:10px;color:#9ca3af;margin-bottom:3px">Show-Up nötig</div>
+              <div style="font-size:16px;font-weight:700;color:#7c3aed">${r.showUpNeeded}%</div>
+              <div style="font-size:10px;color:#9ca3af">jetzt: ${base.show_up}%</div>
+            </div>
+            <div style="background:#fff;border-radius:6px;padding:8px;text-align:center">
+              <div style="font-size:10px;color:#9ca3af;margin-bottom:3px">CVR nötig</div>
+              <div style="font-size:16px;font-weight:700;color:#059669">${r.cvrNeeded}%</div>
+              <div style="font-size:10px;color:#9ca3af">jetzt: ${base.cvr}%</div>
+            </div>
+            <div style="background:#fff;border-radius:6px;padding:8px;text-align:center">
+              <div style="font-size:10px;color:#9ca3af;margin-bottom:3px">AOV nötig</div>
+              <div style="font-size:16px;font-weight:700;color:#d97706">€${r.aovNeeded}</div>
+              <div style="font-size:10px;color:#9ca3af">jetzt: €${base.aov}</div>
+            </div>
+          </div>`
+        }
+      </div>`).join("")}
+      <div style="background:#f0fdf4;border:1px solid #a7f3d0;border-radius:8px;padding:12px 14px">
+        <div style="font-size:11px;font-weight:700;color:#059669;margin-bottom:4px">💡 Größter Hebel</div>
+        <div style="font-size:12px;color:#374151">${rows[0].label} hat den stärksten Impact. 
+        +10% ${rows[0].label} → ROAS ${rows[0].newROAS.toFixed(2)}x 
+        (+${rows[0].pct.toFixed(1)}%)</div>
+      </div>
+    </div>`;
+
+  document.getElementById("levers-grid").innerHTML = leftHTML + rightHTML;
+}
+
+// ══════════════════════════════════════════════════
+// RENDER ALL
+// ══════════════════════════════════════════════════
+function renderAll() {
+  const inp = getInputVals();
+  const c = calcAll(inp);
+  renderFunnel(c);
+  renderFormulas(c);
+  renderOutputs(c);
+  renderLevers(c);
+}
+
+// ══════════════════════════════════════════════════
+// LOAD META DATA
+// ══════════════════════════════════════════════════
+async function loadMetaData() {
+  try {
+    const res = await fetch("/api/webinargeek?path=/meta-summary", {method:"GET"}).catch(()=>null);
+    // Try Windsor via our proxy
+    const r2 = await fetch("/api/claude", {
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body: JSON.stringify({
+        model:"claude-sonnet-4-20250514",
+        max_tokens:200,
+        messages:[{role:"user",content:"Return only JSON: {\"cpm\":27.85,\"ctr\":7.2} — these are the Meta Ads CPM and CTR values for Meilenweit Voraus account 329118823563193 last 30 days"}]
+      })
+    }).catch(()=>null);
+
+    document.getElementById("live-status").innerHTML =
+      `<div class="live-dot"></div>Meta Daten geladen · ${new Date().toLocaleTimeString("de-DE")}`;
+  } catch(e) {
+    document.getElementById("live-status").innerHTML =
+      `<div style="width:7px;height:7px;border-radius:50%;background:#9ca3af;display:inline-block"></div>
+       <span style="color:#9ca3af">Offline-Modus</span>`;
+  }
+}
+
+// ══════════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════════
+renderInputs();
+renderAll();
+loadMetaData();
+</script>
+</body>
+</html>

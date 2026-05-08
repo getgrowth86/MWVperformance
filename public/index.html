@@ -3,435 +3,329 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Meilenweit Voraus — Performance</title>
+<title>Meilenweit Voraus</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 html{-webkit-font-smoothing:antialiased}
-body{font-family:'Inter',sans-serif;background:#f4f5f7;color:#111;min-height:100vh;font-size:13px}
+body{font-family:'Inter',sans-serif;background:#f4f5f7;color:#111;min-height:100vh}
 
-.header{background:#fff;border-bottom:1px solid #e5e7eb;padding:0 32px;position:sticky;top:0;z-index:200}
-.header-inner{height:54px;display:flex;align-items:center;justify-content:space-between}
+.header{background:#fff;border-bottom:1px solid #e5e7eb;padding:0 32px}
+.header-inner{max-width:900px;margin:0 auto;height:54px;display:flex;align-items:center;justify-content:space-between}
 .logo{font-size:15px;font-weight:700}
-.nav-pills{display:flex;gap:2px;background:#f3f4f6;padding:3px;border-radius:7px}
-.nav-pills button{border:none;background:transparent;border-radius:5px;padding:5px 14px;font-size:12px;font-weight:600;font-family:inherit;cursor:pointer;color:#6b7280;transition:all .1s}
-.nav-pills button.active{background:#fff;color:#111;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.next-webinar{font-size:12px;color:#6b7280;display:flex;align-items:center;gap:8px}
+.dot{width:7px;height:7px;border-radius:50%;background:#10b981;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
 
-.wrap{max-width:1600px;margin:0 auto;padding:24px 32px 80px}
+.wrap{max-width:900px;margin:0 auto;padding:28px 32px 80px}
 
-/* ── TRENDS ── */
-.trends-section{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:24px 28px;margin-bottom:24px}
-.trends-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
-.trends-title{font-size:16px;font-weight:700}
-.metric-pills{display:flex;gap:8px;flex-wrap:wrap}
-.metric-pill{border:none;border-radius:20px;padding:5px 14px;font-size:12px;font-weight:600;font-family:inherit;cursor:pointer;transition:all .15s;opacity:.45}
-.metric-pill.on{opacity:1}
-.trends-stats{display:flex;gap:1px;background:#f3f4f6;border:1px solid #e5e7eb;border-radius:10px;overflow:hidden;margin-bottom:20px}
-.ts-card{flex:1;background:#fff;padding:14px 18px}
-.ts-label{font-size:11px;color:#9ca3af;font-weight:500;text-transform:uppercase;letter-spacing:.8px;margin-bottom:5px}
-.ts-value{font-size:22px;font-weight:700;letter-spacing:-.5px}
-.ts-sub{font-size:11px;color:#9ca3af;margin-top:3px}
-.chart-area{position:relative;height:200px;margin-top:4px}
-svg.chart{width:100%;height:100%}
+/* Next Webinar Banner */
+.next-banner{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:20px 24px;margin-bottom:24px;display:flex;align-items:center;justify-content:space-between}
+.next-left{display:flex;align-items:center;gap:16px}
+.next-icon{font-size:28px}
+.next-label{font-size:12px;color:#9ca3af;font-weight:500;margin-bottom:3px}
+.next-date{font-size:16px;font-weight:700}
+.next-stats{display:flex;gap:24px}
+.ns-item{text-align:right}
+.ns-label{font-size:11px;color:#9ca3af;font-weight:500;margin-bottom:2px}
+.ns-value{font-size:22px;font-weight:700}
+.ns-sub{font-size:11px;color:#9ca3af}
 
-/* ── SCORECARD ── */
-.sc-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
-.sc-title{font-size:15px;font-weight:700}
-.sc-meta{font-size:12px;color:#9ca3af}
-.table-wrap{background:#fff;border:1px solid #e5e7eb;border-radius:14px;overflow:hidden}
-.table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
-table{border-collapse:collapse;white-space:nowrap}
-thead tr.gr th{
-  padding:7px 10px;font-size:10px;font-weight:700;letter-spacing:.7px;text-transform:uppercase;
-  border-bottom:1px solid #e5e7eb;text-align:center;
-}
-.g0{background:#f9fafb;color:#6b7280}
-.g1{background:#dbeafe;color:#1e40af}
-.g2{background:#ede9fe;color:#5b21b6}
-.g3{background:#d1fae5;color:#065f46}
-.g4{background:#fef3c7;color:#92400e}
-.g5{background:#fce7f3;color:#9d174d}
-.g6{background:#f3f4f6;color:#374151}
-.g7{background:#ffedd5;color:#9a3412}
+/* Section title */
+.section-title{font-size:11px;font-weight:600;color:#9ca3af;text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;margin-top:28px}
 
-thead tr.cr th{
-  padding:9px 10px;font-size:10px;font-weight:600;color:#9ca3af;text-transform:uppercase;
-  letter-spacing:.5px;background:#f9fafb;border-bottom:2px solid #e5e7eb;
-  text-align:right;line-height:1.4;white-space:pre-line;
-}
-thead tr.cr th:nth-child(1),thead tr.cr th:nth-child(2){text-align:left}
+/* Webinar Cards */
+.webinar-card{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:20px 24px;margin-bottom:10px;cursor:pointer;transition:all .15s}
+.webinar-card:hover{border-color:#d1d5db;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.webinar-card.expanded{border-color:#e5e7eb;box-shadow:0 2px 12px rgba(0,0,0,.08)}
 
-/* Sticky cols */
-thead tr.gr th:nth-child(1),thead tr.cr th:nth-child(1),tbody td:nth-child(1){
-  position:sticky;left:0;z-index:10;background:inherit;min-width:44px;
-  border-right:1px solid #f3f4f6;
-}
-thead tr.gr th:nth-child(2),thead tr.cr th:nth-child(2),tbody td:nth-child(2){
-  position:sticky;left:44px;z-index:10;background:inherit;min-width:72px;
-  border-right:2px solid #e5e7eb;
-}
-thead tr.gr th:nth-child(1),thead tr.gr th:nth-child(2),
-thead tr.cr th:nth-child(1),thead tr.cr th:nth-child(2){background:#f9fafb}
+.card-top{display:flex;align-items:center;justify-content:space-between}
+.card-left{display:flex;align-items:center;gap:16px}
+.card-date{font-size:13px;font-weight:600;color:#111;min-width:52px}
+.card-dow{font-size:11px;color:#9ca3af;font-weight:500}
 
-tbody tr{border-bottom:1px solid #f3f4f6;transition:background .1s}
-tbody tr:last-child{border-bottom:none}
-tbody tr:hover{background:#f9fafb!important}
-tbody tr:hover td{background:#f9fafb!important}
-tbody td{padding:12px 10px;text-align:right;vertical-align:middle;color:#374151}
-tbody td:nth-child(1){background:#fff;color:#6b7280;font-weight:500;font-size:12px;text-align:left}
-tbody td:nth-child(2){background:#fff;font-weight:600;font-size:13px;color:#111;text-align:left}
+.card-metrics{display:flex;gap:28px;align-items:center}
+.cm{text-align:right}
+.cm-label{font-size:10px;color:#9ca3af;font-weight:500;text-transform:uppercase;letter-spacing:.6px;margin-bottom:2px}
+.cm-value{font-size:18px;font-weight:700;letter-spacing:-.3px}
 
-tr.totals td{background:#f9fafb!important;font-weight:700;color:#111!important;border-top:2px solid #e5e7eb}
-
-/* Value styles */
-.vg{color:#059669;font-weight:600}.vy{color:#d97706;font-weight:600}.vr{color:#dc2626;font-weight:600}
-.vp{color:#7c3aed;font-weight:600}.vb{color:#2563eb;font-weight:500}.vgr{color:#9ca3af}
-.vbold{font-weight:700;color:#111}
-.editable{color:#2563eb;cursor:pointer;font-size:12px}
-.badge{display:inline-block;border-radius:4px;padding:2px 7px;font-size:11px;font-weight:600}
+.card-roas{text-align:right}
+.roas-badge{display:inline-block;border-radius:6px;padding:4px 12px;font-size:13px;font-weight:700}
 .bg{background:#ecfdf5;color:#059669}.by{background:#fffbeb;color:#d97706}.br{background:#fef2f2;color:#dc2626}
+
+/* Expanded detail */
+.card-detail{margin-top:16px;padding-top:16px;border-top:1px solid #f3f4f6;display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+.cd-item{}
+.cd-label{font-size:10px;color:#9ca3af;font-weight:500;text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px}
+.cd-value{font-size:15px;font-weight:700;color:#111}
+.cd-sub{font-size:11px;color:#9ca3af;margin-top:2px}
+
+/* Cumulative */
+.cumul-card{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:24px;margin-bottom:10px}
+.cumul-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:#f3f4f6;border-radius:8px;overflow:hidden;margin-top:16px}
+.cg-item{background:#fff;padding:16px 14px}
+.cg-label{font-size:10px;color:#9ca3af;font-weight:500;text-transform:uppercase;letter-spacing:.6px;margin-bottom:5px}
+.cg-value{font-size:20px;font-weight:700;letter-spacing:-.3px}
+.cg-sub{font-size:11px;color:#9ca3af;margin-top:3px}
+
+/* Chart */
+.mini-chart{display:flex;align-items:flex-end;gap:3px;height:32px;margin-top:8px}
+.mc-bar{border-radius:2px 2px 0 0;flex:1;opacity:.7}
+
+/* Colors */
+.green{color:#059669}.yellow{color:#d97706}.red{color:#dc2626}.gray{color:#9ca3af}
 </style>
 </head>
 <body>
 
 <div class="header">
   <div class="header-inner">
-    <div class="logo">Meilenweit Voraus — Performance</div>
-    <div style="display:flex;align-items:center;gap:16px">
-      <div class="nav-pills">
-        <button class="active" id="b4" onclick="setView('last4')">Letzte 4</button>
-        <button id="ba" onclick="setView('all')">Alle 2026</button>
-      </div>
+    <div class="logo">Meilenweit Voraus</div>
+    <div class="next-webinar">
+      <div class="dot"></div>
+      <span id="next-label">Nächstes Webinar: Sonntag 10. Mai · 10:00 Uhr</span>
     </div>
   </div>
 </div>
 
 <div class="wrap">
 
-  <!-- ── TRENDS CHART ── -->
-  <div class="trends-section">
-    <div class="trends-header">
-      <div class="trends-title">Trends</div>
-      <div class="metric-pills" id="metric-pills"></div>
+  <!-- Next Webinar Banner -->
+  <div class="next-banner">
+    <div class="next-left">
+      <div class="next-icon">📅</div>
+      <div>
+        <div class="next-label">Nächstes Webinar</div>
+        <div class="next-date">Sonntag, 10. Mai 2026 · 10:00 Uhr</div>
+      </div>
     </div>
-    <div class="trends-stats" id="trends-stats"></div>
-    <div class="chart-area">
-      <svg class="chart" id="chart-svg" viewBox="0 0 1000 200" preserveAspectRatio="none"></svg>
+    <div class="next-stats">
+      <div class="ns-item">
+        <div class="ns-label">Anmeldungen</div>
+        <div class="ns-value" id="wg-count">
+          <span style="font-size:14px;color:#9ca3af">laden…</span>
+        </div>
+        <div class="ns-sub" id="wg-sub"></div>
+      </div>
+      <div class="ns-item">
+        <div class="ns-label">Ad Spend MTD</div>
+        <div class="ns-value green">€3.078</div>
+        <div class="ns-sub">seit 01. Mai</div>
+      </div>
+      <div class="ns-item">
+        <div class="ns-label">Est. Show-Up</div>
+        <div class="ns-value" id="est-su">—</div>
+        <div class="ns-sub">bei 20% Rate</div>
+      </div>
     </div>
-    <div id="chart-xlabels" style="display:flex;margin-top:8px"></div>
   </div>
 
-  <!-- ── SCORECARD ── -->
-  <div class="sc-header">
-    <span class="sc-title">Webinar Scorecard</span>
-    <span class="sc-meta">Scrollen → · Blaue Felder = befüllbar · Sonntag 10:00 Attribution</span>
-  </div>
-  <div class="table-wrap">
-    <div class="table-scroll">
-      <table>
-        <thead>
-          <tr class="gr" id="gr"></tr>
-          <tr class="cr" id="cr"></tr>
-        </thead>
-        <tbody id="tbody"></tbody>
-      </table>
-    </div>
-  </div>
+  <!-- Last 4 Webinars -->
+  <div class="section-title">Letzte Webinare</div>
+  <div id="webinar-list"></div>
+
+  <!-- Current Month Cumulative -->
+  <div class="section-title">Mai 2026 — Kumuliert</div>
+  <div class="cumul-card" id="cumul-card"></div>
+
 </div>
 
 <script>
-// ══ DATA ══════════════════════════════════════════════════════════════════
-const WEB = [
-  {d:"2026-05-03",spend:3078, leads:551, su:17, rev:1282,  sales:7,  kurs_r:0,   p:1},
-  {d:"2026-04-26",spend:0,    leads:0,   su:0,  rev:11351, sales:45, kurs_r:0,   p:0},
-  {d:"2026-04-19",spend:7243, leads:598, su:20, rev:16320, sales:50, kurs_r:0,   p:0},
-  {d:"2026-04-12",spend:9932, leads:1259,su:21, rev:3649,  sales:24, kurs_r:90,  p:0},
-  {d:"2026-04-05",spend:2431, leads:281, su:22, rev:7335,  sales:45, kurs_r:180, p:0},
-  {d:"2026-03-29",spend:6569, leads:470, su:24, rev:3267,  sales:19, kurs_r:90,  p:0},
-  {d:"2026-03-22",spend:10852,leads:950, su:28, rev:12282, sales:60, kurs_r:450, p:0},
-  {d:"2026-03-15",spend:6654, leads:523, su:28, rev:10218, sales:49, kurs_r:90,  p:0},
-  {d:"2026-03-08",spend:9432, leads:782, su:24, rev:10559, sales:54, kurs_r:0,   p:0},
-  {d:"2026-03-01",spend:21098,leads:1863,su:25, rev:15281, sales:89, kurs_r:0,   p:0},
-  {d:"2026-02-22",spend:12978,leads:1400,su:32, rev:17089, sales:85, kurs_r:630, p:0},
-  {d:"2026-02-15",spend:8878, leads:964, su:33, rev:23563, sales:112,kurs_r:450, p:0},
-  {d:"2026-02-08",spend:5390, leads:720, su:25, rev:11106, sales:62, kurs_r:90,  p:0},
-  {d:"2026-02-01",spend:8325, leads:1041,su:14, rev:12330, sales:75, kurs_r:90,  p:0},
-  {d:"2026-01-25",spend:6819, leads:792, su:36, rev:10183, sales:81, kurs_r:360, p:0},
-  {d:"2026-01-18",spend:3384, leads:389, su:28, rev:10587, sales:47, kurs_r:180, p:0},
-];
-const DAYS=["So","Mo","Di","Mi","Do","Fr","Sa"];
-const fmt=d=>d.slice(8,10)+"."+d.slice(5,7)+".";
-
-// Manual data (from WG Analytics — fill in)
-const MAN={};
-WEB.forEach(w=>MAN[w.d]={cpm:0,stick:0,replay:0,rep_su:0,rep_sales:0,
-  v297:0,v344:0,vrate:0,fu297:0,fu344:0,furate:0});
-
-// ══ STATE ═════════════════════════════════════════════════════════════════
-let view="last4";
-let activeMetric="rev";
-const METRICS=[
-  {k:"rev",   label:"Revenue",    color:"#0ea5e9", fmt:v=>"€"+Math.round(v).toLocaleString("de-DE")},
-  {k:"spend", label:"Ad Spend",   color:"#f59e0b", fmt:v=>"€"+Math.round(v).toLocaleString("de-DE")},
-  {k:"roas",  label:"ROAS",       color:"#10b981", fmt:v=>v.toFixed(2)+"x"},
-  {k:"leads", label:"Leads",      color:"#8b5cf6", fmt:v=>Math.round(v).toString()},
-  {k:"su",    label:"Show-Up %",  color:"#ec4899", fmt:v=>v.toFixed(1)+"%"},
-  {k:"cpl",   label:"CPL",        color:"#f97316", fmt:v=>"€"+v.toFixed(2)},
+// ══ DATA ══════════════════════════════════════════
+const WEBINARS = [
+  {d:"2026-05-03",dow:"So",spend:3078, leads:551, su:17, rev:1282,  sales:7,  cac:440,  partial:true},
+  {d:"2026-04-26",dow:"So",spend:0,    leads:0,   su:0,  rev:11351, sales:45, cac:0,    partial:false},
+  {d:"2026-04-19",dow:"So",spend:7243, leads:598, su:20, rev:16320, sales:50, cac:145,  partial:false},
+  {d:"2026-04-12",dow:"So",spend:9932, leads:1259,su:21, rev:3649,  sales:24, cac:414,  partial:false},
 ];
 
-function ws(){return view==="last4"?WEB.slice(0,4):WEB}
-function wsr(){return [...ws()].reverse()} // chronological for chart
+const MAY_ALL = [
+  {d:"2026-05-03",spend:3078,leads:551,su:17,rev:1282,sales:7},
+  // 10.05. folgt Sonntag
+];
 
-// ══ CALC ══════════════════════════════════════════════════════════════════
-function calc(w){
-  const m=MAN[w.d]||{};
-  const att    = w.leads>0&&w.su>0?Math.round(w.leads*w.su/100):0;
-  const stickN = m.stick>0?Math.round(att*m.stick/100):0;
-  const liveSl = (m.v297||0)+(m.v344||0)+(m.vrate||0);
-  const fuSl   = (m.fu297||0)+(m.fu344||0)+(m.furate||0);
-  const repSl  = m.rep_sales||0;
-  const totSl  = liveSl+fuSl+repSl||w.sales;
-  const cvr    = att>0?totSl/att*100:0;
-  const cpl    = w.leads>0?w.spend/w.leads:0;
-  const cac    = totSl>0?w.spend/totSl:0;
-  const cashR  = w.spend>0?w.rev/w.spend:0;
-  const rateCV = Math.round((w.kurs_r||0)/90)*360;
-  const cv     = w.rev-(w.kurs_r||0)+rateCV;
-  const cvRoas = w.spend>0?cv/w.spend:0;
-  const roas   = cashR;
-  return {att,stickN,liveSl,fuSl,repSl,totSl,cvr,cpl,cac,cashR,cv,cvRoas,roas,
-    cashGain:w.rev-w.spend, cvGain:cv-w.spend};
-}
+// ══ HELPERS ══════════════════════════════════════
+const eur  = n => "€" + Math.round(n).toLocaleString("de-DE");
+const f2   = n => n.toFixed(2) + "x";
+const rc   = r => r >= 1.5 ? "bg" : r >= 1.0 ? "by" : "br";
+const rcc  = r => r >= 1.5 ? "green" : r >= 1.0 ? "yellow" : "red";
+const suC  = s => s >= 28 ? "green" : s >= 22 ? "yellow" : "red";
+const cplC = c => !c ? "gray" : c <= 10 ? "green" : c <= 13 ? "yellow" : "red";
+const fmt  = d => d.slice(8,10) + "." + d.slice(5,7) + ".";
 
-// ══ CHART ═════════════════════════════════════════════════════════════════
-function getMetricVal(w, mk){
-  const c=calc(w);
-  if(mk==="rev")   return w.rev;
-  if(mk==="spend") return w.spend;
-  if(mk==="roas")  return c.roas;
-  if(mk==="leads") return w.leads;
-  if(mk==="su")    return w.su;
-  if(mk==="cpl")   return c.cpl;
-  return 0;
-}
+let expanded = null;
 
-function renderMetricPills(){
-  document.getElementById("metric-pills").innerHTML=METRICS.map(m=>
-    `<button class="metric-pill${activeMetric===m.k?" on":""}" 
-      style="background:${activeMetric===m.k?m.color+"22":"#f3f4f6"};color:${m.color};border:1.5px solid ${activeMetric===m.k?m.color:"transparent"}"
-      onclick="setMetric('${m.k}')">${m.label}</button>`
-  ).join("");
-}
+// ══ WEBINAR CARDS ══════════════════════════════════
+function renderWebinars() {
+  let html = "";
+  WEBINARS.forEach(w => {
+    const roas    = w.spend > 0 ? w.rev / w.spend : 0;
+    const cpl     = w.leads > 0 ? w.spend / w.leads : 0;
+    const att     = w.leads > 0 && w.su > 0 ? Math.round(w.leads * w.su / 100) : 0;
+    const isExp   = expanded === w.d;
 
-function renderTrendStats(){
-  const w=ws();
-  const M=METRICS.find(m=>m.k===activeMetric);
-  const vals=w.map(x=>getMetricVal(x,activeMetric));
-  const total=["rev","spend","leads"].includes(activeMetric)?vals.reduce((a,b)=>a+b,0):vals.reduce((a,b)=>a+b,0)/vals.filter(v=>v>0).length;
-  const best=Math.max(...vals);
-  const worst=Math.min(...vals.filter(v=>v>0));
-  const latest=vals[0];
-  const prev=vals[1]||0;
-  const trend=prev>0?(latest-prev)/prev*100:0;
+    html += `
+    <div class="webinar-card${isExp?" expanded":""}" onclick="toggle('${w.d}')">
+      <div class="card-top">
+        <div class="card-left">
+          <div>
+            <div class="card-date">${fmt(w.d)}</div>
+            <div class="card-dow">${w.dow}${w.partial?' · laufend':''}</div>
+          </div>
+        </div>
+        <div class="card-metrics">
+          <div class="cm">
+            <div class="cm-label">Revenue</div>
+            <div class="cm-value ${rcc(roas)}">${eur(w.rev)}</div>
+          </div>
+          <div class="cm">
+            <div class="cm-label">Sales</div>
+            <div class="cm-value">${w.sales}</div>
+          </div>
+          <div class="cm">
+            <div class="cm-label">Leads</div>
+            <div class="cm-value">${w.leads > 0 ? w.leads : "—"}</div>
+          </div>
+          <div class="cm">
+            <div class="cm-label">Show-Up</div>
+            <div class="cm-value ${suC(w.su)}">${w.su > 0 ? w.su + "%" : "—"}</div>
+          </div>
+          <div class="card-roas">
+            ${w.roas > 0 || w.spend > 0
+              ? `<span class="roas-badge ${rc(roas)}">${roas > 0 ? f2(roas) : "—"}</span>`
+              : `<span style="font-size:12px;color:#9ca3af">carry-over</span>`}
+          </div>
+        </div>
+      </div>
 
-  document.getElementById("trends-stats").innerHTML=[
-    {l:["rev","spend","leads"].includes(activeMetric)?"Gesamt (Zeitraum)":"Durchschnitt",v:M.fmt(total),s:""},
-    {l:"Aktuell ("+fmt(w[0].d)+")",v:M.fmt(latest),s:trend!==0?`${trend>0?"+":""}${trend.toFixed(1)}% vs. Vorwoche`:""},
-    {l:"Bestes Webinar",v:M.fmt(best),s:fmt(w[vals.indexOf(best)].d)},
-    {l:"Schlechtestes",v:M.fmt(worst),s:fmt(w[vals.indexOf(worst)].d)},
-  ].map(c=>`<div class="ts-card">
-    <div class="ts-label">${c.l}</div>
-    <div class="ts-value">${c.v}</div>
-    ${c.s?`<div class="ts-sub">${c.s}</div>`:""}
-  </div>`).join("");
-}
-
-function renderChart(){
-  const data=wsr(); // oldest → newest
-  const M=METRICS.find(m=>m.k===activeMetric);
-  const vals=data.map(x=>getMetricVal(x,activeMetric));
-  const maxV=Math.max(...vals)*1.1||1;
-  const n=data.length;
-  const W=1000,H=200,PAD=10;
-  const xStep=(W-PAD*2)/(n-1||1);
-
-  // Build SVG path
-  const pts=vals.map((v,i)=>{
-    const x=PAD+i*xStep;
-    const y=H-PAD-(v/maxV)*(H-PAD*2);
-    return {x,y,v,d:data[i]};
+      ${isExp ? `
+      <div class="card-detail">
+        <div class="cd-item">
+          <div class="cd-label">Ad Spend</div>
+          <div class="cd-value">${w.spend > 0 ? eur(w.spend) : "—"}</div>
+        </div>
+        <div class="cd-item">
+          <div class="cd-label">CPL</div>
+          <div class="cd-value ${cplC(cpl)}">${cpl > 0 ? "€" + cpl.toFixed(2) : "—"}</div>
+        </div>
+        <div class="cd-item">
+          <div class="cd-label">Teilnehmer</div>
+          <div class="cd-value">${att > 0 ? att : "—"}</div>
+          <div class="cd-sub">${att > 0 ? "von " + w.leads + " Leads" : ""}</div>
+        </div>
+        <div class="cd-item">
+          <div class="cd-label">Ø Order</div>
+          <div class="cd-value">${w.sales > 0 ? eur(Math.round(w.rev / w.sales)) : "—"}</div>
+        </div>
+        <div class="cd-item">
+          <div class="cd-label">CAC</div>
+          <div class="cd-value ${w.cac > 0 ? (w.cac <= 175 ? "green" : w.cac <= 260 ? "yellow" : "red") : "gray"}">${w.cac > 0 ? eur(w.cac) : "—"}</div>
+        </div>
+      </div>` : ""}
+    </div>`;
   });
+  document.getElementById("webinar-list").innerHTML = html;
+}
 
-  const linePath="M "+pts.map(p=>`${p.x},${p.y}`).join(" L ");
-  const areaPath=linePath+` L ${pts[pts.length-1].x},${H} L ${pts[0].x},${H} Z`;
+// ══ CUMULATIVE MAY ══════════════════════════════════
+function renderCumul() {
+  const totRev   = MAY_ALL.reduce((a, w) => a + w.rev, 0);
+  const totSpend = MAY_ALL.reduce((a, w) => a + w.spend, 0);
+  const totSales = MAY_ALL.reduce((a, w) => a + w.sales, 0);
+  const totLeads = MAY_ALL.reduce((a, w) => a + w.leads, 0);
+  const roas     = totSpend > 0 ? totRev / totSpend : 0;
+  const cpl      = totLeads > 0 ? totSpend / totLeads : 0;
 
-  const gradId="grad_"+activeMetric;
-  const c=M.color;
+  document.getElementById("cumul-card").innerHTML = `
+    <div style="display:flex;align-items:center;justify-content:space-between">
+      <div style="font-size:14px;font-weight:600">Mai 2026</div>
+      <div style="font-size:11px;color:#9ca3af">1 Webinar abgeschlossen · 1 diese Woche</div>
+    </div>
+    <div class="cumul-grid">
+      <div class="cg-item">
+        <div class="cg-label">Revenue</div>
+        <div class="cg-value ${rcc(roas)}">${eur(totRev)}</div>
+        <div class="cg-sub">TC Charges</div>
+      </div>
+      <div class="cg-item">
+        <div class="cg-label">Ad Spend</div>
+        <div class="cg-value">${eur(totSpend)}</div>
+        <div class="cg-sub">${MAY_ALL.length} Webinar(e)</div>
+      </div>
+      <div class="cg-item">
+        <div class="cg-label">ROAS</div>
+        <div class="cg-value ${rcc(roas)}">${roas > 0 ? f2(roas) : "—"}</div>
+        <div class="cg-sub">Ziel: 2.0x</div>
+      </div>
+      <div class="cg-item">
+        <div class="cg-label">Sales</div>
+        <div class="cg-value">${totSales}</div>
+        <div class="cg-sub">Neue Käufer</div>
+      </div>
+      <div class="cg-item">
+        <div class="cg-label">CPL</div>
+        <div class="cg-value ${cplC(cpl)}">${cpl > 0 ? "€" + cpl.toFixed(2) : "—"}</div>
+        <div class="cg-sub">Ziel: ≤€12</div>
+      </div>
+    </div>`;
+}
 
-  let svg=`<defs>
-    <linearGradient id="${gradId}" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="${c}" stop-opacity=".25"/>
-      <stop offset="100%" stop-color="${c}" stop-opacity=".02"/>
-    </linearGradient>
-  </defs>`;
+// ══ WEBINARGEEK LIVE COUNT ══════════════════════════
+async function loadWGCount() {
+  try {
+    const res  = await fetch("/api/webinargeek?path=/webinars");
+    const data = await res.json();
+    const webinars = data.webinars || [];
 
-  // Grid lines
-  for(let i=0;i<=4;i++){
-    const y=PAD+(i/4)*(H-PAD*2);
-    svg+=`<line x1="${PAD}" y1="${y}" x2="${W-PAD}" y2="${y}" stroke="#f3f4f6" stroke-width="1"/>`;
+    // Finde Webinar 10. Mai 2026
+    const next = webinars.find(w => {
+      const bd = w.broadcasts || [];
+      return bd.some(b => b.start_time && b.start_time.includes("2026-05-10"));
+    }) || webinars.find(w => w.title && w.title.toLowerCase().includes("workshop"));
+
+    if (!next) {
+      document.getElementById("wg-count").textContent = "—";
+      return;
+    }
+
+    // Subscriptions laden
+    const wid = next.id;
+    const bcast = (next.broadcasts || []).find(b => b.start_time && b.start_time.includes("2026-05-10"));
+    const bid = bcast ? bcast.id : null;
+
+    let subRes;
+    if (bid) {
+      subRes = await fetch(`/api/webinargeek?path=/webinars/${wid}/broadcasts/${bid}/subscriptions&per_page=1`);
+    } else {
+      subRes = await fetch(`/api/webinargeek?path=/webinars/${wid}/subscriptions&per_page=1`);
+    }
+
+    const subData = await subRes.json();
+    const total = subData.total_entries || subData.total || (subData.subscriptions || []).length;
+
+    document.getElementById("wg-count").innerHTML = `<span class="green">${total.toLocaleString("de-DE")}</span>`;
+    document.getElementById("wg-sub").textContent = "Registrierungen";
+
+    // Est Show-Up
+    const estSU = Math.round(total * 0.20);
+    document.getElementById("est-su").innerHTML = `<span class="${estSU >= 80 ? "green" : "yellow"}">${estSU}</span>`;
+
+  } catch(e) {
+    document.getElementById("wg-count").innerHTML = `<span style="font-size:12px;color:#9ca3af">Fehler</span>`;
+    console.error(e);
   }
-
-  svg+=`<path d="${areaPath}" fill="url(#${gradId})"/>`;
-  svg+=`<path d="${linePath}" fill="none" stroke="${c}" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>`;
-
-  // Dots
-  pts.forEach(p=>{
-    svg+=`<circle cx="${p.x}" cy="${p.y}" r="4" fill="#fff" stroke="${c}" stroke-width="2"/>`;
-  });
-
-  document.getElementById("chart-svg").innerHTML=svg;
-
-  // X Labels
-  const labels=document.getElementById("chart-xlabels");
-  labels.innerHTML="";
-  data.forEach((_,i)=>{
-    const el=document.createElement("div");
-    el.style.cssText=`flex:1;text-align:center;font-size:11px;color:#9ca3af;font-family:Inter,sans-serif`;
-    el.textContent=fmt(data[i].d);
-    labels.appendChild(el);
-  });
 }
 
-function setMetric(k){activeMetric=k;renderMetricPills();renderTrendStats();renderChart();}
-
-// ══ TABLE ═════════════════════════════════════════════════════════════════
-function renderTable(){
-  // Group headers
-  const GR=[
-    {cls:"g0",label:"",cs:1},
-    {cls:"g0",label:"",cs:1},
-    {cls:"g1",label:"📣 Anzeigen",cs:4},
-    {cls:"g2",label:"🎙 Live Webinar",cs:4},
-    {cls:"g3",label:"💳 Verkäufe Live",cs:5},
-    {cls:"g4",label:"▶️ Replay",cs:3},
-    {cls:"g5",label:"📧 Follow-Up Sales",cs:3},
-    {cls:"g6",label:"📊 Gesamt",cs:5},
-    {cls:"g7",label:"💰 Finanzen",cs:6},
-  ];
-  document.getElementById("gr").innerHTML=GR.map(g=>
-    `<th class="${g.cls}" colspan="${g.cs}">${g.label}</th>`
-  ).join("");
-
-  // Column headers
-  const COLS=["Tag","Datum",
-    "Kosten","CPM","Leads","CPL",
-    "Ind.\nTeiln.","Show-Up\nRate","Stick\nRate","Pitch\nBeginn",
-    "Verkauf\n297€","Verkauf\n344€","Rate\n90€","CVR\nKauf","Sales\nLive",
-    "Replay\nTeiln.","Show-Up\nReplay","Replay\nSales",
-    "FU Sale\n297€","FU Sale\n344€","FU Rate\n90€",
-    "Total\nSales","Ind.\nTeiln.","Teiln/\nSales%","CAC","CPA\nalltime",
-    "Cash\nCollect","Cash\nROAS","Cash\nGewinn","Contract\nValue","CV\nGewinn","CV\nROAS"
-  ];
-  document.getElementById("cr").innerHTML=COLS.map(c=>`<th>${c}</th>`).join("");
-
-  const w=ws();
-  let tot={spend:0,leads:0,sales:0,rev:0,cv:0};
-  let html="";
-
-  w.forEach(x=>{
-    const m=MAN[x.d]||{};
-    const c=calc(x);
-    const dow=DAYS[new Date(x.d).getDay()];
-
-    const rateCV=Math.round((x.kurs_r||0)/90)*360;
-    const cv=x.rev-(x.kurs_r||0)+rateCV;
-
-    // totals
-    tot.spend+=x.spend; tot.leads+=x.leads;
-    tot.sales+=c.totSl; tot.rev+=x.rev; tot.cv+=cv;
-
-    // helpers
-    const E=v=>v>0?"€"+Math.round(v).toLocaleString("de-DE"):"—";
-    const P=v=>v>0?v.toFixed(1)+"%":"—";
-    const N=v=>v>0?v:"—";
-    const plus='<span class="editable">+</span>';
-
-    html+=`<tr>
-      <td>${dow}</td>
-      <td>${fmt(x.d)}${x.p?' <span style="font-size:10px;color:#9ca3af">●</span>':''}</td>
-      <td class="${x.spend>0?"vbold":""}">${E(x.spend)}</td>
-      <td class="editable">${m.cpm>0?E(m.cpm):plus}</td>
-      <td class="${x.leads>0?"vbold":""}">${N(x.leads)}</td>
-      <td class="${c.cpl<=10?"vg":c.cpl<=13?"vy":c.cpl>0?"vr":"vgr"}">${c.cpl>0?"€"+c.cpl.toFixed(2):"—"}</td>
-      <td class="vbold">${N(c.att)}</td>
-      <td class="${x.su>=28?"vg":x.su>=22?"vy":x.su>0?"vr":"vgr"}">${x.su>0?x.su+"%":"—"}</td>
-      <td class="editable">${m.stick>0?m.stick+"%":plus}</td>
-      <td class="editable">${m.stick>0?c.stickN:plus}</td>
-      <td class="editable">${m.v297>0?m.v297:plus}</td>
-      <td class="editable">${m.v344>0?m.v344:plus}</td>
-      <td class="editable">${m.vrate>0?m.vrate:plus}</td>
-      <td class="${c.cvr>=15?"vg":c.cvr>=8?"vy":c.cvr>0?"vr":"vgr"}">${c.cvr>0?c.cvr.toFixed(1)+"%":"—"}</td>
-      <td class="vbold">${c.liveSl>0?c.liveSl:x.sales>0?'<span class="vgr">'+x.sales+'</span>':"—"}</td>
-      <td class="editable">${m.replay>0?m.replay:plus}</td>
-      <td class="editable">${m.rep_su>0?m.rep_su+"%":plus}</td>
-      <td class="editable">${m.rep_sales>0?m.rep_sales:plus}</td>
-      <td class="editable">${m.fu297>0?m.fu297:plus}</td>
-      <td class="editable">${m.fu344>0?m.fu344:plus}</td>
-      <td class="editable">${m.furate>0?m.furate:plus}</td>
-      <td class="vbold" style="font-size:15px">${c.totSl}</td>
-      <td>${N(c.att)}</td>
-      <td class="${c.cvr>=15?"vg":c.cvr>=8?"vy":"vr"}">${c.cvr>0?c.cvr.toFixed(1)+"%":"—"}</td>
-      <td class="${c.cac<=175?"vg":c.cac<=260?"vy":"vr"}">${c.cac>0?"€"+Math.round(c.cac):"—"}</td>
-      <td class="${c.cac<=175?"vg":c.cac<=260?"vy":"vr"}">${c.cac>0?"€"+Math.round(c.cac):"—"}</td>
-      <td class="vbold">${E(x.rev)}</td>
-      <td class="${c.cashR>=1.5?"vg":c.cashR>=1?"vy":c.cashR>0?"vr":"vgr"}">${c.cashR>0?c.cashR.toFixed(2)+"x":"—"}</td>
-      <td class="${c.cashGain>0?"vg":"vr"}">${c.cashGain!==0?"€"+Math.round(c.cashGain).toLocaleString("de-DE"):"—"}</td>
-      <td class="vbold">${E(cv)}</td>
-      <td class="${c.cvGain>0?"vg":"vr"}">${c.cvGain!==0?"€"+Math.round(c.cvGain).toLocaleString("de-DE"):"—"}</td>
-      <td class="${c.cvRoas>=1.5?"vg":c.cvRoas>=1?"vy":c.cvRoas>0?"vr":"vgr"}">${c.cvRoas>0?c.cvRoas.toFixed(2)+"x":"—"}</td>
-    </tr>`;
-  });
-
-  // Totals row
-  const avgRoas=tot.spend>0?tot.rev/tot.spend:0;
-  const avgCV  =tot.spend>0?tot.cv/tot.spend:0;
-  html+=`<tr class="totals">
-    <td>—</td><td><strong>Gesamt</strong></td>
-    <td><strong>€${Math.round(tot.spend).toLocaleString("de-DE")}</strong></td>
-    <td>—</td>
-    <td><strong>${tot.leads.toLocaleString("de-DE")}</strong></td>
-    <td>${tot.leads>0?"€"+(tot.spend/tot.leads).toFixed(2):"—"}</td>
-    <td>—</td><td>—</td><td>—</td><td>—</td>
-    <td>—</td><td>—</td><td>—</td><td>—</td>
-    <td><strong>${tot.sales}</strong></td>
-    <td>—</td><td>—</td><td>—</td>
-    <td>—</td><td>—</td><td>—</td>
-    <td><strong>${tot.sales}</strong></td>
-    <td>—</td><td>—</td>
-    <td>${tot.sales>0?"€"+Math.round(tot.spend/tot.sales):"—"}</td>
-    <td>${tot.sales>0?"€"+Math.round(tot.spend/tot.sales):"—"}</td>
-    <td><strong>€${Math.round(tot.rev).toLocaleString("de-DE")}</strong></td>
-    <td class="${avgRoas>=1.5?"vg":avgRoas>=1?"vy":"vr"}">${avgRoas.toFixed(2)}x</td>
-    <td class="${tot.rev-tot.spend>0?"vg":"vr"}">€${Math.round(tot.rev-tot.spend).toLocaleString("de-DE")}</td>
-    <td><strong>€${Math.round(tot.cv).toLocaleString("de-DE")}</strong></td>
-    <td class="${tot.cv-tot.spend>0?"vg":"vr"}">€${Math.round(tot.cv-tot.spend).toLocaleString("de-DE")}</td>
-    <td class="${avgCV>=1.5?"vg":avgCV>=1?"vy":"vr"}">${avgCV.toFixed(2)}x</td>
-  </tr>`;
-
-  document.getElementById("tbody").innerHTML=html;
+// ══ TOGGLE ══════════════════════════════════════════
+function toggle(d) {
+  expanded = expanded === d ? null : d;
+  renderWebinars();
 }
 
-// ══ INIT ══════════════════════════════════════════════════════════════════
-function setView(v){
-  view=v;
-  document.getElementById("b4").classList.toggle("active",v==="last4");
-  document.getElementById("ba").classList.toggle("active",v==="all");
-  renderAll();
-}
-function renderAll(){
-  renderMetricPills();renderTrendStats();renderChart();renderTable();
-}
-renderAll();
+// ══ INIT ═════════════════════════════════════════════
+renderWebinars();
+renderCumul();
+loadWGCount();
 </script>
 </body>
 </html>
