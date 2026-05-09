@@ -8,5 +8,8 @@
         { "key": "Access-Control-Allow-Headers", "value": "Content-Type, Authorization" }
       ]
     }
+  ],
+  "crons": [
+    { "path": "/api/morning-news", "schedule": "0 6 * * *" }
   ]
 }
