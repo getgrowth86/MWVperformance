@@ -178,18 +178,8 @@ export default async function handler(req, res) {
     }
   }
 
-  // ── 2. META CAPI ──────────────────────────────────────────────────────────
-  if (fbc || fbp) {
-    try {
-      const eventId = `fbc_lead_${Date.now()}`;
-      const capiRes = await sendCapiEvent("Lead", email, fbc, fbp, eventId);
-      console.log(`✅ Meta CAPI Lead | events_received: ${capiRes?.events_received}`);
-      results.meta_capi = { events_received: capiRes?.events_received };
-    } catch(err) {
-      console.error("CAPI error:", err.message);
-      results.capi_error = err.message;
-    }
-  }
+  // Meta CAPI Lead NICHT senden — wird bereits von /api/lead (WG Webhook)
+  // und Browser Pixel auf Onepage gesendet. Verhindert 3x Attribution!
 
   return res.status(200).json({ status: "success", ...results });
 }
