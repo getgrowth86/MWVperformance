@@ -1,9 +1,8 @@
 {
-  "name": "mw-proxy",
+  "name": "mw-vperformance",
   "version": "1.0.0",
-  "description": "Meilenweit Voraus — WebinarGeek Proxy + Meta CAPI Bridge",
   "private": true,
-  "engines": {
-    "node": ">=18"
+  "dependencies": {
+    "@vercel/blob": "^0.23.0"
   }
 }
